@@ -42,9 +42,10 @@ float* ResizeRow(float* row, int* size)
 	return row;
 }
 //resizes tableau, it means adds new rows and changes the row counter variable
-float** ResizeTableau(float** tableau, int* numberOfRows)
+float** ResizeTableau(float** tableau, int* numberOfRows, int* sizeOfRows)
 {
 	tableau = (float**)realloc(tableau, (*numberOfRows + 1) * sizeof(float*));
+	sizeOfRows = (int*)realloc(sizeOfRows, (*numberOfRows + 1) * sizeof(int));
 	*numberOfRows++;
 	return tableau;
 }
@@ -130,5 +131,12 @@ float* ThrowElementToRow(float* row, float element, int* rowSize, float* element
 		*elementToThrowOut = -1.0; 
 	}
 	return row;
+
+}
+void SetUpTableau(struct Tableau* tab)
+{
+	tab->numberOfRows = 0;
+	tab->sizesOfRows = (int*)malloc(0);
+	tab->tableau = (float**)malloc(0);
 
 }

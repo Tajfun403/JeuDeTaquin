@@ -43,10 +43,10 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 		float* nextElement = &nextElementValue;
 		while (isThereAnyElementLeft != 0)
 		{
-			//resize tableau if its to small
-			if (tableau->numberOfRows < currentRow)
+			// <= because if we have 1 row, thats the row index: 0, and current row may be 1, row[1] doesnt exist
+			if (tableau->numberOfRows <= currentRow)
 			{
-				tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
+				tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows), &(tableau->sizesOfRows);
 			}
 			tableau->tableau[currentRow] = ThrowElementToRow(tableau->tableau[currentRow], tableau->set[element], &(tableau->sizesOfRows[currentRow]), nextElement);
 			//if theres no element to throw (when the new element is the smallest), we can go to the next element of set
