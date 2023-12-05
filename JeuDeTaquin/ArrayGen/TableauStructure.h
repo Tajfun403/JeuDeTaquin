@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 //All the functions that will be used in generating process
 //As we operate on numbers from range [0,1] I'll be using -1f as empty cell
@@ -18,24 +19,29 @@
 	*/
 struct Tableau
 {
-	int setSize; //size of set of randomly generated numbers, the size is given as an input
+	//size of set of randomly generated numbers, the size is given as an input
+	int setSize; 
 
-	float startingNr; // the number which will be used in creating the chart later
-	float* set; // set of randomly generated numbers, those will be used to generate a tabeleux
-	int* sizesOfRows; //stores the sizes of the rows
-	int numberOfRows; //I'll be tracking the size of rows
-
-	float** tableau; //2d array, THE Young Tabelau
+	// the number which will be used in creating the chart later
+	float startingNr; 
+	// set of randomly generated numbers, those will be used to generate a tabeleux
+	float* set; 
+	//stores the sizes of the rows
+	int* sizesOfRows; 
+	//I'll be tracking the size of rows
+	int numberOfRows; 
+	//2d array, THE Young Tabelau
+	float** tableau; 
 
 };
-
+//resizes one row and changes the size variable
 float* ResizeRow(float* row, int* size)
 {
 	row = (float*)realloc(row, (*size + 1) * sizeof(float));
 	*size++;
 	return row;
 }
-
+//resizes tableau, it means adds new rows and changes the row counter variable
 float** ResizeTableau(float** tableau, int* numberOfRows)
 {
 	tableau = (float**)realloc(tableau, (*numberOfRows + 1) * sizeof(float*));
@@ -56,14 +62,14 @@ void GenerateRandomSet(float set[], int size)
 //For example: if you want to have 10 numbers between 0 and 1 it will return 0.1
 float CalculateDelta(int howMany)
 {
-	return (1.0 / howMany);
+	return (float)(1.0 / howMany);
 }
 float* GenerateStartingNumbers(float delta, int howManyNumbers)
 {
 	float* setOfStartingNumbers;
 	setOfStartingNumbers = (float*)malloc(howManyNumbers * sizeof(float));
 	float currentElement = 0.0;
-	for (int i = 0; i <= howManyNumbers; i ++)
+	for (int i = 0; i <= howManyNumbers; i++)
 	{
 		setOfStartingNumbers[i] = currentElement;
 		currentElement += delta;
@@ -74,13 +80,16 @@ float* GenerateStartingNumbers(float delta, int howManyNumbers)
 
 //float max is recently added number, we are looking for the biggest from smaller than the new
 // i'm using "number" and "element" synonymously here
-float* FindThe2ndMaxElement(float* row, float newElement, int rowSize) 
+float* FindThe2ndMaxElement(float* row, float newElement, int rowSize)
 {
-	float currentMax = -1.0; 
-	float* maxAddress; // we'll have to delete the found element from the row later
+	float currentMax = -1.0;
+	float maxAddresValue = -1.0;
+	// we'll have to delete the found element from the row later
+	float* maxAddress = &maxAddresValue; 
 	for (int i = 0; i < rowSize; i++)
 	{
-		if (row[i] > currentMax && row[i] < newElement) // it can't be bigger than the new number
+		// it can't be bigger than the new number
+		if (row[i] > currentMax && row[i] < newElement) 
 		{
 			currentMax = row[i];
 			maxAddress = &currentMax;
@@ -92,29 +101,33 @@ float* FindThe2ndMaxElement(float* row, float newElement, int rowSize)
 	}
 	else
 	{
-		return NULL; 
+		return NULL;
 	}
 }
 
 //we are putting the newest element at the beggining of the row
-float* ThrowElementToRow(float* row, float element, int* rowSize, float* elementToThrow)
+float* ThrowElementToRow(float* row, float element, int* rowSize, float* elementToThrowOut)
 {
 	float* addressToReplace;
-	float thrownOutElement; //this is the biggest from smaller than new, it will be thrown a row higher
-	addressToReplace = FindThe2ndMaxElement(row, element, *rowSize);
+	//this is the biggest from smaller than new, it will be thrown a row higher
+	float thrownOutElement; 
 	// if you find something smaller then replace the smaller number with current and throw smaller to next row
 	// if not, just place the number at the beggining of the row
-	if (addressToReplace != NULL) 
+	addressToReplace = FindThe2ndMaxElement(row, element, *rowSize);
+	
+	if (addressToReplace != NULL)
 	{
 		thrownOutElement = *addressToReplace;
-		*elementToThrow = thrownOutElement;
+		*elementToThrowOut = thrownOutElement;
 		*addressToReplace = element;
 	}
-	else // if not
+	// if not
+	else 
 	{
 		row = ResizeRow(row, rowSize);
 		row[*rowSize - 1] = element;
-		*elementToThrow = -1.0; //means none
+		//means none in that case
+		*elementToThrowOut = -1.0; 
 	}
 	return row;
 
