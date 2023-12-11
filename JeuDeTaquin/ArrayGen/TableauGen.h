@@ -4,8 +4,6 @@
 
 
 //Generating + debugging and testing tools
-
-
 void SaveTableau()
 {
 
@@ -38,7 +36,6 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 	{
 		int currentRow = 0;
 		int isThereAnyElementLeft = 1;
-		//it'll be useful for throwing replaced element to the next row
 		float nextElementValue = -1.0;
 		float* nextElement = &nextElementValue;
 		while (isThereAnyElementLeft != 0)
@@ -46,15 +43,14 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 			// <= because if we have 1 row, thats the row index: 0, and current row may be 1, row[1] doesnt exist
 			if (tableau->numberOfRows <= currentRow)
 			{
-				tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows), &(tableau->sizesOfRows);
+				tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
+				tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, &(tableau->numberOfRows));
 			}
 			tableau->tableau[currentRow] = ThrowElementToRow(tableau->tableau[currentRow], tableau->set[element], &(tableau->sizesOfRows[currentRow]), nextElement);
-			//if theres no element to throw (when the new element is the smallest), we can go to the next element of set
-			if (*nextElement == -1.0) 
+			if (*nextElement == -1.0) //if theres no element to throw, we can go to the next element of set
 			{
 				isThereAnyElementLeft = 0;
-			}
-			//if theres a element to throw to next row
+			}//if theres a element to throw to next row
 			else
 			{
 				currentRow++;

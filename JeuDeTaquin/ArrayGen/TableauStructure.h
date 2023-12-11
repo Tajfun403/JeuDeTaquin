@@ -19,34 +19,60 @@
 	*/
 struct Tableau
 {
-	//size of set of randomly generated numbers, the size is given as an input
-	int setSize; 
+	int setSize; //size of set of randomly generated numbers, the size is given as an input
 
-	// the number which will be used in creating the chart later
-	float startingNr; 
-	// set of randomly generated numbers, those will be used to generate a tabeleux
-	float* set; 
-	//stores the sizes of the rows
-	int* sizesOfRows; 
-	//I'll be tracking the size of rows
-	int numberOfRows; 
-	//2d array, THE Young Tabelau
-	float** tableau; 
+	float startingNr; // the number which will be used in creating the chart later
+	float* set; // set of randomly generated numbers, those will be used to generate a tabeleux
+	int* sizesOfRows; //stores the sizes of the rows
+	int numberOfRows; //I'll be tracking the size of rows
+
+	float** tableau; //2d array, THE Young Tabelau
 
 };
-//resizes one row and changes the size variable
+
 float* ResizeRow(float* row, int* size)
 {
-	row = (float*)realloc(row, (*size + 1) * sizeof(float));
-	*size++;
-	return row;
+	if (*size > 0)
+	{
+		row = (float*)realloc(row, (*size + 1) * sizeof(float));
+		*size++;
+		return row;
+	}
+	else
+	{
+		row = (float*)malloc(1 * sizeof(float));
+		*size = 0;
+	}
 }
-//resizes tableau, it means adds new rows and changes the row counter variable
-float** ResizeTableau(float** tableau, int* numberOfRows, int* sizeOfRows)
+//You remember we had an array that stored all the sizes of rows in the tableu? It will have to be resized as well
+int* ResizeSizesArray(int* sizes, int* currentRowsCounter)
 {
-	tableau = (float**)realloc(tableau, (*numberOfRows + 1) * sizeof(float*));
-	sizeOfRows = (int*)realloc(sizeOfRows, (*numberOfRows + 1) * sizeof(int));
-	*numberOfRows++;
+	// the currentRowsCounter will have been increased in ResizeTableau function so we dont increase it
+	if (*currentRowsCounter > 1)
+	{
+		sizes = (int*)realloc(sizes, (*currentRowsCounter * sizeof(int)));
+		sizes[*currentRowsCounter - 1] = 0;
+	}
+	else
+	{
+		sizes = (int*)malloc(1 * sizeof(int));
+		sizes[*currentRowsCounter - 1] = 0;
+	}
+	return sizes;
+}
+float** ResizeTableau(float** tableau, int* numberOfRows)
+{
+	if (*numberOfRows > 0)
+	{
+		tableau = (float**)realloc(tableau, (*numberOfRows + 1) * sizeof(float*));
+		*numberOfRows++;
+
+	}
+	else
+	{
+		tableau = (float**)malloc(1 * sizeof(float*));
+		*numberOfRows = 1;
+	}
 	return tableau;
 }
 
@@ -85,12 +111,10 @@ float* FindThe2ndMaxElement(float* row, float newElement, int rowSize)
 {
 	float currentMax = -1.0;
 	float maxAddresValue = -1.0;
-	// we'll have to delete the found element from the row later
-	float* maxAddress = &maxAddresValue; 
+	float* maxAddress = &maxAddresValue; // we'll have to delete the found element from the row later
 	for (int i = 0; i < rowSize; i++)
 	{
-		// it can't be bigger than the new number
-		if (row[i] > currentMax && row[i] < newElement) 
+		if (row[i] > currentMax && row[i] < newElement) // it can't be bigger than the new number
 		{
 			currentMax = row[i];
 			maxAddress = &currentMax;
@@ -110,33 +134,22 @@ float* FindThe2ndMaxElement(float* row, float newElement, int rowSize)
 float* ThrowElementToRow(float* row, float element, int* rowSize, float* elementToThrowOut)
 {
 	float* addressToReplace;
-	//this is the biggest from smaller than new, it will be thrown a row higher
-	float thrownOutElement; 
+	float thrownOutElement; //this is the biggest from smaller than new, it will be thrown a row higher
+	addressToReplace = FindThe2ndMaxElement(row, element, *rowSize);
 	// if you find something smaller then replace the smaller number with current and throw smaller to next row
 	// if not, just place the number at the beggining of the row
-	addressToReplace = FindThe2ndMaxElement(row, element, *rowSize);
-	
 	if (addressToReplace != NULL)
 	{
 		thrownOutElement = *addressToReplace;
 		*elementToThrowOut = thrownOutElement;
 		*addressToReplace = element;
 	}
-	// if not
-	else 
+	else // if not
 	{
 		row = ResizeRow(row, rowSize);
 		row[*rowSize - 1] = element;
-		//means none in that case
-		*elementToThrowOut = -1.0; 
+		*elementToThrowOut = -1.0; //means none
 	}
 	return row;
-
-}
-void SetUpTableau(struct Tableau* tab)
-{
-	tab->numberOfRows = 0;
-	tab->sizesOfRows = (int*)malloc(0);
-	tab->tableau = (float**)malloc(0);
 
 }
