@@ -56,6 +56,5 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 				currentRow++;
 			}
 		}
-		free(nextElement);
 	}
 }
