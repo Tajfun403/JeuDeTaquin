@@ -17,8 +17,7 @@
 	0[][][]
 	Therefore the cell [0][0] is in the down-left corner
 	*/
-struct Tableau
-{
+struct Tableau {
 	int setSize; //size of set of randomly generated numbers, the size is given as an input
 
 	float startingNr; // the number which will be used in creating the chart later
@@ -30,35 +29,40 @@ struct Tableau
 
 };
 
+/*MASSIVE WARNING
+For a while ill be using these 3 resize functions in that way:
+function returns pointer to some array
+i copy that array itd
+why?
+because i want to move on and ill repair it later*/
+
 float* ResizeRow(float* row, int* size)
 {
 	if (*size > 0)
 	{
 		row = (float*)realloc(row, (*size + 1) * sizeof(float));
-		*size++;
+		*size = *size + 1;
 		return row;
 	}
 	else
 	{
 		row = (float*)malloc(1 * sizeof(float));
-		*size = 0;
+		*size = 1;
 	}
 }
-//You remember we had an array that stored all the sizes of rows in the tableu? It will have to be resized as well
-int* ResizeSizesArray(int* sizes, int* currentRowsCounter)
+int* ResizeSizesArray(int* sizes, int currentRowsCounter)
 {
-	// the currentRowsCounter will have been increased in ResizeTableau function so we dont increase it
-	if (*currentRowsCounter > 1)
+	//printf("%p \n", sizes);
+	if (currentRowsCounter > 1)
 	{
-		sizes = (int*)realloc(sizes, (*currentRowsCounter * sizeof(int)));
-		sizes[*currentRowsCounter - 1] = 0;
+		sizes = (int*)realloc(sizes, (currentRowsCounter * sizeof(int)));
 	}
 	else
 	{
 		sizes = (int*)malloc(1 * sizeof(int));
-		sizes[*currentRowsCounter - 1] = 0;
 	}
-	return sizes;
+	//printf("%p \n", sizes);
+	return sizes; //works fine till this line
 }
 float** ResizeTableau(float** tableau, int* numberOfRows)
 {
@@ -116,8 +120,9 @@ float* FindThe2ndMaxElement(float* row, float newElement, int rowSize)
 	{
 		if (row[i] > currentMax && row[i] < newElement) // it can't be bigger than the new number
 		{
+
 			currentMax = row[i];
-			maxAddress = &currentMax;
+			maxAddress = &row[i];
 		}
 	}
 	if (currentMax > 0)

@@ -40,11 +40,14 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 		float* nextElement = &nextElementValue;
 		while (isThereAnyElementLeft != 0)
 		{
+			//printf("Current row: %i \n", currentRow);
 			// <= because if we have 1 row, thats the row index: 0, and current row may be 1, row[1] doesnt exist
 			if (tableau->numberOfRows <= currentRow)
 			{
+				//printf("%i", currentRow);
+				//printf("%i", tableau->numberOfRows);
 				tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
-				tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, &(tableau->numberOfRows));
+				tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, tableau->numberOfRows);
 			}
 			tableau->tableau[currentRow] = ThrowElementToRow(tableau->tableau[currentRow], tableau->set[element], &(tableau->sizesOfRows[currentRow]), nextElement);
 			if (*nextElement == -1.0) //if theres no element to throw, we can go to the next element of set
@@ -55,6 +58,8 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 			{
 				currentRow++;
 			}
+			//assert(nextElement != NULL);
 		}
 	}
 }
+//ERROR, NEXT ELEMENT IS ALWAYS 0 BRUH -> max is not being found -> rowSize in ThrowElement is always 0
