@@ -47,7 +47,6 @@ float* ResizeRow(float* row, int* size)
 	{
 		row = (float*)malloc(1 * sizeof(float));
 		*size = 1;
-		printf("Im here %i \n", *size);
 	}
 	return row;
 }
@@ -70,7 +69,7 @@ float** ResizeTableau(float** tableau, int* numberOfRows)
 	if (*numberOfRows > 0)
 	{
 		tableau = (float**)realloc(tableau, (*numberOfRows + 1) * sizeof(float*));
-		*numberOfRows++;
+		*numberOfRows = *numberOfRows + 1;
 
 	}
 	else
@@ -125,9 +124,8 @@ float* FindThe2ndMaxElement(float* row, float newElement, int* rowSize)
 	{
 		if (row[i] > currentMax && row[i] < newElement) // it can't be bigger than the new number
 		{
-
 			currentMax = row[i];
-			maxAddress = &row[i];
+			maxAddress = &(row[i]);
 		}
 	}
 	if (currentMax > 0)
@@ -164,4 +162,3 @@ float* ThrowElementToRow(float* row, float element, int* rowSize, float* element
 	return row;
 
 }
-//ERROR now the rowsize is cosmic

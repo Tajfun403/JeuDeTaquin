@@ -26,6 +26,7 @@ void PrintTableau(struct Tableau tab)
 		}
 		printf("\n");
 	}
+	printf("\n \n \n");
 }
 
 
@@ -36,7 +37,7 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 	{
 		int currentRow = 0;
 		int isThereAnyElementLeft = 1;
-		float nextElementValue = -1.0;
+		float nextElementValue = tableau->set[element];
 		float* nextElement = &nextElementValue;
 		while (isThereAnyElementLeft != 0)
 		{
@@ -49,7 +50,10 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 				tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
 				tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, tableau->numberOfRows);
 			}
-			tableau->tableau[currentRow] = ThrowElementToRow(tableau->tableau[currentRow], tableau->set[element], &(tableau->sizesOfRows[currentRow]), nextElement);
+			//printf("STAGE\n");
+			//PrintTableau(*tableau);
+			tableau->tableau[currentRow] = ThrowElementToRow(tableau->tableau[currentRow], nextElementValue, &(tableau->sizesOfRows[currentRow]), nextElement);
+
 			if (*nextElement == -1.0) //if theres no element to throw, we can go to the next element of set
 			{
 				isThereAnyElementLeft = 0;
@@ -60,6 +64,6 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 			}
 			//assert(nextElement != NULL);
 		}
+
 	}
 }
-//ERROR, NEXT ELEMENT IS ALWAYS 0 BRUH -> max is not being found -> rowSize in ThrowElement is always 0
