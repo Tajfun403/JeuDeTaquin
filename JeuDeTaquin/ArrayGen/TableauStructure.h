@@ -42,13 +42,14 @@ float* ResizeRow(float* row, int* size)
 	{
 		row = (float*)realloc(row, (*size + 1) * sizeof(float));
 		*size = *size + 1;
-		return row;
 	}
 	else
 	{
 		row = (float*)malloc(1 * sizeof(float));
 		*size = 1;
+		printf("Im here %i \n", *size);
 	}
+	return row;
 }
 int* ResizeSizesArray(int* sizes, int currentRowsCounter)
 {
@@ -111,12 +112,16 @@ float* GenerateStartingNumbers(float delta, int howManyNumbers)
 
 //float max is recently added number, we are looking for the biggest from smaller than the new
 // i'm using "number" and "element" synonymously here
-float* FindThe2ndMaxElement(float* row, float newElement, int rowSize)
+float* FindThe2ndMaxElement(float* row, float newElement, int* rowSize)
 {
 	float currentMax = -1.0;
-	float maxAddresValue = -1.0;
-	float* maxAddress = &maxAddresValue; // we'll have to delete the found element from the row later
-	for (int i = 0; i < rowSize; i++)
+
+	float* maxAddress = NULL; // we'll have to delete the found element from the row later
+	if (*rowSize <= 0)
+	{
+		return NULL;
+	}
+	for (int i = 0; i < *rowSize; i++)
 	{
 		if (row[i] > currentMax && row[i] < newElement) // it can't be bigger than the new number
 		{
@@ -140,7 +145,7 @@ float* ThrowElementToRow(float* row, float element, int* rowSize, float* element
 {
 	float* addressToReplace;
 	float thrownOutElement; //this is the biggest from smaller than new, it will be thrown a row higher
-	addressToReplace = FindThe2ndMaxElement(row, element, *rowSize);
+	addressToReplace = FindThe2ndMaxElement(row, element, rowSize);
 	// if you find something smaller then replace the smaller number with current and throw smaller to next row
 	// if not, just place the number at the beggining of the row
 	if (addressToReplace != NULL)
@@ -152,9 +157,11 @@ float* ThrowElementToRow(float* row, float element, int* rowSize, float* element
 	else // if not
 	{
 		row = ResizeRow(row, rowSize);
-		row[*rowSize - 1] = element;
+		row[(*rowSize) - 1] = element;
 		*elementToThrowOut = -1.0; //means none
+
 	}
 	return row;
 
 }
+//ERROR now the rowsize is cosmic
