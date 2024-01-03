@@ -4,9 +4,33 @@
 
 
 //Generating + debugging and testing tools
-void SaveTableau()
-{
 
+char* ConvertRowToString(float row[], int rowSize)
+{
+	int sizeOfString;
+	char* rowAsString;
+	for (int letter = 0; letter < sizeOfString - 1; letter++)
+	{
+
+	}
+	return "";
+}
+// Saves one tab to a separate file
+void SaveTableau(struct Tableau tab, int IDNumber)
+{
+	FILE* file;
+	// first line (last in the array) must be written with w mode, and next with a mode
+	file = fopen("numie.txt", "w");
+	// insert lacking code
+	fclose(file);
+
+	for (int row = tab.numberOfRows - 2; row >= 0; row--)
+	{
+		file = fopen("numie.txt", "a");
+		// insert lacking code
+
+		fclose(file);
+	}
 }
 
 void PrintRow(float row[], int size)
