@@ -39,7 +39,8 @@ int traverse(char *path,int n,int m){
     while(1){
         //end of arr
         if(arr[i-1][j]==0&&arr[i][j+1]==0){
-            res=i+j;
+            ///res=i+j;
+            res=r-i-1+j;
             break;
         }
         //up
