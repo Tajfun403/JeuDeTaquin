@@ -4,47 +4,73 @@
 
 int traverse(char *path,int n,int m){
 
+    // n number of rows, m max number of columns
     // Open a file in read mode
     FILE *fptr = fopen(path, "r");
 
     if(fptr == NULL){
-       // printf("Not able to open the file.");
+       //printf("Not able to open the file.");
         return -1;
     }
+    /*
     //for small n,m only
     double arr[n][m];
     char line[m];
+    */
+    double **arr = (double **)malloc((n) * sizeof(double *));
+
+    char *line=malloc(17*m);//sizeof(char) is always 1, and... m is the number of doubles and every double has many digits.. so assuming constant number of digits per double we need to multiply by some constant
+
+    int *endarr=malloc(n*sizeof(int));
 
     //read from file and input into array
-    int r=0;
+
+    int r=n;//rows
+
+    arr[r] = (double *)malloc((m+1) * sizeof(double));
+    //fill top with 0..... can be changed to only add as many zeros as needed but requires additional if in reading from file
+    for(int i=0;i<m+1;++i){
+        arr[r][i]=0;
+    }
+
     while ( fgets( line, m, fptr ) != NULL  ){
 
-      ///  printf("The line is: %s\n", line);
+    ///    printf("The line is: %s\n", line);
         //...
-      ///  printf("and the values are: ");
-        for(int i=0,j=0,k=0;line[i]!=0;++i){
+    ///    printf("and the values are: ");
+        r--;
+        int j=0,numb=0;
+        while(line[j]!=0){
+            if(line[j]==';')numb++;
+            j++;
+        }
+        arr[r] = (double *)malloc((numb+1) * sizeof(double));
+        endarr[r]=numb-1;//remember where every row ends
+        j=0;
+        for(int i=0,k=0;line[i]!=0;++i){
             if(line[i]==';'){
                 line[i]=0;
                 arr[r][j]=atof(line+k);
-             ///   printf("%lf ", arr[r][j]);
+            ///    printf("%lf ", arr[r][j]);
                 k=i+1;
                 j++;
             }
         }
-       /// printf("\n\n");
-        r++;
+        arr[r][j]=0;
+      ///  printf("\n\n");
     }
 
-    int i=r-1,j=0,res;
+    int i=0,j=0,res;
     while(1){
+      ///   printf("%lf ", arr[i][j]);
         //end of arr
-        if(arr[i-1][j]==0&&arr[i][j+1]==0){
+        if(endarr[i+1]<j&&arr[i][j+1]==0){
             res=i+j;
             break;
         }
         //up
-        else if(arr[i-1][j]>arr[i][j+1]){
-            i--;
+        else if(endarr[i+1]>=j&&arr[i+1][j]>arr[i][j+1]){
+            i++;
         }
         //right
         else j++;
@@ -52,6 +78,14 @@ int traverse(char *path,int n,int m){
     }
     // Close the file
     fclose(fptr);
+    // Deallocate memory when done
+
+    for (int i=0;i<n+1;++i){
+
+        free(arr[i]);
+    }
+
+    free(arr);
 
     return res;
 }
