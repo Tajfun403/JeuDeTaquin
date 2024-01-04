@@ -1,36 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "TableauStructure.h"
+#include <math.h>
+#define MAXDIGITS 10
+#define DIGITS_OF_STARTING_NUMBERS 2
+#define LOCALISATION ""
 
 
 //Generating + debugging and testing tools
 
-char* ConvertRowToString(float row[], int rowSize)
-{
-	int sizeOfString;
-	char* rowAsString;
-	for (int letter = 0; letter < sizeOfString - 1; letter++)
-	{
-
-	}
-	return "";
-}
 // Saves one tab to a separate file
-void SaveTableau(struct Tableau tab, int IDNumber)
+void SaveTableau(struct Tableau tab)
 {
+	//Some functions as sprints and fopen etc wont work in VS, so i have to use safe versions
+	/* We want to have an ordered files naming system.I think the best names will be the first numbers,
+	as we will create the chart according to them*/
+	int idNumber = tab.startingNr * pow(10, DIGITS_OF_STARTING_NUMBERS);
 	FILE* file;
-	// first line (last in the array) must be written with w mode, and next with a mode
-	file = fopen("numie.txt", "w");
-	// insert lacking code
-	fclose(file);
+	//Localization and name of the file
+	char name[10];
+	int last = tab.numberOfRows - 1;
+	//sprintf(name, "%d.txt", idNumber);
+	// We set the name of the file and its localization
+	sprintf_s(name, 10, "%s0,%d.txt", LOCALISATION, idNumber);
 
-	for (int row = tab.numberOfRows - 2; row >= 0; row--)
+	//file = fopen(name, "a");
+	fopen_s(&file, name, "a");
+	for (int row = last; row >= 0; row--)
 	{
-		file = fopen("numie.txt", "a");
-		// insert lacking code
+		for (int number = 0; number < tab.sizesOfRows[row]; number++)
+		{
+			fprintf_s(file, "%f;", tab.tableau[row][number]);
+		}
+		fprintf_s(file, "\n");
 
-		fclose(file);
 	}
+	fclose(file);
 }
 
 void PrintRow(float row[], int size)
@@ -87,6 +93,7 @@ void TableauGeneratingProcess(struct Tableau* tableau)
 				currentRow++;
 			}
 			//assert(nextElement != NULL);
+			PrintTableau(*tableau);
 		}
 
 	}
