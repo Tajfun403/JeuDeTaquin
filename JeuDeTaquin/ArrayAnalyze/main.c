@@ -4,7 +4,7 @@
 int main(){
    // FILE *fptr;// = fopen("filename.txt", "r");
     char* path="filename.txt";
-    int n=100,m=100;
+    int n=3,m=4;
     printf("%d",traverse(path,n,m));
 
     return 0;
