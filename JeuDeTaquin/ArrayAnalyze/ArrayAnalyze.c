@@ -29,9 +29,9 @@ int traverse(char *path,int n,int m){
     endarr[n]=-1;
     while ( fgets( line, 18*m, fptr ) != NULL  ){
 
-        printf("The line is: %s\n", line);
+     ///   printf("The line is: %s\n", line);
         //...
-        printf("and the values are: ");
+    ///    printf("and the values are: ");
         r--;
         int j=0,numb=0;
         while(line[j]!=0){
@@ -45,17 +45,17 @@ int traverse(char *path,int n,int m){
             if(line[i]==';'){
                 line[i]=0;
                 arr[r][j]=atof(line+k);
-                printf("%lf ", arr[r][j]);
+              ///  printf("%lf ", arr[r][j]);
                 k=i+1;
                 j++;
             }
         }
-        printf("\n\n");
+      ///  printf("\n\n");
     }
 
     int i=0,j=0,res;
     while(1){
-         printf("%lf ", arr[i][j]);
+       ///  printf("%lf ", arr[i][j]);
         //end of arr
         if(endarr[i+1]<j&&j==endarr[i]){
             res=i+j;
