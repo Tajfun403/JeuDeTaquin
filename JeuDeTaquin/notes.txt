@@ -1,3 +1,5 @@
+================================ 24th Nov 2023
+
 Rysowanie tablic: GNU-plot
 Można używać frameworków - nawet zalecane. Np do rysowania grafów.
 
@@ -24,3 +26,25 @@ app.diagram.io - zrobić schemat, w miarę wysokopoziomowy. Np "używany algoryt
 
 zapis i wczytywanie gry -> możemy zapisać do pliku wygenerowane tablice. Spakować do zipa, można użyć bibliotek.
 Na start: { chcesz wygenerować nowe tabele czy wczytać istniejące? } -> { oblicz grę i tabelę }
+
+================================ 8th Jan 2024
+General Tableau struct: that can be read and written to files
+
+struct Tableau {
+	int* sizesOfRows; 
+	int numberOfRows; 
+	float** tableau;
+};
+
+Separate files for Tableau:
+- Tableau.h for base struct
+- TableauFileFormat for files
+- TablueGenHelpers for gen helper funcs
+
+Then both read and write funcs would resurrect and save entire Tableau from/to file
+
+------------
+New TODOs:
+- add both command line args to run program instantly, and provide a UI for user to specify the items themselves
+- measure time spent
+- separate funcs for taking input and running program
