@@ -1,8 +1,9 @@
+#pragma once
 #include <stdbool.h>
 
 struct UserInput {
-	int TableuSize;
-	int TableuCount;
+	int TableauSize;
+	int TableauCount;
 	char* InputPath;
 	bool bValid;
 	char* ErrorInfo;
