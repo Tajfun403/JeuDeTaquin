@@ -1,7 +1,9 @@
+#pragma once
+
 #include "GraphItem.h"
 
-void SetAverages(PlotItem** arr, int n);
+void SetAverages(GraphItem* arr, int n);
 
-char* GenerateDB(PlotItem** arr, int n);
+char* GenerateDB(GraphItem* arr, int n);
 
-void GenerateGraph(PlotItem** arr);
+void GenerateGraph(GraphItem* arr, int n);

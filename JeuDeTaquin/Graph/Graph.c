@@ -1,7 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "Graph.h"
+#include "GraphItem.h"
 
-
-void SetAverages(PlotItem** arr, int n) {
+void SetAverages(GraphItem* arr, int n) {
 	int range = n * 0.1;
 	for (int i = 0; i < n; i++) {
 		int currCount = 0;
@@ -11,14 +14,15 @@ void SetAverages(PlotItem** arr, int n) {
 			currSum += arr[j].Y;
 			currCount++;
 		}
-		arr[i].Avg = cureSum / currCount;
+		arr[i].Avg = currSum / currCount;
 	}
+}
 
-char* GenerateDB(PlotItem * *arr, int n) {
+char* GenerateDB(GraphItem* arr, int n) {
 	char fileName[20];
-	sprintf(fileName, "DB_%s.dat", tmpnam(nullptr));
-	FILE* f = fopen(filename, "w");
-	if (f == nullptr) return nullptr;
+	sprintf(fileName, "DB_%s.dat", tmpnam(NULL));
+	FILE* f = fopen(fileName, "w");
+	if (f == NULL) return NULL;
 
 	fprintf(f, "# X Y Avg\n");
 	for (int i = 0; i < n; i++) {
@@ -26,8 +30,9 @@ char* GenerateDB(PlotItem * *arr, int n) {
 		fclose(f);
 		return fileName;
 	}
+}
 
-	void GenerateGraph(PlotItem * *arr, int m) {
+void GenerateGraph(GraphItem* arr, int m) {
 		// get both data sets
 		// feed both to gnuplot. One with lines, the other without
 
@@ -37,14 +42,14 @@ char* GenerateDB(PlotItem * *arr, int n) {
 		char cmd[10000];
 
 		strcpy(cmd, "gnuplot -e \"");
-		strcat(cmd, "set terminal png size 1500, 1000;")
+		strcat(cmd, "set terminal png size 1500, 1000;");
 		strcat(cmd, "set output '");
-		strcat(cmd, filename);
+		strcat(cmd, DB);
 		strcat(cmd, "';");
 		strcat(cmd, "plot ");
 		strcat(cmd, DB);
-		strcat(cmd, "using 1:2 with points\");
+		strcat(cmd, "using 1:2 with points\\");
 		strcat(cmd, "'' using 1:3 with lines;");
 
 		system(cmd);
-	}
+}
