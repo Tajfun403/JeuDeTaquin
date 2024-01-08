@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "TableauGen.c"
+#include "TableauGen.h"
 
 main()
 {

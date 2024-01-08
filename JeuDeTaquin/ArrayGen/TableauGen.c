@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "TableauStructure.c"
+#include "TableauStructure.h"
 #include <math.h>
 #define MAXDIGITS 10
 #define DIGITS_OF_STARTING_NUMBERS 2
