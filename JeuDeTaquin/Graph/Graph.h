@@ -1,7 +1,7 @@
 #include "GraphItem.h"
 
-char* GenerateAveragesDB(PlotItem** arr);
+void SetAverages(PlotItem** arr, int n);
 
-char* GeneratePointsDB(PlotItem** arr);
+char* GenerateDB(PlotItem** arr, int n);
 
 void GenerateGraph(PlotItem** arr);
