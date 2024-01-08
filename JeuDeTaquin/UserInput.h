@@ -5,3 +5,5 @@
 struct UserInput TakeUserInput(int argc, char* argv[]);
 struct UserInput ReadUserInputFromArgs(int argc, char* argv[]);
 struct UserInput ReadUserInputFromPrompts();
+bool ShouldUseExistingTables(struct UserInput input);
+void DrawUsage(void);

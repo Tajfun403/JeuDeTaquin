@@ -71,3 +71,17 @@ struct UserInput ReadUserInputFromPrompts() {
 	returnInput.bValid = true;
 	return returnInput;
 }
+
+inline bool ShouldUseExistingTables(struct UserInput input) {
+	return input.InputPath != NULL;
+}
+
+void DrawUsage(void)
+{
+	printf("Jeu de Taquin (C) 2024");
+	printf("Usage: ");
+	printf("\t--tableauSize size\t - amount of items in each tableau");
+	printf("\t--tableauCount count\t - amount of tableaus");
+	printf("\t--inputPath path\t - if specified - a path to directory with generated tables");
+	printf("\t                \t - if specified - a path to directory with generated tables");
+}
