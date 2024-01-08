@@ -12,6 +12,12 @@
 //Generating + debugging and testing tools
 
 // Saves one tab to a separate file
+/*
+FILE STRUCTURE:
+1st line: how many rows\n
+2nd line: length od the longest row\n
+rest: tableau
+*/
 void SaveTableau(struct Tableau tab)
 {
 	//Some functions as sprints and fopen etc wont work in VS, so i have to use safe versions
