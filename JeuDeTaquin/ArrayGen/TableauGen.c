@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "TableauStructure.h"
+#include "RandomSetStruct.h"
 #include <math.h>
 #define MAXDIGITS 10
 #define DIGITS_OF_STARTING_NUMBERS 2
@@ -11,6 +12,12 @@
 //Generating + debugging and testing tools
 
 // Saves one tab to a separate file
+/*
+FILE STRUCTURE:
+1st line: how many rows\n
+2nd line: length od the longest row\n
+rest: tableau
+*/
 void SaveTableau(struct Tableau tab)
 {
 	//Some functions as sprints and fopen etc wont work in VS, so i have to use safe versions
@@ -27,6 +34,8 @@ void SaveTableau(struct Tableau tab)
 
 	//file = fopen(name, "a");
 	fopen_s(&file, name, "a");
+	fprintf_s(file, "%i\n", tab.numberOfRows); // first line - how many rows there are
+	fprintf_s(file, "%i\n", tab.sizesOfRows[0]); //second line - length of the longest row, the first is always the longest
 	for (int row = last; row >= 0; row--)
 	{
 		for (int number = 0; number < tab.sizesOfRows[row]; number++)
@@ -60,14 +69,14 @@ void PrintTableau(struct Tableau tab)
 }
 
 
-void TableauGeneratingProcess(struct Tableau* tableau)
+void TableauGeneratingProcess(struct Tableau* tableau, struct RandomSet* rset)
 {
-	GenerateRandomSet(tableau->set, tableau->setSize);
-	for (int element = 0; element < tableau->setSize; element++)
+	GenerateRandomSet(rset->set, rset->setSize);
+	for (int element = 0; element < rset->setSize; element++)
 	{
 		int currentRow = 0;
 		int isThereAnyElementLeft = 1;
-		float nextElementValue = tableau->set[element];
+		float nextElementValue = rset->set[element];
 		float* nextElement = &nextElementValue;
 		while (isThereAnyElementLeft != 0)
 		{

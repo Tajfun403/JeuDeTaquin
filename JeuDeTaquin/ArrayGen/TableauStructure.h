@@ -9,10 +9,7 @@
 	Therefore the cell [0][0] is in the down-left corner
 	*/
 struct Tableau {
-	int setSize; //size of set of randomly generated numbers, the size is given as an input
-
 	float startingNr; // the number which will be used in creating the chart later
-	float* set; // set of randomly generated numbers, those will be used to generate a tabeleux
 	int* sizesOfRows; //stores the sizes of the rows
 	int numberOfRows; //I'll be tracking the size of rows
 
