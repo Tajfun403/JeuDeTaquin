@@ -4,7 +4,7 @@
 #include "Graph.h"
 #include "GraphItem.h"
 
-void SetAverages(GraphItem* arr, int n) {
+void SetAverages(struct GraphItem* arr, int n) {
 	int range = n * 0.1;
 	for (int i = 0; i < n; i++) {
 		int currCount = 0;
@@ -18,7 +18,7 @@ void SetAverages(GraphItem* arr, int n) {
 	}
 }
 
-char* GenerateDB(GraphItem* arr, int n) {
+char* GenerateDB(struct GraphItem* arr, int n) {
 	char fileName[20];
 	sprintf(fileName, "DB_%s.dat", tmpnam(NULL));
 	FILE* f = fopen(fileName, "w");
@@ -32,7 +32,7 @@ char* GenerateDB(GraphItem* arr, int n) {
 	}
 }
 
-void GenerateGraph(GraphItem* arr, int n) {
+void GenerateGraph(struct GraphItem* arr, int n) {
 		// get both data sets
 		// feed both to gnuplot. One with lines, the other without
 
