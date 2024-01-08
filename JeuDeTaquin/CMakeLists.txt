@@ -3,7 +3,7 @@
 #
 
 # Add source to this project's executable.
-add_executable (JeuDeTaquin "JeuDeTaquin.cpp" "JeuDeTaquin.h" "Graph/Color.h" "ArrayAnalyze/ArrayAnalyze.h" "ArrayGen/ArrayGen.h")
+add_executable (JeuDeTaquin "JeuDeTaquin.cpp" "JeuDeTaquin.h" "ArrayAnalyze/ArrayAnalyze.h" "ArrayGen/ArrayGen.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET JeuDeTaquin PROPERTY CXX_STANDARD 20)
