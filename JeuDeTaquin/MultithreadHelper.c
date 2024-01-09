@@ -13,6 +13,7 @@
 #include <Windows.h>
 
 // https://stackoverflow.com/a/150971
+
 int GetCoresCount() {
 #if defined(_WIN32) || defined(WIN32)
 	SYSTEM_INFO sysinfo;
