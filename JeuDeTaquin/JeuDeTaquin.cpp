@@ -5,6 +5,7 @@
 #include "UserInputStruct.h"
 #include "UserInput.h"
 #include "UserInput.c"
+#include "BatchRunners.c"
 
 int main(int argc, char* argv[])
 {
@@ -16,13 +17,14 @@ int main(int argc, char* argv[])
 
 	char* TablesDir;
 	if (!ShouldUseExistingTables(input)) {
-		// generate new tables
+		TablesDir = GenerateTables(input.TableauSize, input.TableauCount);
 	}
 	else {
 		TablesDir = input.InputPath;
 	}
 
 	// TODO analyze tables - multithreading
+	char* resultsImg = AnalyzeTables(TablesDir);
 
 	// TODO draw the graph
 
