@@ -1,6 +1,9 @@
+#include "TableauStructure.h"
 #ifndef ARRAYANALYZE_H_INCLUDED
 #define ARRAYANALYZE_H_INCLUDED
 
-int traverse(char *path,int n,int m);
+struct Tableau LoadTableauFromFile(char* filePath);
+
+int SolveTableau(struct Tableau tableau);
 
 #endif // ARRAYANALYZE_H_INCLUDED
