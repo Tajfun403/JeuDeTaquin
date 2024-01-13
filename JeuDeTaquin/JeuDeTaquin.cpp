@@ -2,11 +2,32 @@
 //
 
 #include "JeuDeTaquin.h"
+#include "UserInputStruct.h"
+#include "UserInput.h"
+#include "UserInput.c"
+#include "BatchRunners.c"
 
-using namespace std;
-
-int main()
+int main(int argc, char* argv[])
 {
-	cout << "Hello CMake." << endl;
-	return 0;
+	struct UserInput input = TakeUserInput(argc, argv);
+	if (!input.bValid) {
+		printf("Could not read input!\n");
+		printf("Exception body: %s!\n", input.ErrorInfo);
+	}
+
+	char* TablesDir;
+	if (!ShouldUseExistingTables(input)) {
+		TablesDir = GenerateTables(input.TableauSize, input.TableauCount);
+	}
+	else {
+		TablesDir = input.InputPath;
+	}
+
+	// TODO analyze tables - multithreading
+	char* resultsImg = AnalyzeTables(TablesDir);
+
+	// TODO draw the graph
+
+	// TODO ask user if they wanna the tables?
+	// TODO output performance info
 }
