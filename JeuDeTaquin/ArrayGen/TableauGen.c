@@ -4,6 +4,7 @@
 #include "TableauStructure.h"
 #include "RandomSetStruct.h"
 #include <math.h>
+#include <stdbool.h>
 #define MAXDIGITS 10
 #define DIGITS_OF_STARTING_NUMBERS 2
 #define LOCALISATION ""
@@ -69,14 +70,17 @@ void PrintTableau(struct Tableau tab)
 }
 
 
-void TableauGeneratingProcess(struct Tableau* tableau, struct RandomSet* rset)
+struct Tableau* GenerateTableau(double startingNum, int setSize)
 {
-	GenerateRandomSet(rset->set, rset->setSize);
-	for (int element = 0; element < rset->setSize; element++)
+	struct Tableau* tableau;
+	float* randomSet = (float*)malloc(sizeof(float) * setSize);
+	randomSet[0] = startingNum;
+	GenerateRandomSet(randomSet, setSize);
+	for (int element = 0; element < setSize; element++)
 	{
 		int currentRow = 0;
-		int isThereAnyElementLeft = 1;
-		float nextElementValue = rset->set[element];
+		bool isThereAnyElementLeft = true;
+		float nextElementValue = randomSet[element];
 		float* nextElement = &nextElementValue;
 		while (isThereAnyElementLeft != 0)
 		{
@@ -95,7 +99,7 @@ void TableauGeneratingProcess(struct Tableau* tableau, struct RandomSet* rset)
 
 			if (*nextElement == -1.0) //if theres no element to throw, we can go to the next element of set
 			{
-				isThereAnyElementLeft = 0;
+				isThereAnyElementLeft = false;
 			}//if theres a element to throw to next row
 			else
 			{
@@ -106,4 +110,5 @@ void TableauGeneratingProcess(struct Tableau* tableau, struct RandomSet* rset)
 		}
 
 	}
+	return tableau;
 }

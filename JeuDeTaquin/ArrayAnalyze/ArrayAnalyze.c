@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "TableauStructure.h"
+#include "../ArrayGen/TableauStructure.h"
 #include "ArrayAnalyze.h"
 
 struct Tableau LoadTableauFromFile(char* filePath) {

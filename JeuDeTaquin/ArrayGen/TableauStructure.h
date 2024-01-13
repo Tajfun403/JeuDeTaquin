@@ -1,3 +1,4 @@
+#pragma once
 /*
 	WARNING
 	In this programme we will be using the french notation so the rows will be numbered in that order.

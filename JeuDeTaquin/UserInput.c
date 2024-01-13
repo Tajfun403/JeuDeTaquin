@@ -103,8 +103,11 @@ void DrawUsage(void)
 {
 	printf("Jeu de Taquin (C) 2024");
 	printf("Usage: ");
-	printf("\t--tableauSize size\t - amount of items in each tableau");
-	printf("\t--tableauCount count\t - amount of tableaus");
+	printf("\t--tableauSize size\t - amount of items in each tableau. Only if inputPath was not specified");
+	printf("\t--tableauCount count\t - amount of tableaus. Only if inputPath was not specified");
 	printf("\t--inputPath path\t - if specified - a path to directory with generated tables");
-	printf("\t                \t - if specified - a path to directory with generated tables");
+	printf("\t[--tablesOutputPath path]\t - if specified - a path to directory to save the generated tables in");
+	printf("\t                \t - otherwise, tables will be kept in memory only");
+	printf("\t[--imgOutputPath path]\t - if specified - a path to save the generated graph to");
+	printf("\t                \t - otherwise, graph will be saved in a random file");
 }

@@ -1,4 +1,4 @@
-#include "TableauStructure.h"
+#include "../ArrayGen/TableauStructure.h"
 #ifndef ARRAYANALYZE_H_INCLUDED
 #define ARRAYANALYZE_H_INCLUDED
 

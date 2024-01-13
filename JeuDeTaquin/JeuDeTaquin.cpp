@@ -17,14 +17,14 @@ int main(int argc, char* argv[])
 
 	char* TablesDir;
 	if (!ShouldUseExistingTables(input)) {
-		TablesDir = GenerateTables(input.TableauSize, input.TableauCount);
+		// TablesDir = GenerateTables(input.TableauSize, input.TableauCount);
 	}
 	else {
 		TablesDir = input.InputPath;
 	}
 
 	// TODO analyze tables - multithreading
-	char* resultsImg = AnalyzeTables(TablesDir);
+	// char* resultsImg = AnalyzeTables(TablesDir);
 
 	// TODO draw the graph
 

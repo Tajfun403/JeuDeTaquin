@@ -1,4 +1,3 @@
-#pragma once
 #include "Exceptions.h"
 #include <stdio.h>
 
@@ -19,9 +18,9 @@ void ChangeConsoleColor(enum LogType type) {
 		color = FOREGROUND_RED;
 		break;
 	default:
+		color = FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED;
 		break;
 	}
-
 	SetConsoleTextAttribute(hConsole, color);
 }
 
