@@ -72,7 +72,7 @@ void PrintTableau(struct Tableau tab)
 
 struct Tableau* GenerateTableau(double startingNum, int setSize)
 {
-	struct Tableau* tableau;
+	struct Tableau* tableau = malloc(sizeof(struct Tableau));
 	float* randomSet = (float*)malloc(sizeof(float) * setSize);
 	randomSet[0] = startingNum;
 	GenerateRandomSet(randomSet, setSize);
