@@ -2,10 +2,9 @@
 //
 
 #include "JeuDeTaquin.h"
-#include "UserInputStruct.h"
-#include "UserInput.h"
-#include "UserInput.c"
-#include "BatchRunners.c"
+#include "Helpers/UserInputStruct.h"
+#include "Helpers/UserInput.c"
+#include "Helpers/BatchRunners.c"
 
 int main(int argc, char* argv[])
 {

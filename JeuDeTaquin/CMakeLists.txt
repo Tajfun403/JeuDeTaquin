@@ -15,15 +15,15 @@ add_executable (JeuDeTaquin "JeuDeTaquin.cpp"
 	"ArrayGen/RandomSetStruct.h"
 	"ArrayAnalyze/ArrayAnalyze.c"
 	"ArrayAnalyze/ArrayAnalyze.h"
-	"UserInputStruct.h"
-	"UserInput.h"
-	"UserInput.c"
-	"MultithreadHelper.h"
-	"MultithreadHelper.c"
-	"BatchRunners.h"
-	"BatchRunners.c"
-	"Exceptions.h"
-	"Exceptions.c" )
+	"Helpers/UserInputStruct.h"
+	"Helpers/UserInput.h"
+	"Helpers/UserInput.c"
+	"Helpers/MultithreadHelper.h"
+	"Helpers/MultithreadHelper.c"
+	"Helpers/BatchRunners.h"
+	"Helpers/BatchRunners.c"
+	"Helpers/Exceptions.h"
+	"Helpers/Exceptions.c" )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET JeuDeTaquin PROPERTY CXX_STANDARD 20)
