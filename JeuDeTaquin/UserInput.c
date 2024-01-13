@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "UserInputStruct.h"
 #include "UserInput.h"
+#include "Exceptions.h"
 
 struct UserInput TakeUserInput(int argc, char* argv[])
 {
@@ -81,6 +82,7 @@ struct UserInput ReadUserInputFromPrompts() {
 		strcpy(returnInput.InputPath, buffer);
 	}
 	else {
+		LOG_ERROR("Invalid operation requested");
 		char* error = (char*)malloc(40);
 		strcpy(error, "Invalid operation requested");
 		returnInput.ErrorInfo = error;
