@@ -3,18 +3,13 @@
 #include "../Graph/GraphItem.h"
 #include "../ArrayGen/TableauStructure.h"
 #include "../ArrayGen/TableauGen.h"
+#include "BatchRunners/Generate.h"
 #include <stdbool.h>
+
 
 struct Tableau** GenerateTables(int size, int count)
 {
-	struct Tableau** arr = (struct Tableau**)malloc(count * sizeof(struct Tableau*));
-	const float StartNum = 0;
-	for (size_t i = 0; i < count; i++)
-	{
-		int CurrStartNum = StartNum + ((float)i / count);
-		arr[0] = GenerateTableau(CurrStartNum, size);
-	}
-	return NULL;
+	return GenerateTablesMultiThread(size, count);
 }
 
 void SaveTableaus(char* path, struct Tableaus** arr, int n) 

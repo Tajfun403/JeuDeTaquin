@@ -1,6 +1,8 @@
 ﻿// JeuDeTaquin.cpp : Defines the entry point for the application.
 //
 
+#define MULTITHREAD
+
 #include "JeuDeTaquin.h"
 #include "Helpers/UserInputStruct.h"
 #include "Helpers/UserInput.c"

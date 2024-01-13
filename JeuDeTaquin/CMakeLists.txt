@@ -23,7 +23,7 @@ add_executable (JeuDeTaquin "JeuDeTaquin.cpp"
 	"Helpers/BatchRunners.h"
 	"Helpers/BatchRunners.c"
 	"Helpers/Exceptions.h"
-	"Helpers/Exceptions.c" )
+	"Helpers/Exceptions.c"  "Helpers/BatchRunners/Generate.h" "Helpers/BatchRunners/Generate.c" "Helpers/BatchRunners/GenerateData.h" "Helpers/BatchRunners/Analyze.h" "Helpers/BatchRunners/Analyze.c")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET JeuDeTaquin PROPERTY CXX_STANDARD 20)

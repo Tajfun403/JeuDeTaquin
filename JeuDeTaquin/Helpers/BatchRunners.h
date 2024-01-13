@@ -7,6 +7,7 @@
 /// <returns>An array of generated tables</returns>
 struct Tableau** GenerateTables(int size, int count);
 
+
 /// <summary>
 /// Analyze all tables from an array and output a GNUPLOT graph.
 /// </summary>

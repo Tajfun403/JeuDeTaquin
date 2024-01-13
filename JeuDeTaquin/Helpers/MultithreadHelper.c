@@ -53,8 +53,8 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 			args,                   // argument to thread function 
 			0,                      // use default creation flags 
 			NULL);    
-	
 	}
+	WaitForMultipleObjects(n, threads, TRUE, INFINITE);
 }
 
 void RunBatchThread(struct ThreadArgs* args) {

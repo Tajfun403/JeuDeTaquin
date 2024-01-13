@@ -32,7 +32,7 @@ char* GenerateDB(struct GraphItem* arr, int n) {
 	}
 }
 
-void GenerateGraph(struct GraphItem* arr, int n) {
+void GenerateGraph(struct GraphItem* arr, int n, char* imgPath) {
 		// get both data sets
 		// feed both to gnuplot. One with lines, the other without
 
