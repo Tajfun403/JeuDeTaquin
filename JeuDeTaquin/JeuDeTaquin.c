@@ -5,8 +5,8 @@
 
 #include "JeuDeTaquin.h"
 #include "Helpers/UserInputStruct.h"
-#include "Helpers/UserInput.c"
-#include "Helpers/BatchRunners.c"
+#include "Helpers/UserInput.h"
+#include "Helpers/BatchRunners.h"
 
 int main(int argc, char* argv[])
 {

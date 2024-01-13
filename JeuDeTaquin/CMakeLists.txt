@@ -3,7 +3,7 @@
 #
 
 # Add source to this project's executable.
-add_executable (JeuDeTaquin "JeuDeTaquin.cpp"
+add_executable (JeuDeTaquin "JeuDeTaquin.c"
 	"JeuDeTaquin.h"
 	"Graph/GraphItem.h"
 	"Graph/Graph.h"

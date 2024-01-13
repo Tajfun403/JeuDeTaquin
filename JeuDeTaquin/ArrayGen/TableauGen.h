@@ -1,3 +1,5 @@
+#pragma once
+
 void SaveTableau(struct Tableau tab);
 void PrintRow(float row[], int size);
 void PrintTableau(struct Tableau tab);

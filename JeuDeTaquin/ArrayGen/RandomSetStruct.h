@@ -1,3 +1,5 @@
+#pragma once
+
 struct RandomSet
 {
 	int setSize; //size of set of randomly generated numbers, the size is given as an input

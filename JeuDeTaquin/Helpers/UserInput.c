@@ -95,7 +95,7 @@ struct UserInput ReadUserInputFromPrompts() {
 	return returnInput;
 }
 
-inline bool ShouldUseExistingTables(struct UserInput input) {
+bool ShouldUseExistingTables(struct UserInput input) {
 	return input.InputPath != NULL;
 }
 
