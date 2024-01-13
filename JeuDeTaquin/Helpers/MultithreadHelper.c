@@ -29,7 +29,7 @@ int GetCoresCount() {
 // eg. void* (*func)(void*) is a func of return void*, takes void* as 1st arg, 
 // and is put into var called *func
 
-void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n, int* progress) {
+void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n) {
 	int cores = GetCoresCount();
 	// avoid spinning useless threads
 	if (n < cores)
@@ -39,6 +39,12 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 
 	// https://learn.microsoft.com/en-us/windows/win32/procthread/creating-threads?redirectedfrom=MSDN
 	HANDLE* threads = malloc(sizeof(HANDLE) * cores);
+	int** progressArray = malloc(sizeof(int*) * cores);
+	for (size_t i = 0; i < cores; i++)
+	{
+		progressArray[i] = malloc(sizeof(int));
+		*progressArray[i] = 0;
+	}
 
 	for (int i = 0; i < cores; i++) {
 		bool isThisLastOne = i == cores - 1;
@@ -48,7 +54,7 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 		args->outputArray = outputArray;
 		args->start = itemsPerCore * i;
 		args->end = !isThisLastOne ? (itemsPerCore * (i + 1)) - 1 : leftoverItems;
-		args->progress = progress;
+		args->progress = progressArray[i];
 
 		threads[i] = CreateThread(
 			NULL,                   // default security attributes
@@ -58,13 +64,15 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 			0,                      // use default creation flags 
 			NULL);    
 	}
-	WaitForMultipleObjects(n, threads, TRUE, INFINITE);
+
+	RunProgressThread(progressArray, cores, n);
+	WaitForMultipleObjects(cores, threads, TRUE, INFINITE);
 
 	for (int i = 0; i < cores; i++)
 		CloseHandle(threads[i]);
 }
 
-void RunBatchThread(struct ThreadArgs* args) {
+int RunBatchThread(struct ThreadArgs* args) {
 	for (int i = args->start; i <= args->end; i++) {
 		void* arg;
 		if (args->inputArray != NULL)
@@ -78,8 +86,41 @@ void RunBatchThread(struct ThreadArgs* args) {
 			(args->func)(arg);
 		(*(args->progress))++;
 	}
+	return (*(args->progress));
 }
 
-void UpdateProgress() {
+#pragma region Progress
 
+void RunProgressThread(int** progressArray, int progressCount, int MaxProgressSum) {
+	HANDLE* thread = malloc(sizeof(HANDLE));
+	struct ProgressArgs* args = malloc(sizeof(struct ProgressArgs));
+	args->MaxProgressSum = MaxProgressSum;
+	args->progressEntriesCount = progressCount;
+	args->progressArray = progressArray;
+	thread = CreateThread(
+		NULL,                   // default security attributes
+		0,                      // use default stack size  
+		UpdateProgress,         // thread function name
+		args,                   // argument to thread function 
+		0,                      // use default creation flags 
+		NULL);
 }
+
+int UpdateProgress(struct ProgressArgs* args) {
+	printf("Using %i threads\n", args->progressEntriesCount);
+	printf("Starting progress count");
+	while (true) {
+		Sleep(1000);
+		int currProgressCount = 0;
+		for (size_t i = 0; i < args->progressEntriesCount; i++)
+		{
+			currProgressCount += *(args->progressArray[i]);
+		}
+		// r puts cursor at the start of curr line, allowing one to overwrite it
+		printf("\rCurrentProgress: %i / %i        ", currProgressCount, args->MaxProgressSum);
+	}
+	printf("\rCurrentProgress: %i / %i        \n", args->MaxProgressSum, args->MaxProgressSum);
+	return 0;
+}
+
+#pragma endregion

@@ -29,8 +29,7 @@ struct Tableau** GenerateTablesMultiThread(int size, int count) {
 
 	struct Tableau** outputArray = (struct Tableau**)malloc(count * sizeof(struct Tableau*));
 
-	int progress;
-	RunBatch(&GenTable_Thread, inputArray, outputArray, count, &progress);
+	RunBatch(&GenTable_Thread, inputArray, outputArray, count);
 
 	return outputArray;
 }

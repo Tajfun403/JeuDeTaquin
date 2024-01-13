@@ -13,8 +13,7 @@
 char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n) {
 	struct GraphItem** results = malloc(sizeof(struct GraphItem*) * n);
 
-	int progress;
-	RunBatch(&AnalyzeTable_Thread, tableaus, results, n, &progress);
+	RunBatch(&AnalyzeTable_Thread, tableaus, results, n);
 
 	GenerateGraph(results, n, imgPath);
 	// TODO: do something with that result
