@@ -10,6 +10,7 @@
 struct Tableau** GenerateTables(int size, int count)
 {
 	return GenerateTablesMultiThread(size, count);
+	// return GenerateTablesSingleThread(size, count);
 }
 
 void SaveTableaus(char* path, struct Tableaus** arr, int n) 

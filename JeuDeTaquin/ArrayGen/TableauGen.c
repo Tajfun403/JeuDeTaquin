@@ -106,7 +106,7 @@ struct Tableau* GenerateTableau(double startingNum, int setSize)
 				currentRow++;
 			}
 			//assert(nextElement != NULL);
-			PrintTableau(*tableau);
+			// PrintTableau(*tableau);
 		}
 
 	}

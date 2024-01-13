@@ -16,16 +16,16 @@ int main(int argc, char* argv[])
 		printf("Exception body: %s!\n", input.ErrorInfo);
 	}
 
-	char* TablesDir;
+	struct Tableau* tables;
 	if (!ShouldUseExistingTables(input)) {
-		// TablesDir = GenerateTables(input.TableauSize, input.TableauCount);
+		tables = GenerateTables(input.TableauSize, input.TableauCount);
 	}
 	else {
-		TablesDir = input.InputPath;
+		tables = LoadTableaus(input.InputPath, &input.TableauCount);
 	}
 
 	// TODO analyze tables - multithreading
-	// char* resultsImg = AnalyzeTables(TablesDir);
+	char* resultsImg = AnalyzeTables("null", tables, input.TableauCount);
 
 	// TODO draw the graph
 

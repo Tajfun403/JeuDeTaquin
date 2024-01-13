@@ -11,6 +11,7 @@
 #include "MultithreadHelper.h"
 #include <stdbool.h>
 #include <Windows.h>
+#include "Exceptions.h"
 
 // https://stackoverflow.com/a/150971
 
@@ -30,6 +31,9 @@ int GetCoresCount() {
 
 void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n, int* progress) {
 	int cores = GetCoresCount();
+	// avoid spinning useless threads
+	if (n < cores)
+		cores = n;
 	int itemsPerCore = floor(n / cores);
 	int leftoverItems = n - (itemsPerCore * cores);
 
@@ -43,7 +47,7 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 		args->inputArray = inputArray;
 		args->outputArray = outputArray;
 		args->start = itemsPerCore * i;
-		args->end = !isThisLastOne ? (itemsPerCore * i + 1) - 1 : leftoverItems;
+		args->end = !isThisLastOne ? (itemsPerCore * (i + 1)) - 1 : leftoverItems;
 		args->progress = progress;
 
 		threads[i] = CreateThread(
@@ -55,6 +59,9 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 			NULL);    
 	}
 	WaitForMultipleObjects(n, threads, TRUE, INFINITE);
+
+	for (int i = 0; i < cores; i++)
+		CloseHandle(threads[i]);
 }
 
 void RunBatchThread(struct ThreadArgs* args) {
