@@ -8,6 +8,8 @@ struct UserInput {
 	int TableauSize;
 	int TableauCount;
 	char* InputPath;
+	char* TablesOutputPath;
+	char* ImgOutputPath;
 	bool bValid;
 	char* ErrorInfo;
 };
