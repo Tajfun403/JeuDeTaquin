@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "ArrayAnalyze.h"
 
-int main(){
-   // FILE *fptr;// = fopen("filename.txt", "r");
-    char* path="filename.txt";
-    int n=3,m=4;
-    printf("%d",traverse(path,n,m));
+int main() {
+    
+    char* path = "filename.txt";
+
+    printf("%d",SolveTableau(LoadTableauFromFile(path)));
 
     return 0;
 }
