@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "GenerateData.h"
 #include "../MultithreadHelper.h"
+#include "Generate.h"
 
 struct Tableau** GenerateTablesSingleThread(int size, int count)
 {
@@ -29,7 +30,7 @@ struct Tableau** GenerateTablesMultiThread(int size, int count) {
 	struct Tableau** outputArray = (struct Tableau**)malloc(count * sizeof(struct Tableau*));
 
 	int progress;
-	RunBatch(GenTable_Thread, inputArray, outputArray, count, &progress);
+	RunBatch(&GenTable_Thread, inputArray, outputArray, count, &progress);
 
 	return outputArray;
 }

@@ -7,12 +7,14 @@
 #include "../../Graph/GraphItem.h"
 #include "../../Graph/Graph.h"
 #include "../../ArrayAnalyze/ArrayAnalyze.h";
+#include "Analyze.h"
+
 
 char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n) {
 	struct GraphItem** results = malloc(sizeof(struct GraphItem*) * n);
 
 	int progress;
-	RunBatch(AnalyzeTable_Thread, tableaus, results, n, &progress);
+	RunBatch(&AnalyzeTable_Thread, tableaus, results, n, &progress);
 
 	GenerateGraph(results, n, imgPath);
 	// TODO: do something with that result

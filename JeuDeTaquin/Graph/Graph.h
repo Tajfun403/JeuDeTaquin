@@ -24,4 +24,4 @@ char* GenerateDB(struct GraphItem* arr, int n);
 /// <param name="n">count</param>
 /// <param name="imgPath">Path where the resulting image will be saved</param>
 /// <returns></returns>
-int GenerateGraph(struct GraphItem* arr, int n, char* imgPath);
+void GenerateGraph(struct GraphItem* arr, int n, char* imgPath);
