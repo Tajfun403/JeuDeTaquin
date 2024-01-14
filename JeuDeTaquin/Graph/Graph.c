@@ -10,6 +10,10 @@
 #include "../Helpers/Clock.h"
 #include <stdlib.h>
 
+#define OPTIMIZED_AVG
+#define CHECK_BOUNDS2
+
+#ifndef OPTIMIZED_AVG
 void SetAverages(struct GraphItem** arr, int n) {
 	// TODO optimize that O(n^2) shit, cause for now it is the biggest bottleneck
 	int maxRange = n * 0.05;
@@ -17,16 +21,27 @@ void SetAverages(struct GraphItem** arr, int n) {
 		int currCount = 0;
 		double currSum = 0;
 		int currAllowedRange = min(min(i, n - i - 1), maxRange);
-		for (int j = i - currAllowedRange; j < i + currAllowedRange; j++) {
-			if (j < 0 || j >= n) continue;
+		for (int j = i - currAllowedRange; j < i + currAllowedRange + 1; j++) {
+#ifdef CHECK_BOUNDS
+			if (j < 0 || j >= n) { 
+				LOG_ERROR("Tried accessing index outside of range!");
+				continue; 
+			}
+			currCount++; // just calc it myself
+#endif
 			currSum += arr[j]->Y;
-			currCount++;
 		}
+#ifdef CHECK_BOUNDS
+		assert(currCount == (currAllowedRange * 2 + 1)); // works
+#endif
+		currCount = currAllowedRange * 2 + 1;
 		arr[i]->Avg = currSum / currCount;
 	}
 }
+#endif // !OPTIMIZED_AVG
 
-/* void SetAverages(struct GraphItem** arr, int n) {
+#ifdef OPTIMIZED_AVG
+void SetAverages(struct GraphItem** arr, int n) {
 	int maxRange = n * 0.05;
 
 	// set sums for first range of elements
@@ -37,64 +52,76 @@ void SetAverages(struct GraphItem** arr, int n) {
 		int currAllowedRange = min(min(i, n - i - 1), maxRange);
 		struct GraphItem* currItem = arr[i];
 
-		// fill first element
-		if (i == 0) {
+		// fill first and last element
+		if (i == 0 || i == n - 1) {
 			currItem->Avg = currItem->Y;
 			currItem->currSum = currItem->Y;
-			continue;
-		}
-
-		// last element
-		if (i == n - 1) {
-			currItem->Avg = currItem->Y;
-			currItem->currSum = currItem->Y;
+			currItem->currRange = 0;
 			continue;
 		}
 
 		// copy current sum
 		currItem->currSum = arr[i - 1]->currSum;
 		currItem->currRange = arr[i - 1]->currRange;
+		int oldRange = currItem->currRange;
 
 		// moving away from left border: expand range
-		if (currAllowedRange > currItem->currRange) {
-			assert(currAllowedRange == currItem->currRange + 1);
+		if (currAllowedRange > oldRange) {
+#ifdef CHECK_BOUNDS
+			assert(currAllowedRange == oldRange + 1);
+			assert(i + oldRange >= 0 && i + oldRange + 1 >= 0);
+			assert(i + oldRange < n && i + oldRange + 1 < n);
+#endif
 			// □X□ (range = 1)
 			// to
 			// □□X□□ (range = 2)
 			// - so need to add two items. One with old range, one with new extedned one
-			currItem->currSum += arr[i + currItem->currRange]->Y;
-			currItem->currSum += arr[i + currItem->currRange + 1]->Y;
+			currItem->currSum += arr[i + oldRange]->Y;
+			currItem->currSum += arr[i + oldRange + 1]->Y;
 			currItem->currRange++;
 		}
 
 		// moving closer to borders: shrink range
-		if (currAllowedRange < currItem->currRange) {
-			assert(currAllowedRange == currItem->currRange - 1);
+		else if (currAllowedRange < oldRange) {
+#ifdef CHECK_BOUNDS
+			assert(currAllowedRange == oldRange - 1);
+			assert(i - oldRange >= 0 && i - oldRange - 1 >= 0);
+			assert(i - oldRange < n && i - oldRange - 1 < n);
+#endif
 			// □□X□□ (range = 2)
 			// to
 			// --□X□ (range = 1)
-			//  - again need to remove two items
-			currItem->currSum -= arr[i - currItem->currRange]->Y;
-			currItem->currSum -= arr[i - currItem->currRange - 1]->Y;
+			// - again need to remove two items
+			currItem->currSum -= arr[i - oldRange]->Y;
+			currItem->currSum -= arr[i - oldRange - 1]->Y;
 			currItem->currRange--;
 		}
 
 		// just move the average points: remove one from very left, add one from the very right
 		else {
-			assert(currItem->currRange == currAllowedRange);
-			currItem->currSum -= arr[i - currItem->currRange]->Y;
-			currItem->currSum += arr[i + currItem->currRange]->Y;
+#ifdef CHECK_BOUNDS
+			assert(oldRange == currAllowedRange);
+			assert(i - oldRange >= 0 && i + oldRange < n);
+#endif
+			// -□X□-- (range = 1)
+			// to
+			// --□X□- (range = 1)
+			// - move two times
+			currItem->currSum -= arr[i - oldRange - 1]->Y;
+			currItem->currSum += arr[i + oldRange]->Y;
 		}
 
 		// update average
-		if (currItem->currRange >= 1)
-			currItem->Avg = (float)currItem->currSum / ((currItem->currRange * 2.0) + 1);
+		assert(currItem->currRange == currAllowedRange);
+		if (currAllowedRange >= 1)
+			currItem->Avg = ((float)currItem->currSum) / ((currAllowedRange * 2.0) + 1.0);
 		else {
 			currItem->Avg = currItem->Y;
 			currItem->currSum = currItem->Y;
 		}
 	}
-} */
+}
+#endif 
 
 char* GenerateDB(struct GraphItem** arr, int n) {
 	char* fileName = malloc(255);
@@ -123,6 +150,8 @@ char* GenerateGraph(struct GraphItem** arr, int n, char* imgPath, int tableSize)
 	
 	SetAverages(arr, n);
 	char* DB = GenerateDB(arr, n);
+	printf("Prepared graph data in %.3fs\n", (GetCurrTimeMs() - timeStart) / 1000.0);
+	timeStart = GetCurrTimeMs();
 
 	char cmd[10000];
 	char* midBuff[100];
@@ -150,7 +179,7 @@ char* GenerateGraph(struct GraphItem** arr, int n, char* imgPath, int tableSize)
 	strcat(cmd, "\"");
 
 	system(cmd);
-	printf("Generated graph in %.3fs", (GetCurrTimeMs() - timeStart) / 1000.0);
+	printf("Drawn graph in %.3fs", (GetCurrTimeMs() - timeStart) / 1000.0);
 
 	char* finalImgPath = malloc(255);
 	_fullpath(finalImgPath, imgPath, 255);
