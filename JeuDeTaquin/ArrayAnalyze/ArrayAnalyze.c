@@ -26,7 +26,7 @@ struct Tableau LoadTableauFromFile(char* filePath) {
 
 	char* line = malloc(18 * m);//sizeof(char) is always 1, and... m is the number of doubles and every double has many digits.. so assuming constant number of digits per double we need to multiply by some constant
 
-	int* endarr = malloc(n * sizeof(int));
+	int* endarr = malloc((n+1) * sizeof(int));
 
 	//read from file and input into array
 	int r = n;//rows
@@ -85,7 +85,7 @@ int SolveTableau(struct Tableau tableau) {
 		else j++;
 	}
 
-	for (int i = 0;i < tableau.numberOfRows + 1;++i) {
+	for (int i = 0;i < tableau.numberOfRows;++i) {
 
 		free(tableau.tableau[i]);
 	}
