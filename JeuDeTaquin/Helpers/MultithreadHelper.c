@@ -45,6 +45,8 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 		progressArray[i] = malloc(sizeof(int));
 		*progressArray[i] = 0;
 	}
+	bool* bFinished = malloc(sizeof(bool));
+	*bFinished = false;
 
 	for (int i = 0; i < cores; i++) {
 		bool isThisLastOne = i == cores - 1;
@@ -65,11 +67,14 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 			NULL);    
 	}
 
-	RunProgressThread(progressArray, cores, n);
+	HANDLE* progressThread = RunProgressThread(progressArray, cores, n, bFinished);
 	WaitForMultipleObjects(cores, threads, TRUE, INFINITE);
+	*bFinished = true; // callback so that the counter can kill itself
+	printf("\rCurrentProgress: %i / %i        \n", n, n);
 
 	for (int i = 0; i < cores; i++)
 		CloseHandle(threads[i]);
+	CloseHandle(progressThread);
 }
 
 int RunBatchThread(struct ThreadArgs* args) {
@@ -91,12 +96,13 @@ int RunBatchThread(struct ThreadArgs* args) {
 
 #pragma region Progress
 
-void RunProgressThread(int** progressArray, int progressCount, int MaxProgressSum) {
+HANDLE* RunProgressThread(int** progressArray, int progressCount, int MaxProgressSum, bool* bFinished) {
 	HANDLE* thread = malloc(sizeof(HANDLE));
 	struct ProgressArgs* args = malloc(sizeof(struct ProgressArgs));
 	args->MaxProgressSum = MaxProgressSum;
 	args->progressEntriesCount = progressCount;
 	args->progressArray = progressArray;
+	args->ShouldCancel = bFinished;
 	thread = CreateThread(
 		NULL,                   // default security attributes
 		0,                      // use default stack size  
@@ -104,12 +110,14 @@ void RunProgressThread(int** progressArray, int progressCount, int MaxProgressSu
 		args,                   // argument to thread function 
 		0,                      // use default creation flags 
 		NULL);
+	return thread;
 }
 
 int UpdateProgress(struct ProgressArgs* args) {
 	printf("Using %i threads\n", args->progressEntriesCount);
 	printf("Starting progress count");
-	while (true) {
+	while (!*(args->ShouldCancel)) {
+		// refresh counter once per second
 		Sleep(1000);
 		int currProgressCount = 0;
 		for (size_t i = 0; i < args->progressEntriesCount; i++)
@@ -119,8 +127,10 @@ int UpdateProgress(struct ProgressArgs* args) {
 		// r puts cursor at the start of curr line, allowing one to overwrite it
 		printf("\rCurrentProgress: %i / %i        ", currProgressCount, args->MaxProgressSum);
 	}
-	printf("\rCurrentProgress: %i / %i        \n", args->MaxProgressSum, args->MaxProgressSum);
-	return 0;
+	// let the upper thread do the final print
+	// to avoid overprinting while this one still waits for next refresh cycle
+	// printf("\rCurrentProgress: %i / %i        \n", args->MaxProgressSum, args->MaxProgressSum);
+	return 100;
 }
 
 #pragma endregion

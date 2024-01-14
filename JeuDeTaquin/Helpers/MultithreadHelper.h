@@ -1,6 +1,9 @@
 #pragma once
+#include <stdbool.h>
+#include <windows.h>
+
 /// <summary>
-/// Arguments to pass to a worker thread
+/// Arguments to pass to a worker thread for main threading
 /// </summary>
 struct ThreadArgs {
 	/// <summary>
@@ -34,10 +37,30 @@ struct ThreadArgs {
 	int* progress;
 };
 
+/// <summary>
+/// Arguments to pass to a progress counter thread
+/// </summary>
 struct ProgressArgs {
+	/// <summary>
+	/// An array of pointers to progresses' of each worker
+	/// </summary>
 	int** progressArray;
+
+	/// <summary>
+	/// Expected sum of all progresses
+	/// </summary>
+	/// <returns></returns>
 	int MaxProgressSum;
+
+	/// <summary>
+	/// Amount of workers
+	/// </summary>
 	int progressEntriesCount;
+
+	/// <summary>
+	/// Set to true once main work is done so that the counter thread can stop listening.
+	/// </summary>
+	bool* ShouldCancel;
 };
 
 /// <summary>
@@ -62,5 +85,16 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 /// <param name="args">Thread arguments</param>
 int RunBatchThread(struct ThreadArgs* args);
 
-void RunProgressThread(int** progressArray, int progressCount, int MaxProgressSum);
+/// <summary>
+/// Spawn a progress thread
+/// </summary>
+/// <param name="progressArray">An array of pointers to progresses' of each worker</param>
+/// <param name="progressCount">Amount of workers in prev array</param>
+/// <param name="MaxProgressSum">Expected sum of all progresses</param>
+HANDLE* RunProgressThread(int** progressArray, int progressCount, int MaxProgressSum);
+
+/// <summary>
+/// PRIVATE: Main function for progress counter thread
+/// </summary>
+/// <param name="progressArray">An array with arguments for the thread</param>
 int UpdateProgress(struct ProgressArgs* args);
