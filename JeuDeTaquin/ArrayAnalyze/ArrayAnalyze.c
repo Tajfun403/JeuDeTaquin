@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include "../ArrayGen/TableauStructure.h"
 #include "ArrayAnalyze.h"
+#include "../Helpers/ManagmentRequirements.h"
 
 struct Tableau* LoadTableauFromFile(char* filePath) {
 
@@ -67,6 +68,13 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 
 	return tableau;
 }
+
+#ifdef UNOPTIMAL_MANAGMENT_REQUIREMENTS
+//
+int SolveTableau(struct Tableau* tableau) {
+	// TODO: solve it with recursion
+}
+#else
 int SolveTableau(struct Tableau* tableau) {
 
 	int i = 0, j = 0, res;
@@ -97,3 +105,4 @@ int SolveTableau(struct Tableau* tableau) {
 
 	return res;
 }
+#endif

@@ -14,8 +14,7 @@ char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n
 	RunBatch(&AnalyzeTable_Thread, tableaus, results, n);
 
 	printf("Generating graph\n");
-	GenerateGraph(results, n, imgPath, tableSize);
-	// TODO: do something with that result
+	return GenerateGraph(results, n, imgPath, tableSize);
 }
 
 void* AnalyzeTable_Thread(void* input) {

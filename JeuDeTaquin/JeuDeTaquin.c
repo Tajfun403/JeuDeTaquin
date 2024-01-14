@@ -7,13 +7,14 @@
 #include "Helpers/UserInputStruct.h"
 #include "Helpers/UserInput.h"
 #include "Helpers/BatchRunners.h"
+#include <stdlib.h>
 
 int main(int argc, char* argv[])
 {
 	struct UserInput input = TakeUserInput(argc, argv);
 	if (!input.bValid) {
 		printf("Could not read input!\n");
-		printf("Exception body: %s!\n", input.ErrorInfo);
+		return;
 	}
 
 	struct Tableau* tables;
@@ -25,12 +26,14 @@ int main(int argc, char* argv[])
 		tables = LoadTableaus(input.InputPath, &input.TableauCount);
 	}
 
-	// TODO analyze tables - multithreading
+	// save the tables if user wanted to
+	if (input.TablesOutputPath != NULL) {
+		SaveTableaus(input.TablesOutputPath, tables, input.TableauCount);
+	}
+
 	printf("Analzying tables\n");
-	char* resultsImg = AnalyzeTables("file.png", tables, input.TableauCount, input.TableauSize);
+	char* resultsImg = AnalyzeTables(input.ImgOutputPath, tables, input.TableauCount, input.TableauSize);
 
-	// TODO draw the graph
-
-	// TODO ask user if they wanna the tables?
-	// TODO output performance info
+	// run the generated image with graph
+	system(resultsImg);
 }

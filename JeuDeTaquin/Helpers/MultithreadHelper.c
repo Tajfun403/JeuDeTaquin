@@ -12,7 +12,7 @@
 #include <stdbool.h>
 #include <Windows.h>
 #include "Exceptions.h"
-#include <time.h>
+#include "Clock.h"
 
 // https://stackoverflow.com/a/150971
 
@@ -37,6 +37,9 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 		cores = n;
 	int itemsPerCore = floor(n / cores);
 	int leftoverItems = n - (itemsPerCore * cores);
+	long timeStart, timeStop;
+	timeStart = GetCurrTimeMs(); // time(NULL) only returns seconds, which is not enough accurarcy
+	                         // which Clock() returns amount of cycles used, and not actual time
 
 	// https://learn.microsoft.com/en-us/windows/win32/procthread/creating-threads?redirectedfrom=MSDN
 	HANDLE* threads = malloc(sizeof(HANDLE) * cores);
@@ -71,7 +74,8 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 	HANDLE* progressThread = RunProgressThread(progressArray, cores, n, bFinished);
 	WaitForMultipleObjects(cores, threads, TRUE, INFINITE);
 	*bFinished = true; // callback so that the counter can kill itself
-	printf("\rCurrentProgress: %i / %i        \n", n, n);
+	timeStop = GetCurrTimeMs();
+	printf("\rCurrentProgress: %i / %i. Finished in %.3fs\n", n, n, (timeStop - timeStart) / 1000.0);
 
 	for (int i = 0; i < cores; i++)
 		CloseHandle(threads[i]);
@@ -127,6 +131,10 @@ int UpdateProgress(struct ProgressArgs* args) {
 		{
 			currProgressCount += *(args->progressArray[i]);
 		}
+		// finish the thread once done
+		// let the other thread announce victory
+		if (currProgressCount == args->MaxProgressSum)
+			break;
 		// r puts cursor at the start of curr line, allowing one to overwrite it
 		printf("\rCurrentProgress: %i / %i        ", currProgressCount, args->MaxProgressSum);
 	}
