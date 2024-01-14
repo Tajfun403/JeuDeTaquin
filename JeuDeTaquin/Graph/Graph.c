@@ -1,10 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+#include <stdbool.h>
 #include "Graph.h"
 #include "GraphItem.h"
 #include "../Helpers/Exceptions.h"
 
+/*
 void SetAverages(struct GraphItem** arr, int n) {
 	// TODO optimize that O(n^2) shit, cause for now it is the biggest bottleneck
 	int range = n * 0.05;
@@ -17,6 +20,56 @@ void SetAverages(struct GraphItem** arr, int n) {
 			currCount++;
 		}
 		arr[i]->Avg = currSum / currCount;
+	}
+} */
+
+void SetAverages(struct GraphItem** arr, int n) {
+	int maxRange = n * 0.05;
+
+	// set sums for first range of elements
+
+	for (size_t i = 0; i < n; i++)
+	{
+		// only take as many items into avg as possible so that it is still even
+		int currAllowedRange = min(min(i, n - i - 1), maxRange);
+		struct GraphItem* currItem = arr[i];
+
+		// copy current sum
+		if (i != 0)
+			currItem->currSum = arr[i - 1]->currSum;
+
+		// moving away from left border: expand range
+		if (currAllowedRange > currItem->currRange) {
+			// >?X?<
+			// to
+			// >??X??< - so need to add two items. One with old range, one with new extedned one
+			currItem->currSum += arr[currItem->currRange]->Y;
+			currItem->currSum += arr[i + currAllowedRange]->Y;	
+			currItem->currRange++;
+		}
+
+		// moving closer to borders: shrink range
+		if (currAllowedRange < currItem->currRange) {
+			// >??X??<
+			// to
+			// --<?X?< - again need to remove two items
+			currItem->currSum -= arr[i - currItem->currRange]->Y;
+			currItem->currSum -= arr[i - currAllowedRange]->Y;
+			currItem->currRange--;
+		}
+
+		// just move the average points: remove one from very left, add one from the very right
+		else {
+			currItem->currSum -= arr[i - currItem->currRange]->Y;
+			currItem->currSum += arr[i + currItem->currRange]->Y;
+		}
+
+		if (currItem->currRange > 1)
+			currItem->Avg = (float)currItem->currSum / (float)currItem->currRange;
+		else {
+			currItem->Avg = currItem->Y;
+			currItem->currSum = currItem->Y;
+		}
 	}
 }
 

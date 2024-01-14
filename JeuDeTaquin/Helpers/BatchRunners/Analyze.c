@@ -27,6 +27,8 @@ void* AnalyzeTable_Thread(void* input) {
 	struct GraphItem* graphItem = malloc(sizeof(struct GraphItem));
 	graphItem->X = table->startingNr;
 	graphItem->Y = solution;
+	graphItem->currRange = 0;
+	graphItem->currSum = 0;
 	return graphItem;
 
 }
