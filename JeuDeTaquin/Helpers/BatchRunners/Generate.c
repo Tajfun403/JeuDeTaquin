@@ -11,7 +11,7 @@ struct Tableau** GenerateTablesSingleThread(int size, int count)
 	struct Tableau** arr = (struct Tableau**)malloc(count * sizeof(struct Tableau*));
 	for (size_t i = 0; i < count; i++)
 	{
-		int CurrStartNum = (float)i / count;
+		float CurrStartNum = (float)i / count;
 		arr[0] = GenerateTableau(CurrStartNum, size);
 	}
 	return arr;
@@ -22,7 +22,7 @@ struct Tableau** GenerateTablesMultiThread(int size, int count) {
 	for (size_t i = 0; i < count; i++)
 	{
 		inputArray[i] = malloc(sizeof(struct GenData));
-		int CurrStartNum = (float)i / count;
+		float CurrStartNum = (float)i / count;
 		inputArray[i]->size = size;
 		inputArray[i]->startingNum = CurrStartNum;
 	}

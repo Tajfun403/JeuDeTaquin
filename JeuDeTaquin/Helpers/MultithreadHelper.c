@@ -55,7 +55,7 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 		args->inputArray = inputArray;
 		args->outputArray = outputArray;
 		args->start = itemsPerCore * i;
-		args->end = !isThisLastOne ? (itemsPerCore * (i + 1)) - 1 : leftoverItems;
+		args->end = !isThisLastOne ? (itemsPerCore * (i + 1)) - 1 : n - 1;
 		args->progress = progressArray[i];
 
 		threads[i] = CreateThread(
@@ -116,7 +116,7 @@ HANDLE* RunProgressThread(int** progressArray, int progressCount, int MaxProgres
 int UpdateProgress(struct ProgressArgs* args) {
 	printf("Using %i threads\n", args->progressEntriesCount);
 	printf("Starting progress count");
-	while (!*(args->ShouldCancel)) {
+	while (!(*(args->ShouldCancel))) {
 		// refresh counter once per second
 		Sleep(1000);
 		int currProgressCount = 0;

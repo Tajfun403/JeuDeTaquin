@@ -13,7 +13,7 @@ char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n
 
 	RunBatch(&AnalyzeTable_Thread, tableaus, results, n);
 
-	// GenerateGraph(results, n, imgPath);
+	GenerateGraph(results, n, imgPath);
 	// TODO: do something with that result
 }
 
