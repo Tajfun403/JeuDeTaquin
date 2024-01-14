@@ -5,17 +5,22 @@
 #include "UserInputStruct.h"
 #include "UserInput.h"
 #include "Exceptions.h"
+#include "ManagmentRequirements.h"
 
-struct UserInput TakeUserInput(int argc, char* argv[])
+bool TakeUserInput(struct UserInput* returnInput, int argc, char* argv[])
 {
 	if (argc <= 1)
-		return ReadUserInputFromPrompts();
+		return ReadUserInputFromPrompts(returnInput) && ValidateUserInput(returnInput);
 	else
-		return ReadUserInputFromArgs(argc, argv);
+		return ReadUserInputFromArgs(returnInput, argc, argv) && ValidateUserInput(returnInput);
 }
 
-struct UserInput ReadUserInputFromArgs(int argc, char* argv[]) {
-	struct UserInput returnInput = { 0 };
+bool ReadUserInputFromArgs(struct UserInput* returnInput, int argc, char* argv[]) {
+	if (returnInput == NULL) {
+		returnInput = malloc(sizeof(struct UserInput));
+	}
+	// zero all properties
+	// *returnInput = (struct UserInput){ 0 };
 	bool bUnparsedArgsPresent = false;
 	// zeroth arg is always exe path
 	// expect help command
@@ -24,11 +29,11 @@ struct UserInput ReadUserInputFromArgs(int argc, char* argv[]) {
 		// no idea why it does not match ¯\_(ツ)_/¯
 		if (strcmp(currHeader, "--help")) {
 			DrawUsage();
-			return returnInput;
+			return false;
 		}
 		else {
 			DrawUsage();
-			return returnInput;
+			return false;
 		}
 	}
 	if (argc % 2 != 1) {
@@ -41,19 +46,19 @@ struct UserInput ReadUserInputFromArgs(int argc, char* argv[]) {
 		char* currVal = argv[i + 1];
 
 		if (strcmp(currHeader, "--tableauSize")) {
-			returnInput.TableauSize = atoi(currVal);
+			returnInput->TableauSize = atoi(currVal);
 		}
 		else if (strcmp(currHeader, "--tableauCount")) {
-			returnInput.TableauCount = atoi(currVal);
+			returnInput->TableauCount = atoi(currVal);
 		}
 		else if (strcmp(currHeader, "--inputPath")) {
-			returnInput.InputPath = currVal;
+			returnInput->InputPath = currVal;
 		}
 		else if (strcmp(currHeader, "--tablesOutputPath")) {
-			returnInput.TablesOutputPath = currVal;
+			returnInput->TablesOutputPath = currVal;
 		}
 		else if (strcmp(currHeader, "--imgOutputPath")) {
-			returnInput.ImgOutputPath = currVal;
+			returnInput->ImgOutputPath = currVal;
 		}
 		else if (strcmp(currHeader, "--help")) {
 			DrawUsage();
@@ -65,13 +70,39 @@ struct UserInput ReadUserInputFromArgs(int argc, char* argv[]) {
 			DrawUsage();
 		}
 	}
-	returnInput.bValid = true;
-	return returnInput;
+	return true;
 }
 
-struct UserInput ReadUserInputFromPrompts() {
-	struct UserInput returnInput = {0};
-	char buffer[100];
+bool ValidateUserInput(struct UserInput* input) {
+	if (input == NULL)
+		return (LOG_ERROR("Input is null!\n"), false);
+	if (!ShouldUseExistingTables(*input)) {
+		// we read if provided table sizes / count make senseW
+		// utilizing comma operator
+		// note: utilizing comma operator somewhere was forced by the specifications
+		// it's just not... that awful here
+		if (input->TableauCount == 0)
+			return (LOG_ERROR("Tableau count not provided correctly, and no source specified.\n"), false);
+		else if (input->TableauSize == 0)
+			return (LOG_ERROR("Tableau size not provided correctly, and no source specified.\n"), false);
+		else if (input->TableauCount < 1)
+			return (LOG_ERROR("Tableau count smaller than one!\n"), false);
+		else if (input->TableauSize < 1)
+			return (LOG_ERROR("Tableau size smaller than one!\n"), false);
+	}
+	else {
+		// soo user should provide a path
+	}
+	return true;
+}
+
+bool ReadUserInputFromPrompts(struct UserInput* returnInput) {
+	if (returnInput == NULL) {
+		returnInput = malloc(sizeof(struct UserInput));
+	}
+	// zero all properties
+	// *returnInput = (struct UserInput){ 0 };
+	char buffer[255];
 	int intBuffer;
 #pragma region Generate or take tables
 	printf("Do you want to generate new table set [1] or reuse existing one [2]? [1/2]: ");
@@ -79,10 +110,10 @@ struct UserInput ReadUserInputFromPrompts() {
 	if (intBuffer == 1) {
 		printf("Size of each tableau (number of items): ");
 		scanf("%i", &intBuffer);
-		returnInput.TableauSize = intBuffer;
+		returnInput->TableauSize = intBuffer;
 		printf("Count of tabeaus: ");
 		scanf("%i", &intBuffer);
-		returnInput.TableauCount = intBuffer;
+		returnInput->TableauCount = intBuffer;
 
 #pragma region Save tables
 		printf("Do you want to keep tables in memory only [1] or save them [2]? [1/2]: ");
@@ -90,26 +121,24 @@ struct UserInput ReadUserInputFromPrompts() {
 		if (intBuffer == 2) {
 			printf("Provide path to save the tables in: ");
 			scanf("%s", &buffer);
-			returnInput.TablesOutputPath = (char*)malloc(100);
-			strcpy(returnInput.TablesOutputPath, buffer);
+			returnInput->TablesOutputPath = (char*)malloc(100);
+			strcpy(returnInput->TablesOutputPath, buffer);
 		}
 		else if (intBuffer != 1) {
 			LOG_ERROR("Invalid operation requested!\n");
-			returnInput.bValid = false;
-			return returnInput;
+			return false;
 		}
 #pragma endregion
 	}
 	else if (intBuffer == 2) {
 		printf("Path to directory with tableaus:");
 		scanf("%s", &buffer);
-		returnInput.InputPath = (char*)malloc(100);
-		strcpy(returnInput.InputPath, buffer);
+		returnInput->InputPath = (char*)malloc(100);
+		strcpy(returnInput->InputPath, buffer);
 	}
 	else {
 		LOG_ERROR("Invalid operation requested!\n");
-		returnInput.bValid = false;
-		return returnInput;
+		return false;
 	}
 #pragma endregion
 #pragma region Save image
@@ -118,18 +147,15 @@ struct UserInput ReadUserInputFromPrompts() {
 	if (intBuffer == 2) {
 		printf("Provide path the new image: ");
 		scanf("%s", &buffer);
-		returnInput.ImgOutputPath = (char*)malloc(100);
-		strcpy(returnInput.ImgOutputPath, buffer);
+		returnInput->ImgOutputPath = (char*)malloc(100);
+		strcpy(returnInput->ImgOutputPath, buffer);
 	}
 	else if (intBuffer != 1) {
 		LOG_ERROR("Invalid operation requested!\n");
-		returnInput.bValid = false;
-		return returnInput;
+		return false;
 	}
 #pragma endregion
-
-	returnInput.bValid = true;
-	return returnInput;
+	return true;
 }
 
 bool ShouldUseExistingTables(struct UserInput input) {

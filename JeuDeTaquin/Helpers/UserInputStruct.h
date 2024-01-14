@@ -10,6 +10,6 @@ struct UserInput {
 	char* InputPath;
 	char* TablesOutputPath;
 	char* ImgOutputPath;
-	bool bValid;
-	char* ErrorInfo;
+	// bool bValid;
+	// char* ErrorInfo;
 };
