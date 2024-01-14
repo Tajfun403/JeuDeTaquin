@@ -26,11 +26,7 @@ struct Tableau** LoadTableaus(char* path, int* n)
 	return NULL;
 }
 
-char* AnalyzeTables(char* imgPath, struct Tableau** tableaus, int n)
+char* AnalyzeTables(char* imgPath, struct Tableau** tableaus, int n, int tableSize)
 {
-	// TODO get amount of files
-	// TODO create an array of GraphItems where the results will be saved for every run
-	// TODO then feed that table into GenerateGraph();
-	AnalyzeTablesMultiThreaded(imgPath, tableaus, n);
-	return NULL;
+	return AnalyzeTablesMultiThreaded(imgPath, tableaus, n, tableSize);
 }

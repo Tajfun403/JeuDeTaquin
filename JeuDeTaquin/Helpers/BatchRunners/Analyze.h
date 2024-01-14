@@ -3,7 +3,7 @@
 /// <summary>
 /// PRIVATE: relays table analysis to a multithreaded system
 /// </summary>
-char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n);
+char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n, int tableSize);
 
 /// <summary>
 /// PRIVATE: a function to be ran on every input item, for multithreaded process

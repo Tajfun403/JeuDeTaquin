@@ -14,8 +14,9 @@ struct Tableau** GenerateTables(int size, int count);
 /// <param name="imgPath">Path for saving the results image</param>
 /// <param name="tableaus">Array of tables</param>
 /// <param name="n">Count of tables</param>
+/// <param name="tableSize">Amount of items that existed in each table</param>
 /// <returns>Path to an image containing the images</returns>
-char* AnalyzeTables(char* imgPath, struct Tableau** tableaus, int n);
+char* AnalyzeTables(char* imgPath, struct Tableau** tableaus, int n, int tableSize);
 
 /// <summary>
 /// Save an array of tableaus to files

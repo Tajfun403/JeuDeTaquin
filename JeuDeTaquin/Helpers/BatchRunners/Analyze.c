@@ -8,12 +8,13 @@
 #include "Analyze.h"
 
 
-char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n) {
+char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n, int tableSize) {
 	struct GraphItem** results = malloc(sizeof(struct GraphItem*) * n);
 
 	RunBatch(&AnalyzeTable_Thread, tableaus, results, n);
 
-	GenerateGraph(results, n, imgPath);
+	printf("Generating graph\n");
+	GenerateGraph(results, n, imgPath, tableSize);
 	// TODO: do something with that result
 }
 

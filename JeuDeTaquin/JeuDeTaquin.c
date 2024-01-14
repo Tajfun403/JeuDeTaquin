@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
 
 	// TODO analyze tables - multithreading
 	printf("Analzying tables\n");
-	char* resultsImg = AnalyzeTables("file.png", tables, input.TableauCount);
+	char* resultsImg = AnalyzeTables("file.png", tables, input.TableauCount, input.TableauSize);
 
 	// TODO draw the graph
 
