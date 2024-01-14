@@ -1,7 +1,9 @@
 #pragma once
 
 struct GraphItem {
-    double X;
-    double Y;
+    float X;
+    int Y;
     double Avg;
+    int currSum;
+    int currRange;
 };

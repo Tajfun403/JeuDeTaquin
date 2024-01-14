@@ -1,9 +1,7 @@
-#include "TableauStructure.h"
-#ifndef ARRAYANALYZE_H_INCLUDED
-#define ARRAYANALYZE_H_INCLUDED
+#pragma once
 
-struct Tableau LoadTableauFromFile(char* filePath);
+#include "../ArrayGen/TableauStructure.h"
 
-int SolveTableau(struct Tableau tableau);
+struct Tableau* LoadTableauFromFile(char* filePath);
 
-#endif // ARRAYANALYZE_H_INCLUDED
+int SolveTableau(struct Tableau* tableau);

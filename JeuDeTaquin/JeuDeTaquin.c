@@ -1,11 +1,12 @@
 ﻿// JeuDeTaquin.cpp : Defines the entry point for the application.
 //
 
+#define MULTITHREAD
+
 #include "JeuDeTaquin.h"
-#include "UserInputStruct.h"
-#include "UserInput.h"
-#include "UserInput.c"
-#include "BatchRunners.c"
+#include "Helpers/UserInputStruct.h"
+#include "Helpers/UserInput.h"
+#include "Helpers/BatchRunners.h"
 
 int main(int argc, char* argv[])
 {
@@ -15,16 +16,18 @@ int main(int argc, char* argv[])
 		printf("Exception body: %s!\n", input.ErrorInfo);
 	}
 
-	char* TablesDir;
+	struct Tableau* tables;
 	if (!ShouldUseExistingTables(input)) {
-		TablesDir = GenerateTables(input.TableauSize, input.TableauCount);
+		printf("Generating tables\n");
+		tables = GenerateTables(input.TableauSize, input.TableauCount);
 	}
 	else {
-		TablesDir = input.InputPath;
+		tables = LoadTableaus(input.InputPath, &input.TableauCount);
 	}
 
 	// TODO analyze tables - multithreading
-	char* resultsImg = AnalyzeTables(TablesDir);
+	printf("Analzying tables\n");
+	char* resultsImg = AnalyzeTables("file.png", tables, input.TableauCount, input.TableauSize);
 
 	// TODO draw the graph
 
