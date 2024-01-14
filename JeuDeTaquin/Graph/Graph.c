@@ -15,7 +15,6 @@
 
 #ifndef OPTIMIZED_AVG
 void SetAverages(struct GraphItem** arr, int n) {
-	// TODO optimize that O(n^2) shit, cause for now it is the biggest bottleneck
 	int maxRange = n * 0.05;
 	for (int i = 0; i < n; i++) {
 		int currCount = 0;
