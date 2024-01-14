@@ -1,7 +1,5 @@
 #include <stdlib.h>
 #include "../../ArrayGen/TableauStructure.h"
-#include "../../ArrayGen/TableauGen.h"
-#include <stdbool.h>
 #include "GenerateData.h"
 #include "../MultithreadHelper.h"
 #include "../../Graph/GraphItem.h"
@@ -15,7 +13,7 @@ char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n
 
 	RunBatch(&AnalyzeTable_Thread, tableaus, results, n);
 
-	GenerateGraph(results, n, imgPath);
+	// GenerateGraph(results, n, imgPath);
 	// TODO: do something with that result
 }
 
@@ -24,7 +22,7 @@ void* AnalyzeTable_Thread(void* input) {
 	// output is a pointer to a GraptItem
 	struct Tableau* table = (struct Tableau*)input;
 
-	int solution = SolveTableau(*table);
+	int solution = SolveTableau(table);
 	struct GraphItem* graphItem = malloc(sizeof(struct GraphItem));
 	graphItem->X = table->startingNr;
 	graphItem->Y = solution;

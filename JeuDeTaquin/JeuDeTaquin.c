@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
 
 	struct Tableau* tables;
 	if (!ShouldUseExistingTables(input)) {
+		printf("Generating tables\n");
 		tables = GenerateTables(input.TableauSize, input.TableauCount);
 	}
 	else {
@@ -25,6 +26,7 @@ int main(int argc, char* argv[])
 	}
 
 	// TODO analyze tables - multithreading
+	printf("Analzying tables\n");
 	char* resultsImg = AnalyzeTables("null", tables, input.TableauCount);
 
 	// TODO draw the graph

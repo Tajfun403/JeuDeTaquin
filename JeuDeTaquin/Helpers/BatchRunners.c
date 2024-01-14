@@ -4,6 +4,7 @@
 #include "../ArrayGen/TableauStructure.h"
 #include "../ArrayGen/TableauGen.h"
 #include "BatchRunners/Generate.h"
+#include "BatchRunners/Analyze.h"
 #include <stdbool.h>
 
 
@@ -30,5 +31,6 @@ char* AnalyzeTables(char* imgPath, struct Tableau** tableaus, int n)
 	// TODO get amount of files
 	// TODO create an array of GraphItems where the results will be saved for every run
 	// TODO then feed that table into GenerateGraph();
+	AnalyzeTablesMultiThreaded(imgPath, tableaus, n);
 	return NULL;
 }
