@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -7,22 +7,23 @@
 #include "GraphItem.h"
 #include "../Helpers/Exceptions.h"
 
-/*
 void SetAverages(struct GraphItem** arr, int n) {
 	// TODO optimize that O(n^2) shit, cause for now it is the biggest bottleneck
-	int range = n * 0.05;
+	int maxRange = n * 0.05;
 	for (int i = 0; i < n; i++) {
 		int currCount = 0;
 		double currSum = 0;
-		for (int j = i - range; j < i + range; j++) {
+		int currAllowedRange = min(min(i, n - i - 1), maxRange);
+		for (int j = i - currAllowedRange; j < i + currAllowedRange; j++) {
 			if (j < 0 || j >= n) continue;
 			currSum += arr[j]->Y;
 			currCount++;
 		}
 		arr[i]->Avg = currSum / currCount;
 	}
-} */
+}
 
+/* 
 void SetAverages(struct GraphItem** arr, int n) {
 	int maxRange = n * 0.05;
 
@@ -35,25 +36,27 @@ void SetAverages(struct GraphItem** arr, int n) {
 		struct GraphItem* currItem = arr[i];
 
 		// copy current sum
-		if (i != 0)
+		if (i != 0) {
 			currItem->currSum = arr[i - 1]->currSum;
+			currItem->currRange = arr[i - 1]->currRange;
+		}
 
 		// moving away from left border: expand range
 		if (currAllowedRange > currItem->currRange) {
-			// >?X?<
+			// >□X□<
 			// to
-			// >??X??< - so need to add two items. One with old range, one with new extedned one
-			currItem->currSum += arr[currItem->currRange]->Y;
+			// >□□X□□< - so need to add two items. One with old range, one with new extedned one
+			currItem->currSum += arr[i + currItem->currRange - 1]->Y;
 			currItem->currSum += arr[i + currAllowedRange]->Y;	
 			currItem->currRange++;
 		}
 
 		// moving closer to borders: shrink range
 		if (currAllowedRange < currItem->currRange) {
-			// >??X??<
+			// >□□X□□<
 			// to
-			// --<?X?< - again need to remove two items
-			currItem->currSum -= arr[i - currItem->currRange]->Y;
+			// --<□X□< - again need to remove two items
+			currItem->currSum -= arr[i - currItem->currRange - 1]->Y;
 			currItem->currSum -= arr[i - currAllowedRange]->Y;
 			currItem->currRange--;
 		}
@@ -65,13 +68,14 @@ void SetAverages(struct GraphItem** arr, int n) {
 		}
 
 		if (currItem->currRange > 1)
-			currItem->Avg = (float)currItem->currSum / (float)currItem->currRange;
+			currItem->Avg = (float)currItem->currSum / ((float)currItem->currRange * 2);
 		else {
 			currItem->Avg = currItem->Y;
 			currItem->currSum = currItem->Y;
 		}
 	}
 }
+*/
 
 char* GenerateDB(struct GraphItem** arr, int n) {
 	char* fileName = malloc(100);
