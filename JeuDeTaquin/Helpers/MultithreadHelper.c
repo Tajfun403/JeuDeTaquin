@@ -12,6 +12,7 @@
 #include <stdbool.h>
 #include <Windows.h>
 #include "Exceptions.h"
+#include <time.h>
 
 // https://stackoverflow.com/a/150971
 
@@ -78,6 +79,8 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 }
 
 int RunBatchThread(struct ThreadArgs* args) {
+	// create a new random seed for each thread
+	srand(time(NULL) + args->start);
 	for (int i = args->start; i <= args->end; i++) {
 		void* arg;
 		if (args->inputArray != NULL)

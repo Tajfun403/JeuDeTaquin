@@ -56,7 +56,8 @@ float** ResizeTableau(float** tableau, int* numberOfRows)
 // functions won't be taking whole struct as arguments because there will be different types of young tabeleu later
 void GenerateRandomSet(float set[], int size)
 {
-	srand(time(NULL));
+	// seeds are now set per-thread from a thread worker
+	// srand(time(NULL));
 	for (int i = 1; i < size; i++)
 	{
 		float randomNr = (float)rand() / (float)RAND_MAX;

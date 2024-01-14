@@ -54,8 +54,8 @@ void GenerateGraph(struct GraphItem** arr, int n, char* imgPath, int tableSize) 
 		// the space for font does not scale accordingly
 		/* strcat(cmd, "set tics font \\\", 20\\\";");
 		strcat(cmd, "set title font \\\", 40\\\";"); */
-		strcat(cmd, "set style line 1 linetype 1 linewidth 3 pointtype 3 lc rgb \\\"#3661ba\\\"; ");
-		strcat(cmd, "set style line 2 linetype 1 linewidth 5 pointtype 3 lc rgb \\\"#7d36ba\\\"; ");
+		strcat(cmd, "set style line 1 linetype 1 linewidth 1 pointtype 0 lc rgb \\\"#3661ba\\\"; ");
+		strcat(cmd, "set style line 2 linetype 1 linewidth 3 pointtype 3 lc rgb \\\"#7d36ba\\\"; ");
 		strcat(cmd, "set xlabel 'Starting num';");
 		strcat(cmd, "set ylabel 'X + Y indices of finished cell';");
 
