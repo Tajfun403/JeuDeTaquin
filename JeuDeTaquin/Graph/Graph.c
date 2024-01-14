@@ -8,6 +8,7 @@
 #include "GraphItem.h"
 #include "../Helpers/Exceptions.h"
 #include "../Helpers/Clock.h"
+#include <stdlib.h>
 
 void SetAverages(struct GraphItem** arr, int n) {
 	// TODO optimize that O(n^2) shit, cause for now it is the biggest bottleneck
@@ -96,7 +97,7 @@ void SetAverages(struct GraphItem** arr, int n) {
 } */
 
 char* GenerateDB(struct GraphItem** arr, int n) {
-	char* fileName = malloc(100);
+	char* fileName = malloc(255);
 	sprintf(fileName, "%s.dat", tmpnam(NULL)); // file path is created in user TEMP folder
 	FILE* f = fopen(fileName, "w");
 	if (f == NULL) {
@@ -112,10 +113,13 @@ char* GenerateDB(struct GraphItem** arr, int n) {
 	return fileName;
 }
 
-void GenerateGraph(struct GraphItem** arr, int n, char* imgPath, int tableSize) {
+char* GenerateGraph(struct GraphItem** arr, int n, char* imgPath, int tableSize) {
 	// get both data sets
 	// feed both to gnuplot. One with lines, the other without
 	long timeStart = GetCurrTimeMs();
+
+	if (imgPath == NULL)
+		imgPath = "graph.png";
 	
 	SetAverages(arr, n);
 	char* DB = GenerateDB(arr, n);
@@ -146,7 +150,10 @@ void GenerateGraph(struct GraphItem** arr, int n, char* imgPath, int tableSize) 
 	strcat(cmd, "\"");
 
 	system(cmd);
-
 	printf("Generated graph in %.3fs", (GetCurrTimeMs() - timeStart) / 1000.0);
+
+	char* finalImgPath = malloc(255);
+	_fullpath(finalImgPath, imgPath, 255);
+	return finalImgPath;
 
 }

@@ -7,6 +7,7 @@
 #include "Helpers/UserInputStruct.h"
 #include "Helpers/UserInput.h"
 #include "Helpers/BatchRunners.h"
+#include <stdlib.h>
 
 int main(int argc, char* argv[])
 {
@@ -27,10 +28,10 @@ int main(int argc, char* argv[])
 
 	// TODO analyze tables - multithreading
 	printf("Analzying tables\n");
-	char* resultsImg = AnalyzeTables("file.png", tables, input.TableauCount, input.TableauSize);
+	char* resultsImg = AnalyzeTables(input.ImgOutputPath, tables, input.TableauCount, input.TableauSize);
 
+	system(resultsImg);
 	// TODO draw the graph
 
 	// TODO ask user if they wanna the tables?
-	// TODO output performance info
 }
