@@ -16,6 +16,7 @@ struct Tableau** GenerateTables(int size, int count)
 
 void SaveTableaus(char* path, struct Tableaus** arr, int n) 
 {
+	// TODO save tables
 	for (int i = 0; i < n; i++) {
 
 	}
@@ -23,6 +24,7 @@ void SaveTableaus(char* path, struct Tableaus** arr, int n)
 
 struct Tableau** LoadTableaus(char* path, int* n)
 {
+	// TODO load tables
 	return NULL;
 }
 

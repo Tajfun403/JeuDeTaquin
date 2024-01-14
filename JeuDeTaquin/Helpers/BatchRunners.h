@@ -1,6 +1,6 @@
 #pragma once
 /// <summary>
-/// Generate tables to a directory.
+/// Generate tables to an array in memory
 /// </summary>
 /// <param name="size"></param>
 /// <param name="count"></param>
