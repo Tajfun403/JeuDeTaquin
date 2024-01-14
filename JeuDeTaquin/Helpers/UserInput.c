@@ -1,4 +1,4 @@
-#include <stdbool.h>
+﻿#include <stdbool.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,6 +18,24 @@ struct UserInput ReadUserInputFromArgs(int argc, char* argv[]) {
 	struct UserInput returnInput = { 0 };
 	bool bUnparsedArgsPresent = false;
 	// zeroth arg is always exe path
+	// expect help command
+	if (argc == 2) {
+		char* currHeader = argv[1];
+		// no idea why it does not match ¯\_(ツ)_/¯
+		if (strcmp(currHeader, "--help")) {
+			DrawUsage();
+			return returnInput;
+		}
+		else {
+			DrawUsage();
+			return returnInput;
+		}
+	}
+	if (argc % 2 != 1) {
+		// non-even amount of non-exe args! Something is off
+		LOG_ERROR("Amount of headers and values do not match!\n");
+		return returnInput;
+	}
 	for (int i = 1; i < argc; i += 2) {
 		char* currHeader = argv[i];
 		char* currVal = argv[i + 1];
@@ -120,13 +138,13 @@ bool ShouldUseExistingTables(struct UserInput input) {
 
 void DrawUsage(void)
 {
-	printf("Jeu de Taquin (C) 2024");
-	printf("Usage: ");
-	printf("\t--tableauSize size\t - amount of items in each tableau. Only if inputPath was not specified");
-	printf("\t--tableauCount count\t - amount of tableaus. Only if inputPath was not specified");
-	printf("\t--inputPath path\t - if specified - a path to directory with generated tables");
-	printf("\t[--tablesOutputPath path]\t - if specified - a path to directory to save the generated tables in");
-	printf("\t                \t - otherwise, tables will be kept in memory only");
-	printf("\t[--imgOutputPath path]\t - if specified - a path to save the generated graph to");
-	printf("\t                \t - otherwise, graph will be saved in a random file");
+	printf("Jeu de Taquin (C) 2024\n");
+	printf("Usage: \n");
+	printf("\t--tableauSize size\t - amount of items in each tableau. Only if inputPath was not specified\n");
+	printf("\t--tableauCount count\t - amount of tableaus. Only if inputPath was not specified\n");
+	printf("\t--inputPath path\t - if specified - a path to directory with generated tables\n");
+	printf("\t[--tablesOutputPath path]\t - if specified - a path to directory to save the generated tables in\n");
+	printf("\t                \t  otherwise, tables will be kept in memory only\n");
+	printf("\t[--imgOutputPath path]\t - if specified - a path to save the generated graph to\n");
+	printf("\t                \t  otherwise, graph will be saved in a random file\n");
 }
