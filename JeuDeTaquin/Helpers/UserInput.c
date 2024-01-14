@@ -16,14 +16,7 @@ struct UserInput TakeUserInput(int argc, char* argv[])
 
 struct UserInput ReadUserInputFromArgs(int argc, char* argv[]) {
 	struct UserInput returnInput = { 0 };
-	if (argc % 2 == 0) 
-	{
-		char* error = (char*)malloc(40);
-		strcpy(error, "Non-even amount of args!");
-		returnInput.ErrorInfo = error;
-		returnInput.bValid = false;
-		return returnInput;
-	}
+	bool bUnparsedArgsPresent = false;
 	// zeroth arg is always exe path
 	for (int i = 1; i < argc; i += 2) {
 		char* currHeader = argv[i];
@@ -32,17 +25,26 @@ struct UserInput ReadUserInputFromArgs(int argc, char* argv[]) {
 		if (strcmp(currHeader, "--tableauSize")) {
 			returnInput.TableauSize = atoi(currVal);
 		}
-		if (strcmp(currHeader, "--tableauCount")) {
+		else if (strcmp(currHeader, "--tableauCount")) {
 			returnInput.TableauCount = atoi(currVal);
 		}
-		if (strcmp(currHeader, "--inputPath")) {
+		else if (strcmp(currHeader, "--inputPath")) {
 			returnInput.InputPath = currVal;
 		}
-		if (strcmp(currHeader, "--tablesOutputPath")) {
+		else if (strcmp(currHeader, "--tablesOutputPath")) {
 			returnInput.TablesOutputPath = currVal;
 		}
-		if (strcmp(currHeader, "--imgOutputPath")) {
+		else if (strcmp(currHeader, "--imgOutputPath")) {
 			returnInput.ImgOutputPath = currVal;
+		}
+		else if (strcmp(currHeader, "--help")) {
+			DrawUsage();
+			return returnInput;
+		}
+		else {
+			bUnparsedArgsPresent = true;
+			LOG_WARNING("Could not parse some arguments!\n");
+			DrawUsage();
 		}
 	}
 	returnInput.bValid = true;
@@ -65,13 +67,18 @@ struct UserInput ReadUserInputFromPrompts() {
 		returnInput.TableauCount = intBuffer;
 
 #pragma region Save tables
-		printf("Do you want to save tables [1] or keep them in memory only [2]? [1/2]: ");
+		printf("Do you want to keep tables in memory only [1] or save them [2]? [1/2]: ");
 		scanf("%i", &intBuffer);
-		if (intBuffer == 1) {
+		if (intBuffer == 2) {
 			printf("Provide path to save the tables in: ");
 			scanf("%s", &buffer);
 			returnInput.TablesOutputPath = (char*)malloc(100);
 			strcpy(returnInput.TablesOutputPath, buffer);
+		}
+		else if (intBuffer != 1) {
+			LOG_ERROR("Invalid operation requested!\n");
+			returnInput.bValid = false;
+			return returnInput;
 		}
 #pragma endregion
 	}
@@ -82,10 +89,22 @@ struct UserInput ReadUserInputFromPrompts() {
 		strcpy(returnInput.InputPath, buffer);
 	}
 	else {
-		LOG_ERROR("Invalid operation requested");
-		char* error = (char*)malloc(40);
-		strcpy(error, "Invalid operation requested");
-		returnInput.ErrorInfo = error;
+		LOG_ERROR("Invalid operation requested!\n");
+		returnInput.bValid = false;
+		return returnInput;
+	}
+#pragma endregion
+#pragma region Save image
+	printf("Do you want to save output image to default location [1] or specify a path [2]? [1/2]: ");
+	scanf("%i", &intBuffer);
+	if (intBuffer == 2) {
+		printf("Provide path the new image: ");
+		scanf("%s", &buffer);
+		returnInput.ImgOutputPath = (char*)malloc(100);
+		strcpy(returnInput.ImgOutputPath, buffer);
+	}
+	else if (intBuffer != 1) {
+		LOG_ERROR("Invalid operation requested!\n");
 		returnInput.bValid = false;
 		return returnInput;
 	}
