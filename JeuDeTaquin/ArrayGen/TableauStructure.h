@@ -28,59 +28,59 @@ because i want to move on and ill repair it later*/
 /// <summary>
 /// Resizes a single row
 /// </summary>
-/// <param name="row"></param>
-/// <param name="size"></param>
-/// <returns></returns>
+/// <param name="row">A row, an array to resize</param>
+/// <param name="size">Pointer to the size variable of the row</param>
+/// <returns>Resized row</returns>
 float* ResizeRow(float* row, int* size);
 /// <summary>
 /// Resizes an array which holds the sizes
 /// </summary>
-/// <param name="sizes"></param>
-/// <param name="currentRowsCounter"></param>
-/// <returns></returns>
+/// <param name="sizes">Array which will be resized</param>
+/// <param name="currentRowsCounter">Size of that array</param>
+/// <returns>Resized array</returns>
 int* ResizeSizesArray(int* sizes, int currentRowsCounter);
 /// <summary>
 /// Resizes 2D array called Tableau 
 /// </summary>
-/// <param name="tableau"></param>
-/// <param name="numberOfRows"></param>
-/// <returns></returns>
+/// <param name="tableau">The 2D array tableau, an element of the struct Tableau</param>
+/// <param name="numberOfRows">number of rows</param>
+/// <returns>2D array of floats which will be the new tableau</returns>
 float** ResizeTableau(float** tableau, int* numberOfRows);
 /// <summary>
 /// Generates random set
 /// </summary>
-/// <param name="set"></param>
-/// <param name="size"></param>
+/// <param name="set">Array which contains the set</param>
+/// <param name="size">Size of set</param>
 void GenerateRandomSet(float set[], int size);
 /// <summary>
 /// Calculates difference between n numbers in range (0,1) 
 /// </summary>
-/// <param name="howMany"></param>
-/// <returns></returns>
+/// <param name="howMany">How many number should there be in the range of (0,1)</param>
+/// <returns>The difference variable</returns>
 float CalculateDelta(int howMany);
 /// <summary>
 /// Generates starting numbers from Delta, the starting numbers used in creating the graph
 /// </summary>
-/// <param name="delta"></param>
-/// <param name="howManyNumbers"></param>
-/// <returns></returns>
+/// <param name="delta">Difference between numbers calculated in CalculateDelta function</param>
+/// <param name="howManyNumbers">How many numbers to generate</param>
+/// <returns>Generated array of the generated numbers</returns>
 float* GenerateStartingNumbers(float delta, int howManyNumbers);
 /// <summary>
 /// Finds the 2nd max element in a row
 /// </summary>
-/// <param name="row"></param>
-/// <param name="newElement"></param>
-/// <param name="rowSize"></param>
-/// <returns></returns>
+/// <param name="row">Row where we need to find the element</param>
+/// <param name="newElement">Element to put in the place of the old</param>
+/// <param name="rowSize">Size of the row</param>
+/// <returns>Updated row</returns>
 float* FindThe2ndMaxElement(float* row, float newElement, int* rowSize);
 
 /// <summary>
 /// In the tableau generating process, it throws the 2nd max element to the next row
 /// </summary>
-/// <param name="row"></param>
-/// <param name="element"></param>
-/// <param name="rowSize"></param>
-/// <param name="elementToThrowOut"></param>
+/// <param name="row">Row where we throw the element</param>
+/// <param name="element">Element to throw to the current row</param>
+/// <param name="rowSize">Size of the row</param>
+/// <param name="elementToThrowOut">Pointer to an element to throw to the next row</param>
 /// <returns></returns>
 float* ThrowElementToRow(float* row, float element, int* rowSize, float* elementToThrowOut);
 
