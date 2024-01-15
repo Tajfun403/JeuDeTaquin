@@ -1,4 +1,6 @@
 #pragma once
+#include "../ArrayGen/TableauStructure.h"
+
 /// <summary>
 /// Generate tables to an array in memory
 /// </summary>
@@ -23,7 +25,7 @@ char* AnalyzeTables(char* imgPath, struct Tableau** tableaus, int n, int tableSi
 /// <param name="path">Directory to save tableaus in</param>
 /// <param name="arr">Array of tableaus</param>
 /// <param name="n">Count of tables</param>
-void SaveTableaus(char* path, struct Tableaus** arr, int n);
+void SaveTableaus(char* path, struct Tableau** arr, int n);
 
 /// <summary>
 /// Load all tables from a directory
