@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "../Helpers/ManagmentRequirements.h"
+
 
 //All the functions that will be used in generating process
 //As we operate on numbers from range [0,1] I'll be using -1f as empty cell
@@ -56,7 +58,8 @@ float** ResizeTableau(float** tableau, int* numberOfRows)
 // functions won't be taking whole struct as arguments because there will be different types of young tabeleu later
 void GenerateRandomSet(float set[], int size)
 {
-	srand(time(NULL));
+	// seeds are now set per-thread from a thread worker
+	// srand(time(NULL));
 	for (int i = 1; i < size; i++)
 	{
 		float randomNr = (float)rand() / (float)RAND_MAX;
@@ -81,7 +84,11 @@ float* GenerateStartingNumbers(float delta, int howManyNumbers)
 	return setOfStartingNumbers;
 }
 
-
+#ifdef UNOPTIMAL_MANAGMENT_REQUIREMENTS
+// TODO write this thing with qsort
+float* FindThe2ndMaxElement(float* row, float newElement, int* rowSize){
+}
+#else
 //float max is recently added number, we are looking for the biggest from smaller than the new
 // i'm using "number" and "element" synonymously here
 float* FindThe2ndMaxElement(float* row, float newElement, int* rowSize)
@@ -110,6 +117,7 @@ float* FindThe2ndMaxElement(float* row, float newElement, int* rowSize)
 		return NULL;
 	}
 }
+#endif
 
 //we are putting the newest element at the beggining of the row
 float* ThrowElementToRow(float* row, float element, int* rowSize, float* elementToThrowOut)

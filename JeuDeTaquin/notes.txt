@@ -1,0 +1,50 @@
+================================ 24th Nov 2023
+
+Rysowanie tablic: GNU-plot
+Można używać frameworków - nawet zalecane. Np do rysowania grafów.
+
+UI - zostać raczej przy konsolowym UI.
+
+Wyświetlanie tablicy - np. dwa pierwsze rzędy gdzie zaczęła się gra, rząd na którym skończyła się gra - jeśli cała tabela się nie zmieści.
+Jeśli jest bardzo mała tabela - wyświetl ją całą, żeby użytkownik mógł ją sobie "sprawdzić"
+
+Interakcja w zasadzie - użytkownik definiuje liczbę n. N - liczba elementów jaka znajdzie się w każdej tablicy. Np 100. Tyle wystarczy na podstawową interakcję.
+Można dać minimum - np min 100, bo jeśli mniej to wyniki będą dziwne. 
+
+Optymalizacja - np struktura danych x jest szybsza niż y, dlatego ją wybraliśmy. Opisać to w dokumentacji.
+Wielowątkowość się zalicza jako optymalizacja. Zobaczyć MPI. Można też ręcznie.
+
+
+generacja tabel: użytkownik podaje N
+losujemy zwykłą listę N wartości, gdzie pierwszy element to 0.1, 0.2, 0.3... 1.0 - zawsze 10 tabel. Reszta wyrazów losowa aż tak żeby było N elementów. Z tych wartości stwórz tablicę younga.
+
+W wykresie końcowym - 0.1, 0.2, 0.3... 1.0 na osi X
+wynik (kolumna + wiersz) ostatniej komórki do której doszła gra na osi Y
+W wykresie na osi X będzie 10 elementów (każdy dla jednej tabeli). Można dawać użytkownikowi opcję wpisania częstotliwości tabel.
+
+app.diagram.io - zrobić schemat, w miarę wysokopoziomowy. Np "używany algorytmu RSK"
+
+zapis i wczytywanie gry -> możemy zapisać do pliku wygenerowane tablice. Spakować do zipa, można użyć bibliotek.
+Na start: { chcesz wygenerować nowe tabele czy wczytać istniejące? } -> { oblicz grę i tabelę }
+
+================================ 8th Jan 2024
+General Tableau struct: that can be read and written to files
+
+struct Tableau {
+	int* sizesOfRows; 
+	int numberOfRows; 
+	float** tableau;
+};
+
+Separate files for Tableau:
+- Tableau.h for base struct
+- TableauFileFormat for files
+- TablueGenHelpers for gen helper funcs
+
+Then both read and write funcs would resurrect and save entire Tableau from/to file
+
+------------
+New TODOs:
+- add both command line args to run program instantly, and provide a UI for user to specify the items themselves
+- measure time spent
+- separate funcs for taking input and running program
