@@ -7,7 +7,6 @@
 #include <stdbool.h>
 #define MAXDIGITS 10
 #define DIGITS_OF_STARTING_NUMBERS 2
-#define LOCALISATION ""
 
 
 //Generating + debugging and testing tools
@@ -19,7 +18,7 @@ FILE STRUCTURE:
 2nd line: length od the longest row\n
 rest: tableau
 */
-void SaveTableau(struct Tableau tab)
+void SaveTableau(struct Tableau tab, char path[])
 {
 	//Some functions as sprints and fopen etc wont work in VS, so i have to use safe versions
 	/* We want to have an ordered files naming system.I think the best names will be the first numbers,
@@ -31,7 +30,7 @@ void SaveTableau(struct Tableau tab)
 	int last = tab.numberOfRows - 1;
 	//sprintf(name, "%d.txt", idNumber);
 	// We set the name of the file and its localization
-	sprintf_s(name, 10, "%s0,%d.txt", LOCALISATION, idNumber);
+	sprintf_s(name, 10, "%s0,%d.txt", path, idNumber);
 
 	//file = fopen(name, "a");
 	fopen_s(&file, name, "a");
