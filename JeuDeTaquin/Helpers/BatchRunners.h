@@ -2,11 +2,10 @@
 /// <summary>
 /// Generate tables to an array in memory
 /// </summary>
-/// <param name="size"></param>
-/// <param name="count"></param>
+/// <param name="size">Amount of items in each table</param>
+/// <param name="count">Amount of tables</param>
 /// <returns>An array of generated tables</returns>
 struct Tableau** GenerateTables(int size, int count);
-
 
 /// <summary>
 /// Analyze all tables from an array and output a GNUPLOT graph.

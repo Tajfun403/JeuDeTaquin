@@ -3,11 +3,18 @@
 /// <summary>
 /// PRIVATE: relays table analysis to a singlethreaded system
 /// </summary>
+/// <param name="size">Amount of items in each table</param>
+/// <param name="count">Amount of tables</param>
+/// <returns>An array of generated tables</returns>
 struct Tableau** GenerateTablesSingleThread(int size, int count);
+
 
 /// <summary>
 /// PRIVATE: relays table analysis to a multithreaded system
 /// </summary>
+/// <param name="size">Amount of items in each table</param>
+/// <param name="count">Amount of tables</param>
+/// <returns>An array of generated tables</returns>
 struct Tableau** GenerateTablesMultiThread(int size, int count);
 
 /// <summary>

@@ -11,7 +11,7 @@ add_executable (JeuDeTaquin "JeuDeTaquin.c"
 	"ArrayGen/TableauGen.c"
 	"ArrayGen/TableauGen.h"
 	"ArrayGen/TableauStructure.c"
-	"ArrayGen/TableauStructure.c"
+	"ArrayGen/TableauStructure.h"
 	"ArrayGen/RandomSetStruct.h"
 	"ArrayAnalyze/ArrayAnalyze.c"
 	"ArrayAnalyze/ArrayAnalyze.h"
@@ -28,7 +28,10 @@ add_executable (JeuDeTaquin "JeuDeTaquin.c"
 	"Helpers/BatchRunners/Generate.c"
 	"Helpers/BatchRunners/GenerateData.h"
 	"Helpers/BatchRunners/Analyze.h"
-	"Helpers/BatchRunners/Analyze.c" "Helpers/Clock.h" "Helpers/Clock.c" "Helpers/ManagmentRequirements.h")
+	"Helpers/BatchRunners/Analyze.c"
+	"Helpers/Clock.h"
+	"Helpers/Clock.c"
+	"Helpers/ManagmentRequirements.h")
 
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)

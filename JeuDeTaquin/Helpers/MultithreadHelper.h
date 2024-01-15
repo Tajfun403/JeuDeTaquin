@@ -64,9 +64,9 @@ struct ProgressArgs {
 };
 
 /// <summary>
-/// PRIVATE FUNCTION<para />Get amount of cores in the system
+/// PRIVATE FUNCTION: Get amount of logical cores in the system
 /// </summary>
-/// <returns></returns>
+/// <returns>Amount of logical cores in the system</returns>
 int GetCoresCount();
 
 /// <summary>
@@ -76,25 +76,28 @@ int GetCoresCount();
 /// <param name="inputArray">Input array. Elements from this array will be passed as arg to the func. Set to NULL to skip.</param>
 /// <param name="outputArray">Output array. Return value from the func will be written to this array. Set to NULL to skip.</param>
 /// <param name="n">Amount of items in array</param>
-/// <param name="progress">Pointer to progress var that will be updated with current progress</param>
 void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n);
 
 /// <summary>
-/// PRIVATE FUNCTION<para />Main function for each thread
+/// PRIVATE FUNCTION: Main function for each thread
 /// </summary>
 /// <param name="args">Thread arguments</param>
+/// <returns>Return code of the thread</returns>
 int RunBatchThread(struct ThreadArgs* args);
 
 /// <summary>
-/// Spawn a progress thread
+/// Spawn a progress thread, which will periodically count and print current progress of all workers to standard output.
 /// </summary>
 /// <param name="progressArray">An array of pointers to progresses' of each worker</param>
 /// <param name="progressCount">Amount of workers in prev array</param>
 /// <param name="MaxProgressSum">Expected sum of all progresses</param>
-HANDLE* RunProgressThread(int** progressArray, int progressCount, int MaxProgressSum);
+/// <param name="bFinished">Pointer to a bool which will change once the task is finished and monitoring should be ceased</param>
+/// <returns>Handle to spawned thread</returns>
+HANDLE* RunProgressThread(int** progressArray, int progressCount, int MaxProgressSum, bool* bFinished);
 
 /// <summary>
 /// PRIVATE: Main function for progress counter thread
 /// </summary>
 /// <param name="progressArray">An array with arguments for the thread</param>
+/// <returns>Return code of the thread</returns>
 int UpdateProgress(struct ProgressArgs* args);
