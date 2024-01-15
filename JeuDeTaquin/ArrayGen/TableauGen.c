@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #define MAXDIGITS 10
 #define DIGITS_OF_STARTING_NUMBERS 2
+#define MAGIC "TAB 1.0"
 
 
 //Generating + debugging and testing tools
@@ -14,8 +15,9 @@
 // Saves one tab to a separate file
 /*
 FILE STRUCTURE:
-1st line: how many rows\n
-2nd line: length od the longest row\n
+1st line: Magic number
+2nd line: how many rows\n
+3rd line: length od the longest row\n
 rest: tableau
 */
 void SaveTableau(struct Tableau tab, char path[])
@@ -34,8 +36,12 @@ void SaveTableau(struct Tableau tab, char path[])
 
 	//file = fopen(name, "a");
 	fopen_s(&file, name, "a");
-	fprintf_s(file, "%i\n", tab.numberOfRows); // first line - how many rows there are
-	fprintf_s(file, "%i\n", tab.sizesOfRows[0]); //second line - length of the longest row, the first is always the longest
+	// first line - magic number
+	fprintf_s(file, "%s\n", MAGIC); 
+	// second line - how many rows there are
+	fprintf_s(file, "%i\n", tab.numberOfRows); 
+	//third line - length of the longest row, the first is always the longest
+	fprintf_s(file, "%i\n", tab.sizesOfRows[0]); 
 	for (int row = last; row >= 0; row--)
 	{
 		for (int number = 0; number < tab.sizesOfRows[row]; number++)
