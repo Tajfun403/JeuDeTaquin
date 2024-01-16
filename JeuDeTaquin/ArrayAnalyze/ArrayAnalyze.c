@@ -5,6 +5,8 @@
 #include "ArrayAnalyze.h"
 #include "../Helpers/ManagmentRequirements.h"
 
+#define MAGIC "TAB 1.0"
+
 struct Tableau* LoadTableauFromFile(char* filePath) {
 
 	struct Tableau* tableau;
@@ -14,7 +16,7 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 	tableau->tableau = NULL;
 
 	FILE* fptr = fopen(filePath, "r");
-
+	
 	if (fptr == NULL) {
 		// printf("Not able to open the file.");
 		return tableau;
@@ -30,43 +32,48 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 
 	int* endarr = malloc(n * sizeof(int));
 
-	// read from file and input into array
-	int r = n;//rows
-	endarr[n] = -1;
-	while (fgets(line, 18 * m, fptr) != NULL) {
+	// checking if the magic number is correct
+	fgets(line, 18 * m, fptr);
+	if (line == MAGIC)
+	{
+		// read from file and input into array
+		int r = n;//rows
+		endarr[n] = -1;
+		while (fgets(line, 18 * m, fptr) != NULL) {
 
-		//printf("The line is: %s\n", line);
-		   //...
-		//printf("and the values are: ");
-		r--;
-		int j = 0, numb = 0;
-		while (line[j] != 0) {
-			if (line[j] == ';')numb++;
-			j++;
-		}
-		arr[r] = (float*)malloc((numb) * sizeof(float));
-		endarr[r] = numb - 1;//remember where every row ends
-		j = 0;
-		for (int i = 0, k = 0;line[i] != 0;++i) {
-			if (line[i] == ';') {
-				line[i] = 0;
-				arr[r][j] = atof(line + k);
-				//printf("%lf ", arr[r][j]);
-				k = i + 1;
+			//printf("The line is: %s\n", line);
+			   //...
+			//printf("and the values are: ");
+			r--;
+			int j = 0, numb = 0;
+			while (line[j] != 0) {
+				if (line[j] == ';')numb++;
 				j++;
 			}
+			arr[r] = (float*)malloc((numb) * sizeof(float));
+			endarr[r] = numb - 1;//remember where every row ends
+			j = 0;
+			for (int i = 0, k = 0; line[i] != 0; ++i) {
+				if (line[i] == ';') {
+					line[i] = 0;
+					arr[r][j] = atof(line + k);
+					//printf("%lf ", arr[r][j]);
+					k = i + 1;
+					j++;
+				}
+			}
+			//  printf("\n\n");
 		}
-		//  printf("\n\n");
+		// deallocate what wont be used
+		free(line);
+
+		// set the rest of tableau values
+		tableau->numberOfRows = n;
+		tableau->sizesOfRows = endarr;
+		tableau->tableau = arr;
+
+		return tableau;
 	}
-	// deallocate what wont be used
-	free(line);
-
-	// set the rest of tableau values
-	tableau->numberOfRows = n;
-	tableau->sizesOfRows = endarr;
-	tableau->tableau = arr;
-
-	return tableau;
 }
 
 #ifdef UNOPTIMAL_MANAGMENT_REQUIREMENTS
