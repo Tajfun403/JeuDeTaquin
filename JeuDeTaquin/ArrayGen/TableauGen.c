@@ -96,8 +96,13 @@ struct Tableau* GenerateTableau(double startingNum, int setSize)
 			{
 				//printf("%i", currentRow);
 				//printf("%i", tableau->numberOfRows);
-				tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
-				tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, tableau->numberOfRows);
+				if (tableau->numberOfRows % 10 == 0)
+				{
+					tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
+					tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, tableau->numberOfRows);
+				}
+				tableau->numberOfRows++;
+				
 			}
 			//printf("STAGE\n");
 			//PrintTableau(*tableau);
