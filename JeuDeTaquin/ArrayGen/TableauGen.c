@@ -85,8 +85,9 @@ struct Tableau* GenerateTableau(double startingNum, int setSize)
 	struct Tableau* tableau = malloc(sizeof(struct Tableau));
 	float* randomSet = (float*)malloc(sizeof(float) * setSize);
 	tableau->startingNr = startingNum;
-	randomSet[0] = startingNum;
+	tableau->numberOfRows = 0;
 	GenerateRandomSet(randomSet, setSize);
+	randomSet[0] = startingNum;
 	for (int element = 0; element < setSize; element++)
 	{
 		int currentRow = 0;
