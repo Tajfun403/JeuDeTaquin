@@ -49,7 +49,7 @@ void SaveTableau(struct Tableau tab, char path[])
 	// second line - version number
 	fprintf_s(file, "%s\n", VERSION); 
 	// third line - starting num
-	fprintf_s(file, "%i\n", tab.startingNr); 
+	fprintf_s(file, "%lf\n", tab.startingNr); 
 	// fourth line - how many rows there are
 	fprintf_s(file, "%i\n", tab.numberOfRows); 
 	// fifth line - length of the longest row, the first is always the longest
