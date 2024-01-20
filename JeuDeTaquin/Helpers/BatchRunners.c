@@ -9,6 +9,7 @@
 #include "../ArrayAnalyze/ArrayAnalyze.h"
 #include "Windows.h"
 #include "Exceptions.h"
+#include "stdio.h"
 
 struct Tableau** GenerateTables(int size, int count)
 {
@@ -18,12 +19,17 @@ struct Tableau** GenerateTables(int size, int count)
 
 void SaveTableaus(char* path, struct Tableau** arr, int n) 
 {
+	// make sure dir exists
+	// if it already does, this command will do nothing
+	if (!CreateDirectory(path, NULL) && GetLastError() == ERROR_ALREADY_EXISTS) {
+		LOG_WARNING("Save tables directory already exists. Files will be overwritten\n");
+	}
 	for (size_t i = 0; i < n; i++)
 	{
-		/* char fileName[MAX_PATH];
-		sprintf("%s//Table_%i.jdt", path, i);
-		SaveTableau(*arr[n], fileName); */
-		SaveTableau(*arr[n], path);
+		char fileName[MAX_PATH];
+		sprintf(fileName, "%s//Table_%i.jdt", path, i);
+		SaveTableau(*arr[i], fileName);
+		// SaveTableau(*(arr[i]), path);
 	}
 }
 
@@ -34,27 +40,29 @@ struct Tableau** LoadTableaus(char* path, int* n)
 
 	// https://stackoverflow.com/a/7773561
 	HANDLE hFind;
-	WIN32_FIND_DATA FindData;
+	WIN32_FIND_DATA foundData;
 	int i = 0;
 
 	char searchPattern[MAX_PATH];
-	sprintf("%s//%s", path, "*.jdt");
-	hFind = FindFirstFile(searchPattern, &FindData);
+	sprintf(searchPattern, "%s//*.jdt", path);
+	hFind = FindFirstFile(searchPattern, &foundData);
 	if (hFind == NULL) {
 		LOG_ERROR("Could not find any files!");
 		return NULL;
 	}
-	tableausArray[i] = LoadTableauFromFile(FindData.cFileName);
-	i++;
-	while (FindNextFile(hFind, &FindData))
-	{
+	do {
+		// analyze data from prev iteration (because the initial find is a "minus oneth" iteration
 		if (i >= CurrCapacity) {
 			CurrCapacity *= 2;
 			tableausArray = realloc(tableausArray, CurrCapacity * sizeof(struct Tableau*));
 		}
-		tableausArray[i] = LoadTableauFromFile(FindData.cFileName);
+		char realPath[MAX_PATH];
+		// findData.cFileName only returns the file name - with NO directory name
+		sprintf(realPath, "%s//%s", path, foundData.cFileName);
+		tableausArray[i] = LoadTableauFromFile(realPath);
 		i++;
-	}
+	} while (FindNextFile(hFind, &foundData));
+
 	*n = i;
 	return tableausArray;
 }

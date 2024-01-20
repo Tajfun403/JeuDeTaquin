@@ -133,7 +133,7 @@ bool ReadUserInputFromPrompts(struct UserInput* returnInput) {
 #pragma endregion
 	}
 	else if (intBuffer == 2) {
-		printf("Path to directory with tableaus:");
+		printf("Path to directory with tableaus: ");
 		scanf("%s", &buffer);
 		returnInput->InputPath = (char*)malloc(100);
 		strcpy(returnInput->InputPath, buffer);

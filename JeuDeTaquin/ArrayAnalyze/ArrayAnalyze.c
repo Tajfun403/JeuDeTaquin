@@ -6,6 +6,7 @@
 #include "../Helpers/ManagmentRequirements.h"
 #include "..\Helpers\Version.h"
 #include "..\Helpers\Exceptions.h"
+#define DOUBLE_DIGITS 18
 
 struct Tableau* LoadTableauFromFile(char* filePath) {
 
@@ -18,13 +19,13 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 	FILE* fptr = fopen(filePath, "r");
 	
 	if (fptr == NULL) {
-		LOG_ERROR("Couldn't open the file!");
+		LOG_ERROR("Couldn't open the file!\n");
 		return NULL;
 	}
 	// read: magic, version, starting number, number of rows and max lenght of row
-	int n = 0, m = 0;
+	int n = 0, maxRowSize = 0;
 	char magic[100], version[100];
-	fscanf(fptr, "%s %s %f %d %d ", magic, version, &tableau->startingNr, &n, &m); // note:  "%f %d %d" breaks rest of code (needs space after %d)
+	fscanf(fptr, "%s %s %f %d %d ", magic, version, &(tableau->startingNr), &n, &maxRowSize); // note:  "%f %d %d" breaks rest of code (needs space after %d)
 	if (strcmp(magic, MAGIC)) {
 		LOG_ERROR("MAGIC header does not match!\n");
 		return NULL;
@@ -38,52 +39,47 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 
 	float** arr = (float**)malloc((n) * sizeof(float*));
 
-	char* line = malloc(18 * m); // sizeof(char) is always 1, and... m is the number of doubles and every double has many digits.. so assuming constant number of digits per double we need to multiply by some constant
+	char* line = malloc(DOUBLE_DIGITS * maxRowSize); // sizeof(char) is always 1, and... m is the number of doubles and every double has many digits.. so assuming constant number of digits per double we need to multiply by some constant
 
-	int* endarr = malloc((n+1) * sizeof(int));
+	int* sizesOfRows = malloc((n + 1) * sizeof(int));
 
-	// checking if the magic number is correct
-	fgets(line, 18 * m, fptr);
-	if (line == MAGIC)
-	{
-		// read from file and input into array
-		int r = n; //rows
-		endarr[n] = -1;
-		while (fgets(line, 18 * m, fptr) != NULL) {
+	// read from file and input into array
+	int r = n; //rows
+	sizesOfRows[n] = -1;
+	while (fgets(line, DOUBLE_DIGITS * maxRowSize, fptr) != NULL) {
 
-			//printf("The line is: %s\n", line);
-			   //...
-			//printf("and the values are: ");
-			r--;
-			int j = 0, numb = 0;
-			while (line[j] != 0) {
-				if (line[j] == ';')numb++;
+		//printf("The line is: %s\n", line);
+		   //...
+		//printf("and the values are: ");
+		r--;
+		int j = 0, numb = 0;
+		while (line[j] != 0) {
+			if (line[j] == ';')numb++;
+			j++;
+		}
+		arr[r] = (float*)malloc((numb) * sizeof(float));
+		sizesOfRows[r] = numb - 1; // remember where every row ends
+		j = 0;
+		for (int i = 0, k = 0; line[i] != 0; ++i) {
+			if (line[i] == ';') {
+				line[i] = 0;
+				arr[r][j] = atof(line + k);
+				//printf("%lf ", arr[r][j]);
+				k = i + 1;
 				j++;
 			}
-			arr[r] = (float*)malloc((numb) * sizeof(float));
-			endarr[r] = numb - 1; // remember where every row ends
-			j = 0;
-			for (int i = 0, k = 0; line[i] != 0; ++i) {
-				if (line[i] == ';') {
-					line[i] = 0;
-					arr[r][j] = atof(line + k);
-					//printf("%lf ", arr[r][j]);
-					k = i + 1;
-					j++;
-				}
-			}
-			//  printf("\n\n");
 		}
-		// deallocate what wont be used
-		free(line);
-
-		// set the rest of tableau values
-		tableau->numberOfRows = n;
-		tableau->sizesOfRows = endarr;
-		tableau->tableau = arr;
-
-		return tableau;
+		//  printf("\n\n");
 	}
+	// deallocate what wont be used
+	free(line);
+
+	// set the rest of tableau values
+	tableau->numberOfRows = n;
+	tableau->sizesOfRows = sizesOfRows;
+	tableau->tableau = arr;
+
+	return tableau;
 }
 
 #ifdef UNOPTIMAL_MANAGMENT_REQUIREMENTS
