@@ -15,11 +15,13 @@ float* ResizeRow(float* row, int* size)
 {
 	if (*size > 0)
 	{
-		row = (float*)realloc(row, (*size + 10) * sizeof(float));
+		row = (float*)realloc(row, (*size + 1) * sizeof(float));
+		*size = *size + 1;
 	}
 	else
 	{
-		row = (float*)malloc(10 * sizeof(float));
+		row = (float*)malloc(1 * sizeof(float));
+		*size = 1;
 	}
 	return row;
 }
@@ -28,11 +30,11 @@ int* ResizeSizesArray(int* sizes, int currentRowsCounter)
 	//printf("%p \n", sizes);
 	if (currentRowsCounter > 1)
 	{
-		sizes = (int*)realloc(sizes, ((currentRowsCounter + 10) * sizeof(int)));
+		sizes = (int*)realloc(sizes, (currentRowsCounter * sizeof(int)));
 	}
 	else
 	{
-		sizes = (int*)malloc(10 * sizeof(int));
+		sizes = (int*)malloc(1 * sizeof(int));
 	}
 	//printf("%p \n", sizes);
 	return sizes; //works fine till this line
@@ -41,12 +43,14 @@ float** ResizeTableau(float** tableau, int* numberOfRows)
 {
 	if (*numberOfRows > 0)
 	{
-		tableau = (float**)realloc(tableau, (*numberOfRows + 10) * sizeof(float*));
+		tableau = (float**)realloc(tableau, (*numberOfRows + 1) * sizeof(float*));
+		*numberOfRows = *numberOfRows + 1;
 
 	}
 	else
 	{
-		tableau = (float**)malloc(10 * sizeof(float*));
+		tableau = (float**)malloc(1 * sizeof(float*));
+		*numberOfRows = 1;
 	}
 	return tableau;
 }
@@ -82,7 +86,7 @@ float* GenerateStartingNumbers(float delta, int howManyNumbers)
 
 #ifdef UNOPTIMAL_MANAGMENT_REQUIREMENTS
 // TODO write this thing with qsort
-float* FindThe2ndMaxElement(float* row, float newElement, int* rowSize){
+float* FindThe2ndMaxElement(float* row, float newElement, int* rowSize) {
 }
 #else
 //float max is recently added number, we are looking for the biggest from smaller than the new
@@ -131,11 +135,7 @@ float* ThrowElementToRow(float* row, float element, int* rowSize, float* element
 	}
 	else // if not
 	{
-		if (*rowSize % 10 == 0)
-		{
-			row = ResizeRow(row, rowSize);
-		}
-		*rowSize++;
+		row = ResizeRow(row, rowSize);
 		row[(*rowSize) - 1] = element;
 		*elementToThrowOut = -1.0; //means none
 
