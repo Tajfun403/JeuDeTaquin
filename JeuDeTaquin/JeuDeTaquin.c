@@ -8,6 +8,7 @@
 #include "Helpers/UserInput.h"
 #include "Helpers/BatchRunners.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int main(int argc, char* argv[])
 {
@@ -18,7 +19,7 @@ int main(int argc, char* argv[])
 		return;
 	}
 
-	struct Tableau* tables;
+	struct Tableau** tables;
 	if (!ShouldUseExistingTables(input)) {
 		printf("Generating tables\n");
 		tables = GenerateTables(input.TableauSize, input.TableauCount);
