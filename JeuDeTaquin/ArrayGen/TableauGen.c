@@ -79,15 +79,14 @@ void PrintTableau(struct Tableau tab)
 }
 
 
+
 struct Tableau* GenerateTableau(double startingNum, int setSize)
 {
 	struct Tableau* tableau = malloc(sizeof(struct Tableau));
 	float* randomSet = (float*)malloc(sizeof(float) * setSize);
 	tableau->startingNr = startingNum;
-	tableau->numberOfRows = 0;
-	tableau->sizesOfRows = 0;
-	GenerateRandomSet(randomSet, setSize);
 	randomSet[0] = startingNum;
+	GenerateRandomSet(randomSet, setSize);
 	for (int element = 0; element < setSize; element++)
 	{
 		int currentRow = 0;
@@ -102,13 +101,8 @@ struct Tableau* GenerateTableau(double startingNum, int setSize)
 			{
 				//printf("%i", currentRow);
 				//printf("%i", tableau->numberOfRows);
-				if (tableau->numberOfRows % 10 == 0)
-				{
-					tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
-					tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, tableau->numberOfRows);
-				}
-				tableau->numberOfRows++;
-				
+				tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
+				tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, tableau->numberOfRows);
 			}
 			//printf("STAGE\n");
 			//PrintTableau(*tableau);
