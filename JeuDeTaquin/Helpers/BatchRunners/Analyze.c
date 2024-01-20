@@ -1,12 +1,12 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "../../ArrayGen/TableauStructure.h"
 #include "GenerateData.h"
 #include "../MultithreadHelper.h"
 #include "../../Graph/GraphItem.h"
 #include "../../Graph/Graph.h"
-#include "../../ArrayAnalyze/ArrayAnalyze.h";
+#include "../../ArrayAnalyze/ArrayAnalyze.h"
 #include "Analyze.h"
-
 
 char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n, int tableSize) {
 	struct GraphItem** results = malloc(sizeof(struct GraphItem*) * n);
@@ -29,5 +29,4 @@ void* AnalyzeTable_Thread(void* input) {
 	graphItem->currRange = 0;
 	graphItem->currSum = 0;
 	return graphItem;
-
 }

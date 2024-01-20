@@ -34,11 +34,10 @@ bool ValidateUserInput(struct UserInput* input);
 /// <returns>Whether the input was taken sucessfully</returns>
 bool ReadUserInputFromPrompts(struct UserInput* returnInput);
 
-
 /// <summary>
 /// True if a path to existing tables which should be used was passed.
 /// </summary>
-/// <param name="input"></param>
+/// <param name="input">User input</param>
 /// <returns></returns>
 bool ShouldUseExistingTables(struct UserInput input);
 

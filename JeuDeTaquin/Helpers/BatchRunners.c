@@ -15,12 +15,7 @@ struct Tableau** GenerateTables(int size, int count)
 	return GenerateTablesMultiThread(size, count);
 	// return GenerateTablesSingleThread(size, count);
 }
-/// <summary>
-/// Saves an array of pointers to Tableaus to a certain path
-/// </summary>
-/// <param name="path"></param>
-/// <param name="arr"></param>
-/// <param name="n"></param>
+
 void SaveTableaus(char* path, struct Tableaus** arr, int n) 
 {
 	// TODO save tables
@@ -29,12 +24,6 @@ void SaveTableaus(char* path, struct Tableaus** arr, int n)
 	}
 }
 
-/// <summary>
-/// Loads a couple of Tableaus saved in a certain path, and returns an array of pointers of them
-/// </summary>
-/// <param name="path"></param>
-/// <param name="n"></param>
-/// <returns></returns>
 struct Tableau** LoadTableaus(char* path, int* n)
 {
 	// Array of pointers to tableaus
