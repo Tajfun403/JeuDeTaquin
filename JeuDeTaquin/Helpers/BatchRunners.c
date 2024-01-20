@@ -7,8 +7,8 @@
 #include "BatchRunners/Analyze.h"
 #include <stdbool.h>
 #include "../ArrayAnalyze/ArrayAnalyze.h"
+#include "Windows.h"
 #define LOCALISATION ""
-
 
 struct Tableau** GenerateTables(int size, int count)
 {
@@ -16,23 +16,45 @@ struct Tableau** GenerateTables(int size, int count)
 	// return GenerateTablesSingleThread(size, count);
 }
 
-void SaveTableaus(char* path, struct Tableaus** arr, int n) 
+void SaveTableaus(char* path, struct Tableau** arr, int n) 
 {
-	// TODO save tables
-	for (int i = 0; i < n; i++) {
-		SaveTableau(*arr[n], path);
+	for (size_t i = 0; i < n; i++)
+	{
+		char fileName[MAX_PATH];
+		sprintf("%s//Table_%i.jdt", path, i);
+		SaveTableau(*arr[n], fileName);
 	}
 }
 
 struct Tableau** LoadTableaus(char* path, int* n)
 {
-	// Array of pointers to tableaus
-	struct Tableau** tableausArray = malloc(*n * sizeof(struct Tableau*)); 
-	for (int i = 0; i < *n, i++)
-	{
-		struct Tableau* tab = LoadTableauFromFile(path);
-		tableausArray[i] = tab;
+	int CurrCapacity = 1;
+	struct Tableau** tableausArray = malloc(CurrCapacity * sizeof(struct Tableau*));
+
+	// https://stackoverflow.com/a/7773561
+	HANDLE hFind;
+	WIN32_FIND_DATA FindData;
+	int i = 0;
+
+	char searchPattern[MAX_PATH];
+	sprintf("%s//%s", path, "*.jdt");
+	hFind = FindFirstFile(searchPattern, &FindData);
+	if (hFind == NULL) {
+		LOG_ERROR("Could not find any files!");
+		return NULL;
 	}
+	tableausArray[i] = LoadTableauFromFile(FindData.cFileName);
+	i++;
+	while (FindNextFile(hFind, &FindData))
+	{
+		if (i >= CurrCapacity) {
+			CurrCapacity *= 2;
+			tableausArray = realloc(tableausArray, CurrCapacity * sizeof(struct Tableau*));
+		}
+		tableausArray[i] = LoadTableauFromFile(FindData.cFileName);
+		i++;
+	}
+	*n = i;
 	return tableausArray;
 }
 
