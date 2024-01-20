@@ -8,7 +8,7 @@
 #include <stdbool.h>
 #include "../ArrayAnalyze/ArrayAnalyze.h"
 #include "Windows.h"
-#define LOCALISATION ""
+#include "Exceptions.h"
 
 struct Tableau** GenerateTables(int size, int count)
 {
@@ -20,9 +20,10 @@ void SaveTableaus(char* path, struct Tableau** arr, int n)
 {
 	for (size_t i = 0; i < n; i++)
 	{
-		char fileName[MAX_PATH];
+		/* char fileName[MAX_PATH];
 		sprintf("%s//Table_%i.jdt", path, i);
-		SaveTableau(*arr[n], fileName);
+		SaveTableau(*arr[n], fileName); */
+		SaveTableau(*arr[n], path);
 	}
 }
 

@@ -93,7 +93,7 @@ int SolveTableau(struct Tableau* tableau) {
     return SolveTableauRecursively(tableau, 0, 0);
 }
 int SolveTableauRecursively(struct Tableau* tableau, int i, int j){
-    int res=-1;
+    int res = -1;
 	while (1) {
 		///  printf("%lf ", arr[i][j]);
 		 //end of arr
@@ -109,7 +109,7 @@ int SolveTableauRecursively(struct Tableau* tableau, int i, int j){
 		else return SolveTableauRecursively(tableau, i, j+1);
 	}
     //free memory only once
-    if(res!=-1){
+    if (res != -1){
        for (int i = 0; i < tableau->numberOfRows; ++i) {
             free(tableau->tableau[i]);
         }
@@ -140,14 +140,12 @@ int SolveTableau(struct Tableau* tableau) {
 		else j++;
 	}
 
-	 for (int i = 0; i < tableau->numberOfRows; ++i) {
+	for (int i = 0; i < tableau->numberOfRows; ++i) {
+		free(tableau->tableau[i]);
+	}
 
-            free(tableau->tableau[i]);
-
-        }
-
-        free(tableau->tableau);
-        free(tableau->sizesOfRows);
+	free(tableau->tableau);
+	free(tableau->sizesOfRows);
 
 	return res;
 }

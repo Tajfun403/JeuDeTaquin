@@ -45,7 +45,7 @@ void SaveTableau(struct Tableau tab, char path[])
 	fprintf_s(file, "%i\n", tab.startingNr); 
 	// fourth line - how many rows there are
 	fprintf_s(file, "%i\n", tab.numberOfRows); 
-	// fif	th line - length of the longest row, the first is always the longest
+	// fifth line - length of the longest row, the first is always the longest
 	fprintf_s(file, "%i\n", tab.sizesOfRows[0]); 
 	for (int row = last; row >= 0; row--)
 	{
@@ -84,8 +84,10 @@ struct Tableau* GenerateTableau(double startingNum, int setSize)
 	struct Tableau* tableau = malloc(sizeof(struct Tableau));
 	float* randomSet = (float*)malloc(sizeof(float) * setSize);
 	tableau->startingNr = startingNum;
-	randomSet[0] = startingNum;
+	tableau->numberOfRows = 0;
+	tableau->sizesOfRows = 0;
 	GenerateRandomSet(randomSet, setSize);
+	randomSet[0] = startingNum;
 	for (int element = 0; element < setSize; element++)
 	{
 		int currentRow = 0;
