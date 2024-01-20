@@ -30,7 +30,7 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 
 	char* line = malloc(18 * m); // sizeof(char) is always 1, and... m is the number of doubles and every double has many digits.. so assuming constant number of digits per double we need to multiply by some constant
 
-	int* endarr = malloc(n * sizeof(int));
+	int* endarr = malloc((n+1) * sizeof(int));
 
 	// checking if the magic number is correct
 	fgets(line, 18 * m, fptr);
@@ -78,8 +78,36 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 
 #ifdef UNOPTIMAL_MANAGMENT_REQUIREMENTS
 //
-int SolveTableau(struct Tableau* tableau) {
-	// TODO: solve it with recursion
+int SolveTableau(struct Tableau* tableau,int i, int j) {
+
+	int res=-1;
+	while (1) {
+		///  printf("%lf ", arr[i][j]);
+		 //end of arr
+		if (tableau->sizesOfRows[i + 1] < j && j == tableau->sizesOfRows[i]) {
+			res = i + j;
+			break;
+		}
+		//up if arr[i+1] exists and we can't go right or up is greater than right
+		else if ((tableau->sizesOfRows[i + 1] >= j) && (j == tableau->sizesOfRows[i] || tableau->tableau[i + 1][j] > tableau->tableau[i][j + 1])) {
+			return SolveTableau(tableau, i+1, j);
+		}
+		//right
+		else return SolveTableau(tableau, i, j+1);
+	}
+
+    if(res!=-1){
+       for (int i = 0; i < tableau->numberOfRows; ++i) {
+
+            free(tableau->tableau[i]);
+
+        }
+
+        free(tableau->tableau);
+        free(tableau->sizesOfRows);
+    }
+
+	return res;
 }
 #else
 int SolveTableau(struct Tableau* tableau) {
@@ -100,15 +128,14 @@ int SolveTableau(struct Tableau* tableau) {
 		else j++;
 	}
 
-	//for (int i = 0; i < tableau->numberOfRows + 1; ++i) {
+	 for (int i = 0; i < tableau->numberOfRows; ++i) {
 
-	// TODO solve why it is throwing AccessViolationException
+            free(tableau->tableau[i]);
 
-	//	free(tableau->tableau[i]);
-	//}
+        }
 
-	//free(tableau->tableau);
-	//free(tableau->sizesOfRows);
+        free(tableau->tableau);
+        free(tableau->sizesOfRows);
 
 	return res;
 }
