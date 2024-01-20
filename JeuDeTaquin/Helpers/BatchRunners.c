@@ -9,6 +9,7 @@
 #include "../ArrayAnalyze/ArrayAnalyze.h"
 #include "Windows.h"
 #include "Exceptions.h"
+#include "stdio.h"
 
 struct Tableau** GenerateTables(int size, int count)
 {
@@ -18,12 +19,17 @@ struct Tableau** GenerateTables(int size, int count)
 
 void SaveTableaus(char* path, struct Tableau** arr, int n) 
 {
+	// make sure dir exists
+	// if it already does, this command will do nothing
+	if (!CreateDirectory(path, NULL) && GetLastError() == ERROR_ALREADY_EXISTS) {
+		LOG_WARNING("Save tables directory already exists. Files will be overwritten\n");
+	}
 	for (size_t i = 0; i < n; i++)
 	{
-		/* char fileName[MAX_PATH];
-		sprintf("%s//Table_%i.jdt", path, i);
-		SaveTableau(*arr[n], fileName); */
-		SaveTableau(*arr[n], path);
+		char fileName[MAX_PATH];
+		sprintf(fileName, "%s//Table_%i.jdt", path, i);
+		SaveTableau(*arr[i], fileName);
+		// SaveTableau(*(arr[i]), path);
 	}
 }
 

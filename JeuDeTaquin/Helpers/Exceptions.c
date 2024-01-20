@@ -26,6 +26,6 @@ void ChangeConsoleColor(enum LogType type) {
 
 void Log(const char* msg, enum LogType type, int line, const char* file) {
 	ChangeConsoleColor(type);
-	printf("%s:%i: %s", file, line, msg);
+	printf("%s(%i): %s", file, line, msg);
 	ChangeConsoleColor(LOGTYPE_OK);
 }
