@@ -78,9 +78,12 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 
 #ifdef UNOPTIMAL_MANAGMENT_REQUIREMENTS
 //
-int SolveTableau(struct Tableau* tableau,int i, int j) {
+int SolveTableau(struct Tableau* tableau) {
 
-	int res=-1;
+    return SolveTableauRecursively(tableau, 0, 0);
+}
+int SolveTableauRecursively(struct Tableau* tableau, int i, int j){
+    	int res=-1;
 	while (1) {
 		///  printf("%lf ", arr[i][j]);
 		 //end of arr
@@ -90,12 +93,12 @@ int SolveTableau(struct Tableau* tableau,int i, int j) {
 		}
 		//up if arr[i+1] exists and we can't go right or up is greater than right
 		else if ((tableau->sizesOfRows[i + 1] >= j) && (j == tableau->sizesOfRows[i] || tableau->tableau[i + 1][j] > tableau->tableau[i][j + 1])) {
-			return SolveTableau(tableau, i+1, j);
+			return SolveTableauRecursively(tableau, i+1, j);
 		}
 		//right
-		else return SolveTableau(tableau, i, j+1);
+		else return SolveTableauRecursively(tableau, i, j+1);
 	}
-
+    //free memory only once
     if(res!=-1){
        for (int i = 0; i < tableau->numberOfRows; ++i) {
 
@@ -109,6 +112,7 @@ int SolveTableau(struct Tableau* tableau,int i, int j) {
 
 	return res;
 }
+
 #else
 int SolveTableau(struct Tableau* tableau) {
 
