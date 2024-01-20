@@ -4,12 +4,12 @@
 #include "../ArrayGen/TableauStructure.h"
 #include "ArrayAnalyze.h"
 #include "../Helpers/ManagmentRequirements.h"
-
-#define MAGIC "TAB 1.0"
+#include "..\Helpers\Version.h"
+#include "..\Helpers\Exceptions.h"
 
 struct Tableau* LoadTableauFromFile(char* filePath) {
 
-	struct Tableau* tableau;
+	struct Tableau* tableau = malloc(sizeof(struct Tableau));
 	tableau->numberOfRows = -1;
 	tableau->sizesOfRows = NULL;
 	tableau->startingNr = -1;
@@ -18,12 +18,22 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 	FILE* fptr = fopen(filePath, "r");
 	
 	if (fptr == NULL) {
-		// printf("Not able to open the file.");
-		return tableau;
+		LOG_ERROR("Couldn't open the file!");
+		return NULL;
 	}
-	// read starting number,number of rows and max lenght of row
+	// read: magic, version, starting number, number of rows and max lenght of row
 	int n = 0, m = 0;
-	fscanf(fptr, "%f %d %d ", &tableau->startingNr, &n, &m); // note:  "%f %d %d" breaks rest of code (needs space after %d)
+	char magic[100], version[100];
+	fscanf(fptr, "%s %s %f %d %d ", magic, version, &tableau->startingNr, &n, &m); // note:  "%f %d %d" breaks rest of code (needs space after %d)
+	if (strcmp(magic, MAGIC)) {
+		LOG_ERROR("MAGIC header does not match!\n");
+		return NULL;
+	}
+	else if (strcmp(version, VERSION)) {
+		LOG_ERROR("This file comes from another version of the program and cannot be read!\n");
+		return NULL;
+	}
+	
 	// printf("%f %d %d \n", tableau.startingNr, n, m);
 
 	float** arr = (float**)malloc((n) * sizeof(float*));
@@ -37,7 +47,7 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 	if (line == MAGIC)
 	{
 		// read from file and input into array
-		int r = n;//rows
+		int r = n; //rows
 		endarr[n] = -1;
 		while (fgets(line, 18 * m, fptr) != NULL) {
 
@@ -51,7 +61,7 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 				j++;
 			}
 			arr[r] = (float*)malloc((numb) * sizeof(float));
-			endarr[r] = numb - 1;//remember where every row ends
+			endarr[r] = numb - 1; // remember where every row ends
 			j = 0;
 			for (int i = 0, k = 0; line[i] != 0; ++i) {
 				if (line[i] == ';') {
@@ -83,7 +93,7 @@ int SolveTableau(struct Tableau* tableau) {
     return SolveTableauRecursively(tableau, 0, 0);
 }
 int SolveTableauRecursively(struct Tableau* tableau, int i, int j){
-    	int res=-1;
+    int res=-1;
 	while (1) {
 		///  printf("%lf ", arr[i][j]);
 		 //end of arr
@@ -101,9 +111,7 @@ int SolveTableauRecursively(struct Tableau* tableau, int i, int j){
     //free memory only once
     if(res!=-1){
        for (int i = 0; i < tableau->numberOfRows; ++i) {
-
             free(tableau->tableau[i]);
-
         }
 
         free(tableau->tableau);

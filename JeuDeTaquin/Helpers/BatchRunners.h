@@ -30,7 +30,7 @@ void SaveTableaus(char* path, struct Tableau** arr, int n);
 /// <summary>
 /// Load all tables from a directory
 /// </summary>
-/// <param name="path">Directory to save tableaus in</param>
+/// <param name="path">Directory to load the tables from</param>
 /// <param name="n">RETURNS: count of items</param>
 /// <returns>An array of loaded tables</returns>
 struct Tableau** LoadTableaus(char* path, int* n);

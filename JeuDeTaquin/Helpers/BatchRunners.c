@@ -9,26 +9,27 @@
 #include "../ArrayAnalyze/ArrayAnalyze.h"
 #define LOCALISATION ""
 
-
 struct Tableau** GenerateTables(int size, int count)
 {
 	return GenerateTablesMultiThread(size, count);
 	// return GenerateTablesSingleThread(size, count);
 }
 
-void SaveTableaus(char* path, struct Tableaus** arr, int n) 
+void SaveTableaus(char* path, struct Tableau** arr, int n) 
 {
 	// TODO save tables
 	for (int i = 0; i < n; i++) {
-		SaveTableau(*arr[n], path);
+		// actually make a file name
+		// SaveTableau(*arr[n], path);
 	}
 }
 
 struct Tableau** LoadTableaus(char* path, int* n)
 {
 	// Array of pointers to tableaus
+	// You have to FIND the count and LOAD tables from a file, goddamn Andraste
 	struct Tableau** tableausArray = malloc(*n * sizeof(struct Tableau*)); 
-	for (int i = 0; i < *n, i++)
+	for (int i = 0; i < *n; i++)
 	{
 		struct Tableau* tab = LoadTableauFromFile(path);
 		tableausArray[i] = tab;
