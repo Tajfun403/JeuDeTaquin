@@ -6,6 +6,8 @@
 #include "BatchRunners/Generate.h"
 #include "BatchRunners/Analyze.h"
 #include <stdbool.h>
+#include "../ArrayAnalyze/ArrayAnalyze.h"
+#define LOCALISATION ""
 
 
 struct Tableau** GenerateTables(int size, int count)
@@ -14,18 +16,24 @@ struct Tableau** GenerateTables(int size, int count)
 	// return GenerateTablesSingleThread(size, count);
 }
 
-void SaveTableaus(char* path, struct Tableau** arr, int n) 
+void SaveTableaus(char* path, struct Tableaus** arr, int n) 
 {
 	// TODO save tables
 	for (int i = 0; i < n; i++) {
-
+		SaveTableau(*arr[n], path);
 	}
 }
 
 struct Tableau** LoadTableaus(char* path, int* n)
 {
-	// TODO load tables
-	return NULL;
+	// Array of pointers to tableaus
+	struct Tableau** tableausArray = malloc(*n * sizeof(struct Tableau*)); 
+	for (int i = 0; i < *n, i++)
+	{
+		struct Tableau* tab = LoadTableauFromFile(path);
+		tableausArray[i] = tab;
+	}
+	return tableausArray;
 }
 
 char* AnalyzeTables(char* imgPath, struct Tableau** tableaus, int n, int tableSize)

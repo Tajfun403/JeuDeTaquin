@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #define MAXDIGITS 10
 #define DIGITS_OF_STARTING_NUMBERS 2
-#define LOCALISATION ""
+#define MAGIC "TAB 1.0"
 
 
 //Generating + debugging and testing tools
@@ -15,11 +15,12 @@
 // Saves one tab to a separate file
 /*
 FILE STRUCTURE:
-1st line: how many rows\n
-2nd line: length od the longest row\n
+1st line: Magic number
+2nd line: how many rows\n
+3rd line: length od the longest row\n
 rest: tableau
 */
-void SaveTableau(struct Tableau tab)
+void SaveTableau(struct Tableau tab, char path[])
 {
 	//Some functions as sprints and fopen etc wont work in VS, so i have to use safe versions
 	/* We want to have an ordered files naming system.I think the best names will be the first numbers,
@@ -31,12 +32,16 @@ void SaveTableau(struct Tableau tab)
 	int last = tab.numberOfRows - 1;
 	//sprintf(name, "%d.txt", idNumber);
 	// We set the name of the file and its localization
-	sprintf_s(name, 10, "%s0,%d.txt", LOCALISATION, idNumber);
+	sprintf_s(name, 10, "%s0,%d.txt", path, idNumber);
 
 	//file = fopen(name, "a");
 	fopen_s(&file, name, "a");
-	fprintf_s(file, "%i\n", tab.numberOfRows); // first line - how many rows there are
-	fprintf_s(file, "%i\n", tab.sizesOfRows[0]); //second line - length of the longest row, the first is always the longest
+	// first line - magic number
+	fprintf_s(file, "%s\n", MAGIC); 
+	// second line - how many rows there are
+	fprintf_s(file, "%i\n", tab.numberOfRows); 
+	//third line - length of the longest row, the first is always the longest
+	fprintf_s(file, "%i\n", tab.sizesOfRows[0]); 
 	for (int row = last; row >= 0; row--)
 	{
 		for (int number = 0; number < tab.sizesOfRows[row]; number++)
@@ -91,8 +96,13 @@ struct Tableau* GenerateTableau(double startingNum, int setSize)
 			{
 				//printf("%i", currentRow);
 				//printf("%i", tableau->numberOfRows);
-				tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
-				tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, tableau->numberOfRows);
+				if (tableau->numberOfRows % 10 == 0)
+				{
+					tableau->tableau = ResizeTableau(tableau->tableau, &(tableau->numberOfRows));
+					tableau->sizesOfRows = ResizeSizesArray(tableau->sizesOfRows, tableau->numberOfRows);
+				}
+				tableau->numberOfRows++;
+				
 			}
 			//printf("STAGE\n");
 			//PrintTableau(*tableau);
