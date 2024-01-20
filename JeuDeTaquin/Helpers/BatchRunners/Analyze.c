@@ -5,6 +5,7 @@
 #include "../MultithreadHelper.h"
 #include "../../Graph/GraphItem.h"
 #include "../../Graph/Graph.h"
+#include "../Exceptions.h"
 #include "../../ArrayAnalyze/ArrayAnalyze.h"
 #include "Analyze.h"
 
@@ -14,7 +15,13 @@ char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n
 	RunBatch(&AnalyzeTable_Thread, tableaus, results, n);
 
 	printf("Generating graph\n");
-	return GenerateGraph(results, n, imgPath, tableSize);
+	char* ret = GenerateGraph(results, n, imgPath, tableSize);
+	for (size_t i = 0; i < n; i++)
+	{
+		free(results[i]);
+	}
+	free(results);
+	return ret;
 }
 
 void* AnalyzeTable_Thread(void* input) {
@@ -22,8 +29,12 @@ void* AnalyzeTable_Thread(void* input) {
 	// output is a pointer to a GraptItem
 	struct Tableau* table = (struct Tableau*)input;
 
-	int solution = SolveTableau(table);
 	struct GraphItem* graphItem = malloc(sizeof(struct GraphItem));
+	if (table == NULL) {
+		LOG_ERROR("Passed table was null!\n");
+		return NULL;
+	}
+	int solution = SolveTableau(table);
 	graphItem->X = table->startingNr;
 	graphItem->Y = solution;
 	graphItem->currRange = 0;
