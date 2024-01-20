@@ -26,12 +26,14 @@ bool ReadUserInputFromArgs(struct UserInput* returnInput, int argc, char* argv[]
 	// expect help command
 	if (argc == 2) {
 		char* currHeader = argv[1];
-		// no idea why it does not match ¯\_(ツ)_/¯
-		if (strcmp(currHeader, "--help")) {
+		if (!strcmp(currHeader, "--help") || !strcmp(currHeader, "-h")) {
 			DrawUsage();
+			exit(0);
 			return false;
 		}
 		else {
+			LOG_ERROR("No valid args specified!\n");
+			LOG_ERROR("Priting --help...!\n");
 			DrawUsage();
 			return false;
 		}
@@ -45,22 +47,22 @@ bool ReadUserInputFromArgs(struct UserInput* returnInput, int argc, char* argv[]
 		char* currHeader = argv[i];
 		char* currVal = argv[i + 1];
 
-		if (strcmp(currHeader, "--tableauSize")) {
+		if (!strcmp(currHeader, "--tableauSize") || !strcmp(currHeader, "-s")) {
 			returnInput->TableauSize = atoi(currVal);
 		}
-		else if (strcmp(currHeader, "--tableauCount")) {
+		else if (!strcmp(currHeader, "--tableauCount") || !strcmp(currHeader, "-c")) {
 			returnInput->TableauCount = atoi(currVal);
 		}
-		else if (strcmp(currHeader, "--inputPath")) {
+		else if (!strcmp(currHeader, "--inputPath") || !strcmp(currHeader, "-i")) {
 			returnInput->InputPath = currVal;
 		}
-		else if (strcmp(currHeader, "--tablesOutputPath")) {
+		else if (!strcmp(currHeader, "--tablesOutputPath") || !strcmp(currHeader, "-o")) {
 			returnInput->TablesOutputPath = currVal;
 		}
-		else if (strcmp(currHeader, "--imgOutputPath")) {
+		else if (!strcmp(currHeader, "--imgOutputPath") || !strcmp(currHeader, "-img")) {
 			returnInput->ImgOutputPath = currVal;
 		}
-		else if (strcmp(currHeader, "--help")) {
+		else if (!strcmp(currHeader, "--help") || !strcmp(currHeader, "-h")) {
 			DrawUsage();
 			return returnInput;
 		}
@@ -166,11 +168,14 @@ void DrawUsage(void)
 {
 	printf("Jeu de Taquin (C) 2024\n");
 	printf("Usage: \n");
-	printf("\t--tableauSize size\t - amount of items in each tableau. Only if inputPath was not specified\n");
-	printf("\t--tableauCount count\t - amount of tableaus. Only if inputPath was not specified\n");
-	printf("\t--inputPath path\t - if specified - a path to directory with generated tables\n");
-	printf("\t[--tablesOutputPath path]\t - if specified - a path to directory to save the generated tables in\n");
-	printf("\t                \t  otherwise, tables will be kept in memory only\n");
-	printf("\t[--imgOutputPath path]\t - if specified - a path to save the generated graph to\n");
-	printf("\t                \t  otherwise, graph will be saved in a random file\n");
+	printf("\t JeuDeTaquin <--tableauSize size --tableauCount count | --inputPath path> [ (optional args) ]\n");
+	printf("\n");
+	printf("\t -s, --tableauSize size      \t - amount of items in each tableau. Only if inputPath was not specified\n");
+	printf("\t -c, --tableauCount count    \t - amount of tableaus. Only if inputPath was not specified\n");
+	printf("\t -i, --inputPath path        \t - a path to directory with generated tables, if they should be loaded\n");
+	printf("\t[-o, --tablesOutputPath path]\t - if specified - a path to directory to save the generated tables in\n");
+	printf("\t                             \t   otherwise, tables will be kept in memory only\n");
+	printf("\t[-img, --imgOutputPath path] \t - if specified - a path to save the generated graph to\n");
+	printf("\t                             \t   otherwise, graph will be saved in \"graph.png\" file next to exe's dir\n");
+	printf("\t[-h, --help]                 \t - prints this help message\n");
 }
