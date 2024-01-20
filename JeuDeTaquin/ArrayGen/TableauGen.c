@@ -16,6 +16,7 @@
 FILE STRUCTURE:
 1st line: Magic number
 2nd line: Version
+3rd line: Starting num
 3rd line: how many rows\n
 4th line: length od the longest row\n
 rest: tableau
@@ -40,8 +41,8 @@ void SaveTableau(struct Tableau tab, char path[])
 	fprintf_s(file, "%s\n", MAGIC); 
 	// second line - version number
 	fprintf_s(file, "%s\n", VERSION); 
-	// third line - how many rows there are
-	fprintf_s(file, "%i\n", tab.numberOfRows); 
+	// third line - starting num
+	fprintf_s(file, "%i\n", tab.startingNr); 
 	// fourth line - how many rows there are
 	fprintf_s(file, "%i\n", tab.numberOfRows); 
 	// fif	th line - length of the longest row, the first is always the longest

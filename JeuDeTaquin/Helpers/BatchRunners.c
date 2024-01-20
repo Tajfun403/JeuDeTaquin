@@ -18,10 +18,11 @@ struct Tableau** GenerateTables(int size, int count)
 
 void SaveTableaus(char* path, struct Tableau** arr, int n) 
 {
-	// TODO save tables
-	for (int i = 0; i < n; i++) {
-		// actually make a file name
-		// SaveTableau(*arr[n], path);
+	for (size_t i = 0; i < n; i++)
+	{
+		char fileName[MAX_PATH];
+		sprintf("%s//Table_%i.jdt", path, i);
+		SaveTableau(*arr[n], fileName);
 	}
 }
 

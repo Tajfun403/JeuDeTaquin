@@ -1,10 +1,12 @@
 #pragma once
 /// <summary>
-/// Saves one tab to a separate file <para/>
+/// Saves one tab to a file <para/>
 /// FILE STRUCTURE: <para/>
 /// 1st line: Magic number <para/>
-/// 2nd line: how many rows <para/>
-/// 3rd line: length od the longest row <para/>
+/// 2nd line: Version <para/>
+/// 3rd line: Tableau starting num <para/>
+/// 4th line: Rows count <para/>
+/// 5th line: Length of the longest row <para/>
 /// rest: tableau <para/>
 /// </summary>
 /// <param name="tab">Tableau to save</param>
