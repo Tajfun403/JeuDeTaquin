@@ -31,6 +31,12 @@ struct Tableau** GenerateTablesMultiThread(int size, int count) {
 
 	RunBatch(&GenTable_Thread, inputArray, outputArray, count);
 
+	for (size_t i = 0; i < count; i++)
+	{
+		free(inputArray[i]);
+	}
+	free(inputArray);
+
 	return outputArray;
 }
 

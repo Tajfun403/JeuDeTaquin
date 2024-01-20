@@ -10,6 +10,7 @@
 #include "Windows.h"
 #include "Exceptions.h"
 #include "stdio.h"
+#include "Clock.h"
 
 struct Tableau** GenerateTables(int size, int count)
 {
@@ -19,11 +20,13 @@ struct Tableau** GenerateTables(int size, int count)
 
 void SaveTableaus(char* path, struct Tableau** arr, int n) 
 {
+	printf("Saving tables...\n");
 	// make sure dir exists
 	// if it already does, this command will do nothing
 	if (!CreateDirectory(path, NULL) && GetLastError() == ERROR_ALREADY_EXISTS) {
 		LOG_WARNING("Save tables directory already exists. Files will be overwritten\n");
 	}
+	long timeStart = GetCurrTimeMs();
 	for (size_t i = 0; i < n; i++)
 	{
 		char fileName[MAX_PATH];
@@ -31,10 +34,13 @@ void SaveTableaus(char* path, struct Tableau** arr, int n)
 		SaveTableau(*arr[i], fileName);
 		// SaveTableau(*(arr[i]), path);
 	}
+	printf("Finished in %.3fs\n", (GetCurrTimeMs() - timeStart) / 1000.0);
 }
 
 struct Tableau** LoadTableaus(char* path, int* n)
 {
+	printf("Loading tables...\n");
+	long timeStart = GetCurrTimeMs();
 	int CurrCapacity = 1;
 	struct Tableau** tableausArray = malloc(CurrCapacity * sizeof(struct Tableau*));
 
@@ -46,8 +52,9 @@ struct Tableau** LoadTableaus(char* path, int* n)
 	char searchPattern[MAX_PATH];
 	sprintf(searchPattern, "%s//*.jdt", path);
 	hFind = FindFirstFile(searchPattern, &foundData);
-	if (hFind == NULL) {
-		LOG_ERROR("Could not find any files!");
+	if (hFind == -1) {
+		LOG_ERROR("Could not find any files!\n");
+		exit(-1);
 		return NULL;
 	}
 	do {
@@ -64,6 +71,7 @@ struct Tableau** LoadTableaus(char* path, int* n)
 	} while (FindNextFile(hFind, &foundData));
 
 	*n = i;
+	printf("Finished in %.3fs\n", (GetCurrTimeMs() - timeStart) / 1000.0);
 	return tableausArray;
 }
 
