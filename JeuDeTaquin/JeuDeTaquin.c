@@ -12,8 +12,7 @@
 
 int main(int argc, char* argv[])
 {
-	// struct UserInput* input = malloc(sizeof(struct UserInput));
-	struct UserInput input = { 0 };
+	auto struct UserInput input = { 0 };
 	if (!TakeUserInput(&input, argc, argv)) {
 		printf("Could not read input!\n");
 		return;
