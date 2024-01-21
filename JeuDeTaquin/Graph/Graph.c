@@ -122,6 +122,26 @@ void SetAverages(struct GraphItem** arr, int n) {
 }
 #endif 
 
+void SortIfNotSorted(struct GraphItem** arr, int n) {
+	if (!IsSorted(arr, n)) {
+		qsort(arr, n, sizeof(struct GraphItem*), Compaper);
+	}
+}
+
+int Compaper(struct GraphItem* a, struct GraphItem* b) {
+	return ceil(a->X - b->X);
+}
+
+bool IsSorted(struct GraphItem** arr, int n) {
+	for (size_t i = 1; i < n; i++)
+	{
+		if (arr[i]->X > arr[i - 1]->X) {
+			return false;
+		}
+	}
+	return true;
+}
+
 char* GenerateDB(struct GraphItem** arr, int n) {
 	char* fileName = malloc(255);
 	sprintf(fileName, "%s.dat", tmpnam(NULL)); // file path is created in user TEMP folder

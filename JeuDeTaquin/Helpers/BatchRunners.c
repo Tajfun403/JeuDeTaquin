@@ -22,14 +22,14 @@ struct Tableau** GenerateTables(int size, int count)
 
 void SaveTableaus(char* path, struct Tableau** arr, int n) 
 {
-	// SaveTableausMultiThreaded(path, arr, n);
-	SaveTableausSingleThread(path, arr, n);
+	SaveTableausMultiThreaded(path, arr, n);
+	// SaveTableausSingleThread(path, arr, n);
 }
 
 struct Tableau** LoadTableaus(char* path, int* n)
 {
-	// LoadTableausMultiThread(path, n);
-	LoadTableausSingleThread(path, n);
+	LoadTableausMultiThread(path, n);
+	// LoadTableausSingleThread(path, n);
 }
 
 void PrintTables(struct Tableau** tableaus, int n) {
