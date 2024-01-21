@@ -8,7 +8,6 @@
 /// <returns>An array of generated tables</returns>
 struct Tableau** GenerateTablesSingleThread(int size, int count);
 
-
 /// <summary>
 /// PRIVATE: relays table analysis to a multithreaded system
 /// </summary>

@@ -122,17 +122,17 @@ int SolveTableau(struct Tableau* tableau) {
 
 	int i = 0, j = 0, res;
 	while (true) {
-		///  printf("%lf ", arr[i][j]);
-		 //end of arr
+		// printf("%lf ", arr[i][j]);
+		// end of arr
 		if (tableau->sizesOfRows[i + 1] - 1 < j && j == tableau->sizesOfRows[i] - 1) {
 			res = i + j;
 			break;
 		}
-		//up if arr[i+1] exists and we can't go right or up is greater than right
+		// up if arr[i+1] exists and we can't go right or up is greater than right
 		else if ((tableau->sizesOfRows[i + 1] - 1 >= j) && (j == tableau->sizesOfRows[i] - 1 || tableau->tableau[i + 1][j] > tableau->tableau[i][j + 1])) {
 			i++;
 		}
-		//right
+		// right
 		else j++;
 	}
 
