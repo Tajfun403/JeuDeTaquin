@@ -31,6 +31,11 @@ bool ReadUserInputFromArgs(struct UserInput* returnInput, int argc, char* argv[]
 			exit(0);
 			return false;
 		}
+		else if (!strcmp(currHeader, "--version") || !strcmp(currHeader, "-v")) {
+			DrawVersion();
+			exit(0);
+			return false;
+		}
 		else {
 			LOG_ERROR("No valid args specified!\n");
 			LOG_ERROR("Priting --help...!\n");
@@ -38,11 +43,11 @@ bool ReadUserInputFromArgs(struct UserInput* returnInput, int argc, char* argv[]
 			return false;
 		}
 	}
-	if (argc % 2 != 1) {
-		// non-even amount of non-exe args! Something is off
-		LOG_ERROR("Amount of headers and values do not match!\n");
-		return returnInput;
-	}
+	//if (argc % 2 != 1) {
+	//	// non-even amount of non-exe args! Something is off
+	//	LOG_ERROR("Amount of headers and values do not match!\n");
+	//	return returnInput;
+	//}
 	for (int i = 1; i < argc; i += 2) {
 		char* currHeader = argv[i];
 		char* currVal = argv[i + 1];
@@ -62,9 +67,14 @@ bool ReadUserInputFromArgs(struct UserInput* returnInput, int argc, char* argv[]
 		else if (!strcmp(currHeader, "--imgOutputPath") || !strcmp(currHeader, "-img")) {
 			returnInput->ImgOutputPath = currVal;
 		}
+		else if (!strcmp(currHeader, "--printTableaux") || !strcmp(currHeader, "-p")) {
+			returnInput->bPrintTables = true;
+		}
 		else if (!strcmp(currHeader, "--help") || !strcmp(currHeader, "-h")) {
 			DrawUsage();
-			return returnInput;
+		}
+		else if (!strcmp(currHeader, "--version") || !strcmp(currHeader, "-v")) {
+			DrawVersion();
 		}
 		else {
 			bUnparsedArgsPresent = true;
@@ -143,6 +153,19 @@ bool ReadUserInputFromPrompts(struct UserInput* returnInput) {
 		return false;
 	}
 #pragma endregion
+#pragma region Print tables
+	if (returnInput->TableauCount < 100 || ShouldUseExistingTables(*returnInput)) {
+		printf("Do you want to show generated tables [1] or not [2]? [1/2]: ");
+		scanf("%i", &intBuffer);
+		if (intBuffer == 1) {
+			returnInput->bPrintTables = true;
+		}
+		else if (intBuffer != 2) {
+			LOG_ERROR("Invalid operation requested!\n");
+			return false;
+		}
+	}
+#pragma endregion
 #pragma region Save image
 	printf("Do you want to save output image to default location [1] or specify a path [2]? [1/2]: ");
 	scanf("%i", &intBuffer);
@@ -168,7 +191,9 @@ void DrawUsage(void)
 {
 	printf("Jeu de Taquin (C) 2024\n");
 	printf("Usage: \n");
-	printf("\t JeuDeTaquin <--tableauSize size --tableauCount count | --inputPath path> [ (optional args) ]\n");
+	// printf("\t JeuDeTaquin <--tableauSize size --tableauCount count | --inputPath path> [ (optional args) ]\n");
+	printf("\t JeuDeTaquin --tableauSize size --tableauCount count [ {optional args} ]\n");
+	printf("\t JeuDeTaquin --inputPath path [ {optional args} ]\n");
 	printf("\n");
 	printf("\t -s, --tableauSize size      \t - amount of items in each tableau. Only if inputPath was not specified\n");
 	printf("\t -c, --tableauCount count    \t - amount of tableaus. Only if inputPath was not specified\n");
@@ -177,5 +202,13 @@ void DrawUsage(void)
 	printf("\t                             \t   otherwise, tables will be kept in memory only\n");
 	printf("\t[-img, --imgOutputPath path] \t - if specified - a path to save the generated graph to\n");
 	printf("\t                             \t   otherwise, graph will be saved in \"graph.png\" file next to exe's dir\n");
-	printf("\t[-h, --help]                 \t - prints this help message\n");
+	printf("\t[-p, --printTableaux]        \t - if specified - print the generated tables before analyzing\n");
+	printf("\t -h, --help                  \t - prints this help message\n");
+	printf("\t -v, --version               \t - prints version info\n");
+}
+
+void DrawVersion(void) {
+	printf("Jeu de Taquin (C) 2024\n");
+	printf("https://github.com/Tajfun403/JeuDeTaquin\n");
+	printf("version 1.0\n");
 }

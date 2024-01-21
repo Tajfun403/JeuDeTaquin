@@ -34,3 +34,10 @@ void SaveTableaus(char* path, struct Tableau** arr, int n);
 /// <param name="n">RETURNS: count of items</param>
 /// <returns>An array of loaded tables</returns>
 struct Tableau** LoadTableaus(char* path, int* n);
+
+/// <summary>
+/// Print all tables to standard output.
+/// </summary>
+/// <param name="tableaus">Array of tables</param>
+/// <param name="n">Count of tables</param>
+void PrintTables(struct Tableau** tableaus, int n);

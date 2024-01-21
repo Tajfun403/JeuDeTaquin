@@ -45,3 +45,9 @@ bool ShouldUseExistingTables(struct UserInput input);
 /// Print explanations of command line args to standard output.
 /// </summary>
 void DrawUsage(void);
+
+/// <summary>
+/// Print version info to standard output.
+/// </summary>
+/// <param name=""></param>
+void DrawVersion(void);

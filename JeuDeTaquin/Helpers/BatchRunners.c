@@ -75,6 +75,16 @@ struct Tableau** LoadTableaus(char* path, int* n)
 	return tableausArray;
 }
 
+void PrintTables(struct Tableau** tableaus, int n) {
+	if (n > 10)
+		LOG_WARNING("Amount of tables to print might be excessive!\n");
+	for (size_t i = 0; i < n; i++)
+	{
+		printf("Tableau %i\n", i);
+		PrintTableau(*tableaus[i]);
+	}
+}
+
 char* AnalyzeTables(char* imgPath, struct Tableau** tableaus, int n, int tableSize)
 {
 	return AnalyzeTablesMultiThreaded(imgPath, tableaus, n, tableSize);

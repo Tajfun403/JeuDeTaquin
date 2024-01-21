@@ -28,6 +28,9 @@ int main(int argc, char* argv[])
 		tables = LoadTableaus(input.InputPath, &input.TableauCount);
 	}
 
+	if (input.bPrintTables)
+		PrintTables(tables, input.TableauCount);
+
 	// save the tables if user wanted to
 	if (input.TablesOutputPath != NULL) {
 		SaveTableaus(input.TablesOutputPath, tables, input.TableauCount);
