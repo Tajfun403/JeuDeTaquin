@@ -40,7 +40,7 @@ struct Tableau** GenerateTablesMultiThread(int size, int count) {
 	return outputArray;
 }
 
-void* GenTable_Thread(void* input) {
+static void* GenTable_Thread(void* input) {
 	// Input is a tuple<startingNum, size>
 	// output is a pointer to generated table
 	struct GenData* data = (struct GenData*)input;

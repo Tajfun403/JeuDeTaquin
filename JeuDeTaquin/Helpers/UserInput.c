@@ -5,7 +5,7 @@
 #include "UserInputStruct.h"
 #include "UserInput.h"
 #include "Exceptions.h"
-#include "ManagmentRequirements.h"
+#include "ProjectRequirements.h"
 
 bool TakeUserInput(struct UserInput* returnInput, int argc, char* argv[])
 {
