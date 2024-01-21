@@ -61,7 +61,7 @@ void SaveTableausMultiThreaded(char* path, struct Tableau** arr, int n) {
 	free(inputArray);
 }
 
-static void* SaveTable_Thread(void* input) {
+void* SaveTable_Thread(void* input) {
 	// Input is a tuple<tableau, basePath, index>
 	// no output
 	struct SaveData* data = (struct SaveData*)input;

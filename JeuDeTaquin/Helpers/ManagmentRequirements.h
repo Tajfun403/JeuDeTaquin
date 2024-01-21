@@ -6,4 +6,4 @@
 // ArrayAnalyze/ArrayAnalyze.c -> SolveTableau (in-place vs recursion)
 // ArrayGen/TableauStructure.c -> FindThe2ndMaxElement (linear search vs qsort)
 
-// #define UNOPTIMAL_PROJECT_REQUIREMENTS
+// #define UNOPTIMAL_MANAGMENT_REQUIREMENTS

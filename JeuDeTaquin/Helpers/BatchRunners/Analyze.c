@@ -24,7 +24,7 @@ char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n
 	return ret;
 }
 
-static void* AnalyzeTable_Thread(void* input) {
+void* AnalyzeTable_Thread(void* input) {
 	// Input is a pointer to a table
 	// output is a pointer to a GraptItem
 	struct Tableau* table = (struct Tableau*)input;

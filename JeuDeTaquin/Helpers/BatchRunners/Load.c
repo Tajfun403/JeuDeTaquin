@@ -97,7 +97,7 @@ struct Tableau** LoadTableausMultiThread(char* path, int* n) {
 	return outputArray;
 }
 
-static void* LoadTable_Thread(void* input) {
+void* LoadTable_Thread(void* input) {
 	// input is a file path
 	// output is a pointer to a loaded struct Tableau*
 

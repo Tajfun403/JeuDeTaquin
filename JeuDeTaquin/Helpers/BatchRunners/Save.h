@@ -32,4 +32,4 @@ void SaveTableausMultiThreaded(char* path, struct Tableau** arr, int n);
 /// </summary>
 /// <param name="input">Pointer to a struct SaveData*</param>
 /// <returns>Nothing (always returns NULL)</returns>
-static void* SaveTable_Thread(void* input);
+void* SaveTable_Thread(void* input);

@@ -32,4 +32,4 @@ struct Tableau** LoadTableausMultiThread(char* path, int* n);
 /// </summary>
 /// <param name="input">Pointer to a file path</param>
 /// <returns>Pointer to a loaded struct Tableau</returns>
-static void* LoadTable_Thread(void* input);
+void* LoadTable_Thread(void* input);

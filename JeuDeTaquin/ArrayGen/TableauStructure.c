@@ -1,10 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "../Helpers/ProjectRequirements.h"
+#include "../Helpers/ManagmentRequirements.h"
+
 
 //All the functions that will be used in generating process
 //As we operate on numbers from range [0,1] I'll be using -1f as empty cell
+
+
+
+
 
 float* ResizeRow(float* row, int* size)
 {
@@ -79,7 +84,7 @@ float* GenerateStartingNumbers(float delta, int howManyNumbers)
 	return setOfStartingNumbers;
 }
 
-#ifdef UNOPTIMAL_PROJECT_REQUIREMENTS
+#ifdef UNOPTIMAL_MANAGMENT_REQUIREMENTS
 // TODO write this thing with qsort
 float* FindThe2ndMaxElement(float* row, float newElement, int* rowSize) {
 }
