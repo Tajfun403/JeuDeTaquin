@@ -93,12 +93,12 @@ int SolveTableauRecursively(struct Tableau* tableau, int i, int j){
 	while (1) {
 		///  printf("%lf ", arr[i][j]);
 		 //end of arr
-		if (tableau->sizesOfRows[i + 1] < j && j == tableau->sizesOfRows[i]) {
+		if (tableau->sizesOfRows[i + 1] - 1 < j && j == tableau->sizesOfRows[i] - 1) {
 			res = i + j;
 			break;
 		}
 		//up if arr[i+1] exists and we can't go right or up is greater than right
-		else if ((tableau->sizesOfRows[i + 1] >= j) && (j == tableau->sizesOfRows[i] || tableau->tableau[i + 1][j] > tableau->tableau[i][j + 1])) {
+		else if ((tableau->sizesOfRows[i + 1] - 1 >= j) && (j == tableau->sizesOfRows[i] - 1 || tableau->tableau[i + 1][j] > tableau->tableau[i][j + 1])) {
 			return SolveTableauRecursively(tableau, i+1, j);
 		}
 		//right
@@ -124,12 +124,12 @@ int SolveTableau(struct Tableau* tableau) {
 	while (true) {
 		///  printf("%lf ", arr[i][j]);
 		 //end of arr
-		if (tableau->sizesOfRows[i + 1] < j && j == tableau->sizesOfRows[i]) {
+		if (tableau->sizesOfRows[i + 1] - 1 < j && j == tableau->sizesOfRows[i] - 1) {
 			res = i + j;
 			break;
 		}
 		//up if arr[i+1] exists and we can't go right or up is greater than right
-		else if ((tableau->sizesOfRows[i + 1] >= j) && (j == tableau->sizesOfRows[i] || tableau->tableau[i + 1][j] > tableau->tableau[i][j + 1])) {
+		else if ((tableau->sizesOfRows[i + 1] - 1 >= j) && (j == tableau->sizesOfRows[i] - 1 || tableau->tableau[i + 1][j] > tableau->tableau[i][j + 1])) {
 			i++;
 		}
 		//right
