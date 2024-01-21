@@ -11,6 +11,7 @@
 #include "Exceptions.h"
 #include "stdio.h"
 #include "Clock.h"
+#include "BatchRunners/Save.h";
 
 struct Tableau** GenerateTables(int size, int count)
 {
@@ -20,21 +21,7 @@ struct Tableau** GenerateTables(int size, int count)
 
 void SaveTableaus(char* path, struct Tableau** arr, int n) 
 {
-	printf("Saving tables...\n");
-	// make sure dir exists
-	// if it already does, this command will do nothing
-	if (!CreateDirectory(path, NULL) && GetLastError() == ERROR_ALREADY_EXISTS) {
-		LOG_WARNING("Save tables directory already exists. Files will be overwritten\n");
-	}
-	long timeStart = GetCurrTimeMs();
-	for (size_t i = 0; i < n; i++)
-	{
-		char fileName[MAX_PATH];
-		sprintf(fileName, "%s//Table_%i.jdt", path, i);
-		SaveTableau(*arr[i], fileName);
-		// SaveTableau(*(arr[i]), path);
-	}
-	printf("Finished in %.3fs\n", (GetCurrTimeMs() - timeStart) / 1000.0);
+	SaveTableausMultiThreaded(path, arr, n);
 }
 
 struct Tableau** LoadTableaus(char* path, int* n)
