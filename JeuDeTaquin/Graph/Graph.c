@@ -44,7 +44,6 @@ void SetAverages(struct GraphItem** arr, int n) {
 	const int maxRange = n * 0.05;
 
 	// set sums for first range of elements
-
 	for (size_t i = 0; i < n; i++)
 	{
 		// only take as many items into avg as possible so that it is still even
