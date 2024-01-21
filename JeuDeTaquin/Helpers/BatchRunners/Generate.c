@@ -8,12 +8,14 @@
 
 struct Tableau** GenerateTablesSingleThread(int size, int count)
 {
+	long timeStart = GetCurrTimeMs();
 	struct Tableau** arr = (struct Tableau**)malloc(count * sizeof(struct Tableau*));
 	for (size_t i = 0; i < count; i++)
 	{
 		float CurrStartNum = (float)i / count;
-		arr[0] = GenerateTableau(CurrStartNum, size);
+		arr[i] = GenerateTableau(CurrStartNum, size);
 	}
+	printf("Finished in %.3fs\n", (GetCurrTimeMs() - timeStart) / 1000.0);
 	return arr;
 }
 
