@@ -69,4 +69,5 @@ void* SaveTable_Thread(void* input) {
 	char fileName[MAX_PATH];
 	sprintf(fileName, "%s//Table_%.*d.jdt", data->basePath, data->digitsCount, data->index);
 	SaveTableau(*(data->tableau), fileName);
+	return NULL;
 }

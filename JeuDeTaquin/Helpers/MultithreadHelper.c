@@ -35,15 +35,17 @@ void RunBatch(void* (*func)(void*), void** inputArray, void** outputArray, int n
 	// avoid spinning useless threads
 	if (n < cores)
 		cores = n;
-	int itemsPerCore = floor(n / cores);
-	int leftoverItems = n - (itemsPerCore * cores);
+	const int itemsPerCore = floor(n / cores);
+	const int leftoverItems = n - (itemsPerCore * cores);
 	long timeStart, timeStop;
 	timeStart = GetCurrTimeMs(); // time(NULL) only returns seconds, which is not enough accurarcy
 	                         // which Clock() returns amount of cycles used, and not actual time
 
 	// https://learn.microsoft.com/en-us/windows/win32/procthread/creating-threads?redirectedfrom=MSDN
 	HANDLE* threads = malloc(sizeof(HANDLE) * cores);
-	int** progressArray = malloc(sizeof(int*) * cores);
+
+	// array of pointers to volatile ints
+	volatile int** progressArray = malloc(sizeof(int*) * cores);
 	for (size_t i = 0; i < cores; i++)
 	{
 		progressArray[i] = malloc(sizeof(int));

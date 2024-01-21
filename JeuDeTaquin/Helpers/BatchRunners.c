@@ -11,8 +11,8 @@
 #include "Exceptions.h"
 #include "stdio.h"
 #include "Clock.h"
-#include "BatchRunners/Save.h";
-#include "BatchRunners/Load.h";
+#include "BatchRunners/Save.h"
+#include "BatchRunners/Load.h"
 
 struct Tableau** GenerateTables(int size, int count)
 {

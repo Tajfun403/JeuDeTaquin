@@ -15,7 +15,7 @@
 
 #ifndef OPTIMIZED_AVG
 void SetAverages(struct GraphItem** arr, int n) {
-	int maxRange = n * 0.05;
+	const int maxRange = n * 0.05;
 	for (int i = 0; i < n; i++) {
 		int currCount = 0;
 		double currSum = 0;
@@ -41,7 +41,7 @@ void SetAverages(struct GraphItem** arr, int n) {
 
 #ifdef OPTIMIZED_AVG
 void SetAverages(struct GraphItem** arr, int n) {
-	int maxRange = n * 0.05;
+	const int maxRange = n * 0.05;
 
 	// set sums for first range of elements
 
