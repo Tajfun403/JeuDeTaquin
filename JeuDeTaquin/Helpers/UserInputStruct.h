@@ -29,6 +29,9 @@ struct UserInput {
 	/// OPTIONAL: path to save the generated image to
 	/// </summary>
 	char* ImgOutputPath;
-	// bool bValid;
-	// char* ErrorInfo;
+	
+	/// <summary>
+	/// OPTIONAL: if true, print tables before analyzing them
+	/// </summary>
+	bool bPrintTables;
 };

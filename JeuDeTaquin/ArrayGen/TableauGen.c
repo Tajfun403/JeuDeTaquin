@@ -78,13 +78,12 @@ void PrintTableau(struct Tableau tab)
 	{
 		for (int j = 0; j < tab.sizesOfRows[i]; j++)
 		{
-			printf("%f", tab.tableau[i][j]);
+			printf("%f; ", tab.tableau[i][j]);
 		}
 		printf("\n");
 	}
-	printf("\n \n \n");
+	printf("\n");
 }
-
 
 
 struct Tableau* GenerateTableau(double startingNum, int setSize)

@@ -52,13 +52,13 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 		   //...
 		//printf("and the values are: ");
 		r--;
-		int j = 0, numb = 0;
+		int j = 0, numCount = 0;
 		while (line[j] != 0) {
-			if (line[j] == ';')numb++;
+			if (line[j] == ';') numCount++;
 			j++;
 		}
-		arr[r] = (float*)malloc((numb) * sizeof(float));
-		sizesOfRows[r] = numb - 1; // remember where every row ends
+		arr[r] = (float*)malloc((numCount) * sizeof(float));
+		sizesOfRows[r] = numCount; // remember where every row ends
 		j = 0;
 		for (int i = 0, k = 0; line[i] != 0; ++i) {
 			if (line[i] == ';') {
