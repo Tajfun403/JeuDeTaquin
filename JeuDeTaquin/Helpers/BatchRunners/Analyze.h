@@ -15,4 +15,4 @@ char* AnalyzeTablesMultiThreaded(char* imgPath, struct Tableau** tableaus, int n
 /// </summary>
 /// <param name="input">Pointer to a struct Tableau*</param>
 /// <returns>Pointer to a new struct GraphItem, filled with X and Y values.</returns>
-void* AnalyzeTable_Thread(void* input);
+static void* AnalyzeTable_Thread(void* input);

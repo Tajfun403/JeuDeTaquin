@@ -21,4 +21,4 @@ struct Tableau** GenerateTablesMultiThread(int size, int count);
 /// </summary>
 /// <param name="input">A struct GenData*, which is a tuple(startingNum, size)</param>
 /// <returns>Pointer to a generated struct Tableau*</returns>
-void* GenTable_Thread(void* input);
+static void* GenTable_Thread(void* input);

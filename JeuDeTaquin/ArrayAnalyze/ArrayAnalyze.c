@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "../ArrayGen/TableauStructure.h"
 #include "ArrayAnalyze.h"
-#include "../Helpers/ManagmentRequirements.h"
+#include "../Helpers/ProjectRequirements.h"
 #include "..\Helpers\Version.h"
 #include "..\Helpers\Exceptions.h"
 #define DOUBLE_DIGITS 18
@@ -82,7 +82,7 @@ struct Tableau* LoadTableauFromFile(char* filePath) {
 	return tableau;
 }
 
-#ifdef UNOPTIMAL_MANAGMENT_REQUIREMENTS
+#ifdef UNOPTIMAL_PROJECT_REQUIREMENTS
 //
 int SolveTableau(struct Tableau* tableau) {
 
@@ -91,24 +91,24 @@ int SolveTableau(struct Tableau* tableau) {
 int SolveTableauRecursively(struct Tableau* tableau, int i, int j){
     int res = -1;
 	while (1) {
-		///  printf("%lf ", arr[i][j]);
-		 //end of arr
+		/// printf("%lf ", arr[i][j]);
+		// end of arr
 		if (tableau->sizesOfRows[i + 1] - 1 < j && j == tableau->sizesOfRows[i] - 1) {
 			res = i + j;
 			break;
 		}
-		//up if arr[i+1] exists and we can't go right or up is greater than right
+		// up if arr[i+1] exists and we can't go right or up is greater than right
 		else if ((tableau->sizesOfRows[i + 1] - 1 >= j) && (j == tableau->sizesOfRows[i] - 1 || tableau->tableau[i + 1][j] > tableau->tableau[i][j + 1])) {
 			return SolveTableauRecursively(tableau, i+1, j);
 		}
-		//right
+		// right
 		else return SolveTableauRecursively(tableau, i, j+1);
 	}
-    //free memory only once
+    // free memory only once
     if (res != -1){
-       for (int i = 0; i < tableau->numberOfRows; ++i) {
+		for (int i = 0; i < tableau->numberOfRows; ++i) {
             free(tableau->tableau[i]);
-        }
+		}
 
         free(tableau->tableau);
         free(tableau->sizesOfRows);
