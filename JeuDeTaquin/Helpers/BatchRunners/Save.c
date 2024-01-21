@@ -12,6 +12,7 @@
 #include "SaveData.h"
 #include "../MultithreadHelper.h"
 #include "Save.h"
+#include "Math.h"
 
 void SaveTableausSingleThread(char* path, struct Tableau** arr, int n) {
 	printf("Saving tables...\n");
@@ -21,10 +22,12 @@ void SaveTableausSingleThread(char* path, struct Tableau** arr, int n) {
 		LOG_WARNING("Save tables directory already exists. Files will be overwritten\n");
 	}
 	long timeStart = GetCurrTimeMs();
+	int digitsCount = ceil(log10(n));
 	for (size_t i = 0; i < n; i++)
 	{
 		char fileName[MAX_PATH];
-		sprintf(fileName, "%s//Table_%i.jdt", path, i);
+		// https://stackoverflow.com/questions/13100821/variable-leading-zeroes-in-c99-printf#comment81624295_13100838
+		sprintf(fileName, "%s//Table_%.*d.jdt", path, digitsCount, i);
 		SaveTableau(*arr[i], fileName);
 		// SaveTableau(*(arr[i]), path);
 	}
@@ -38,6 +41,7 @@ void SaveTableausMultiThreaded(char* path, struct Tableau** arr, int n) {
 		LOG_WARNING("Save tables directory already exists. Files will be overwritten\n");
 	}
 
+	int digitsCount = ceil(log10(n));
 	struct SaveData** inputArray = malloc(sizeof(struct SaveData*) * n);
 	for (size_t i = 0; i < n; i++)
 	{
@@ -45,6 +49,7 @@ void SaveTableausMultiThreaded(char* path, struct Tableau** arr, int n) {
 		inputArray[i]->basePath = path;
 		inputArray[i]->index = i;
 		inputArray[i]->tableau = arr[i];
+		inputArray[i]->digitsCount = digitsCount;
 	}
 
 	RunBatch(SaveTable_Thread, inputArray, NULL, n);
@@ -62,6 +67,6 @@ void* SaveTable_Thread(void* input) {
 	struct SaveData* data = (struct SaveData*)input;
 
 	char fileName[MAX_PATH];
-	sprintf(fileName, "%s//Table_%i.jdt", data->basePath, data->index);
+	sprintf(fileName, "%s//Table_%.*d.jdt", data->basePath, data->digitsCount, data->index);
 	SaveTableau(*(data->tableau), fileName);
 }

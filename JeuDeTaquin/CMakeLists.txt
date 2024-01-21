@@ -33,9 +33,11 @@ add_executable (JeuDeTaquin "JeuDeTaquin.c"
 	"Helpers/Clock.c"
 	"Helpers/ManagmentRequirements.h"
 	"Helpers/Version.h"
-	"Helpers/BatchRunners/Save.h"
+	"Helpers/BatchRunners/Load.h"
 	"Helpers/BatchRunners/Save.c"
-	"Helpers/BatchRunners/SaveData.h"  )
+	"Helpers/BatchRunners/SaveData.h"
+	"Helpers/BatchRunners/Load.c"
+	"Helpers/BatchRunners/Save.h")
 
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
