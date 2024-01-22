@@ -41,3 +41,10 @@ struct Tableau** LoadTableaus(char* path, int* n);
 /// <param name="tableaus">Array of tables</param>
 /// <param name="n">Count of tables</param>
 void PrintTables(struct Tableau** tableaus, int n);
+
+/// <summary>
+/// Get count of all items in a tableau
+/// </summary>
+/// <param name="t">A tableau to count items fof</param>
+/// <returns>Count of all items in the tableau</returns>
+int GetTableauSize(struct Tableau* t);

@@ -46,3 +46,12 @@ char* AnalyzeTables(char* imgPath, struct Tableau** tableaus, int n, int tableSi
 {
 	return AnalyzeTablesMultiThreaded(imgPath, tableaus, n, tableSize);
 }
+
+int GetTableauSize(struct Tableau* t) {
+	int count = 0;
+	for (size_t i = 0; i < t->numberOfRows; i++)
+	{
+		count += t->sizesOfRows[i];
+	}
+	return count;
+}

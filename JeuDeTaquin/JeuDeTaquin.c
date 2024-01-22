@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
 	}
 	else {
 		tables = LoadTableaus(input.InputPath, &input.TableauCount);
+		input.TableauSize = GetTableauSize(tables[0]);
 	}
 
 	if (input.bPrintTables)
